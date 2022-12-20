@@ -19,9 +19,6 @@ import java.nio.file.Paths;
 
 public class HelloController {
     @FXML
-    private AnchorPane scene;
-
-    @FXML
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
