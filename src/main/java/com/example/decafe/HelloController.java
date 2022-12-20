@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -17,7 +18,13 @@ import java.nio.file.Paths;
 
 public class HelloController {
     @FXML
+    private AnchorPane scene;
+
+    @FXML
     ImageView startButton = new ImageView();
+
+    @FXML
+    private ImageView waiter;
 
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
