@@ -12,12 +12,12 @@
             <Image url="@cafeIndoorNew.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="coffeeMachine" fitHeight="117.0" fitWidth="75.0" layoutX="7.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#showCoffee">
+      <ImageView fx:id="coffeeMachine" fitHeight="117.0" fitWidth="75.0" layoutX="7.0" layoutY="180.0" onMouseClicked="#showCoffee" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeMachine.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="kitchenAid" fitHeight="73.0" fitWidth="146.0" layoutX="4.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#showCake">
+      <ImageView fx:id="kitchenAid" fitHeight="73.0" fitWidth="146.0" layoutX="4.0" layoutY="304.0" onMouseClicked="#showCake" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@kitchenAid.png" />
          </image>
