@@ -72,6 +72,5 @@
             <Image url="@cofiBrew.png" />
          </image>
       </ImageView>
-      <AnchorPane prefHeight="680.0" prefWidth="979.0" />
    </children>
 </Pane>
