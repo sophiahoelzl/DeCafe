@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -19,8 +20,10 @@ public class HelloController {
     @FXML
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
+    public ImageView kitchenAid;
 
     public Machine coffeeeMachine = new Machine(0);
+    public Machine cakeMachine = new Machine(0);
 
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
@@ -83,6 +86,21 @@ public class HelloController {
         InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
         coffeeMachine.setImage(coffee);
+    }
+
+    public void showCake() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        if (cakeMachine.getProduced()){
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAid.png";;
+            cakeMachine.productTaken();
+        } else {
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAidUsed.png";;
+            cakeMachine.produceProduct();
+        }
+        InputStream stream = new FileInputStream(filePath);
+        Image coffee = new Image(stream);
+        kitchenAid.setImage(coffee);
     }
 
 
