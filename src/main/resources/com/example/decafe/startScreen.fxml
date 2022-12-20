@@ -8,7 +8,7 @@
    <children>
       <ImageView fitHeight="681.0" fitWidth="977.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@startScreen1.png" />
+            <Image url="@startScreen.png" />
          </image>
       </ImageView>
       <ImageView fx:id="startButton" fitHeight="132.0" fitWidth="138.0" layoutX="429.0" layoutY="80.0" onMouseClicked="#startGame" onMouseEntered="#changeCoffeeImage" onMouseExited="#changeCoffeeImageBack" pickOnBounds="true" preserveRatio="true">
