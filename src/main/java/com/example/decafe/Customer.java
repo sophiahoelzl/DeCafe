@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +21,7 @@ public class Customer {
     private String image;  // Bild vom Gast
     private int tableNr; //Tischnummer auf dem der Gast sitzt
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
-    private List<ImageView> list = new LinkedList<>();
+    private ImageView pics[] = new ImageView[8];
     private ImageView customerImage = new ImageView();
 
 
@@ -47,18 +48,20 @@ public class Customer {
         return positionX;
     }
 
-    public List<ImageView> makeListCustomer() {
+    public ImageView[] makeArrayCustomer() {
 
-        list.add(first);
-        list.add(second);
-        list.add(third);
-        list.add(fourth);
-        list.add(fifth);
-        list.add(sixth);
-        list.add(seventh);
-        list.add(eighth);
+        pics[0] = new ImageView(String.valueOf(getClass().getResource("characterOben.png")));
+        pics[1] = new ImageView(String.valueOf(getClass().getResource("characterOben.png")));
+        pics[2] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
+        pics[3] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
+        pics[4] = new ImageView(String.valueOf(getClass().getResource("characterLinks.png")));
+        pics[5] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
+        pics[6] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
+        pics[7] = new ImageView(String.valueOf(getClass().getResource("characterRechts.png")));
 
-        return list;
+        System.out.println("wtf2");
+
+        return pics;
     }
 
     public int getPositionY() {
@@ -107,39 +110,34 @@ public class Customer {
         this.order = order;
     }
 
-    public ImageView getRandomPic(List<ImageView> list){
+    public ImageView getRandomPic(ImageView[] pics){
+
         Random random = new Random();
-        return list.get(random.nextInt(list.size()));
+        int index = random.nextInt(8);
+
+        return pics[index];
     }
 
     //Gast sucht nach einem Tisch wo er sich hinsetzten kann
-    public void searchForTable() throws FileNotFoundException {
+    public void searchForTable() {
 
-        list = makeListCustomer();
-        customerImage = getRandomPic(list);
+        pics = makeArrayCustomer();
+        customerImage = getRandomPic(pics);
         displayPerson(customerImage);
 
-        File f = new File("");
-        String filePath;
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\characterOben.png";;
-        } else {
-            filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//characterOben.png";;
-        }
-        InputStream stream = new FileInputStream(filePath);
-        ImageView customerPic = new ImageView(stream);
-        displayPerson(customerPic);
-                
-
+        System.out.println("wtf3");
     }
 
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
     public void displayPerson (ImageView image){
 
-        image.setVisible(true);
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(10), image);
+        //image.setVisible(true);
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(5), image);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(5);
+        fadeTransition.play();
+
+        System.out.println("wtf4");
 
     }
 
@@ -149,7 +147,8 @@ public class Customer {
     }
 
     //Funktion damit der Kunde geht
-    public void leave () {
+    public void leave (ImageView image) {
 
+        image.setStyle("visibility: false;");
     }
 }
