@@ -41,11 +41,7 @@ public class HelloController {
 
         File f = new File("");
         String filePath;
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\hotcoffee.png";;
-        } else {
-            filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//hotcoffee.png";;
-        }
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "hotcoffee.png";
         InputStream stream = new FileInputStream(filePath);
         Image hotCoffee = new Image(stream);
         startButton.setImage(hotCoffee);
@@ -54,11 +50,7 @@ public class HelloController {
     public void changeCoffeeImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\coffee.png";;
-        } else {
-            filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//coffee.png";;
-        }
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
         InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
         startButton.setImage(coffee);
@@ -68,22 +60,10 @@ public class HelloController {
         File f = new File("");
         String filePath;
         if (coffeeeMachine.getProduced()){
-            if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\coffeeMachine.png";
-                ;
-            } else {
-                filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//coffeeMachine.png";
-                ;
-            }
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffeeMachine.png";
             coffeeeMachine.productTaken();
         } else {
-            if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\coffee.png";
-                ;
-            } else {
-                filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//coffee.png";
-                ;
-            }
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "CoffeemachineWithCoffee.png";
             coffeeeMachine.produceProduct();
 
         }
@@ -96,10 +76,10 @@ public class HelloController {
         File f = new File("");
         String filePath;
         if (cakeMachine.getProduced()){
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAid.png";;
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAid.png";
             cakeMachine.productTaken();
         } else {
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAidUsed.png";;
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAidUsed.png";
             cakeMachine.produceProduct();
         }
         InputStream stream = new FileInputStream(filePath);
