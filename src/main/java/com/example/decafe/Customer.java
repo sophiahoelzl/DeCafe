@@ -1,6 +1,7 @@
 package com.example.decafe;
 
 import javafx.animation.FadeTransition;
+import javafx.beans.value.WritableStringValue;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -115,6 +116,8 @@ public class Customer {
         Random random = new Random();
         int index = random.nextInt(8);
 
+        System.out.println(pics[index].getImage().getUrl());
+
         return pics[index];
     }
 
@@ -131,11 +134,15 @@ public class Customer {
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
     public void displayPerson (ImageView image){
 
-        //image.setVisible(true);
+        image.setVisible(false);
+        image.setStyle("visibility: false;");
+
+        /*
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(5), image);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(5);
         fadeTransition.play();
+        */
 
         System.out.println("wtf4");
 
