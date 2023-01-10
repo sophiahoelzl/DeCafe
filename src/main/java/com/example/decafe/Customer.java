@@ -104,7 +104,7 @@ public class Customer {
     }
 
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public void displayPerson (Label orderlabel, ImageView customerPic){
+    public void displayPerson (Label orderlabel, ImageView customerPic) throws InterruptedException {
 
         order = getOrder();
 
@@ -140,6 +140,7 @@ public class Customer {
         fadeTransition2.setFromValue(2);
         fadeTransition2.setToValue(0);
         fadeTransition2.play();
-        //image.setStyle("visibility: false;");
+
+        image.setStyle("visibility: false;");
     }
 }

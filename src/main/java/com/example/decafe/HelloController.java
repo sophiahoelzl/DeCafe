@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -42,8 +43,25 @@ public class HelloController implements Initializable {
     private ImageView waiter;
 
    @FXML
-    public Label orderlabel = new Label();
+    public Label orderlabel1 = new Label();
+    public Label orderlabel2 = new Label();
+    public Label orderlabel3 = new Label();
+    public Label orderlabel4 = new Label();
+    public Label orderlabel5 = new Label();
+    public Label orderlabel6 = new Label();
+    public Label orderlabel7 = new Label();
+    public Label orderlabel8 = new Label();
     public ImageView first;
+    public ImageView second;
+    public ImageView third;
+    public ImageView fourth;
+    public ImageView fifth;
+    public ImageView sixth;
+    public ImageView seventh;
+    public ImageView eighth;
+
+    private ImageView pics[] = new ImageView[8];
+    private ImageView customerImage = new ImageView();
 
     private int movementVariable = 5;
 
@@ -189,7 +207,69 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) {
-        customer.displayPerson(orderlabel, first);
+    public void displayPerson(MouseEvent event) throws InterruptedException {
+
+        ImageView cust = (ImageView)event.getSource();
+        Label order = new Label();
+
+        if (first.equals(cust)) {
+            order = orderlabel1;
+        } else if (second.equals(cust)) {
+            order = orderlabel2;
+        } else if (third.equals(cust)) {
+            order = orderlabel3;
+        } else if (fourth.equals(cust)) {
+            order = orderlabel4;
+        } else if (fifth.equals(cust)) {
+            order = orderlabel5;
+        } else if (sixth.equals(cust)) {
+            order = orderlabel6;
+        } else if (seventh.equals(cust)) {
+            order = orderlabel7;
+        } else if (eighth.equals(cust)) {
+            order = orderlabel8;
+        }
+
+        customer.displayPerson(order, cust);
+    }
+
+    public ImageView[] makeArrayCustomer() {
+
+        pics[0] = first;
+        pics[1] = second;
+        pics[2] = third;
+        pics[3] = fourth;
+        pics[4] = fifth;
+        pics[5] = sixth;
+        pics[6] = seventh;
+        pics[7] = eighth;
+
+        return pics;
+    }
+
+    public ImageView getRandomPic(ImageView[] pics){
+
+        Random random = new Random();
+        int index = random.nextInt(8);
+
+        if (pics[index].getStyle() == "visibility: true;"){
+            getRandomPic(pics);
+        }
+
+        return pics[index];
+    }
+
+    public void searchForTable() {
+
+        pics = makeArrayCustomer();
+        customerImage = getRandomPic(pics);
+        makePersonVisible(customerImage);
+
+    }
+
+    public void makePersonVisible(ImageView customerImage){
+
+        customerImage.setVisible(true);
+
     }
 }
