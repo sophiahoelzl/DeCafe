@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -45,6 +46,9 @@ public class HelloController implements Initializable {
 
     @FXML
     private ImageView waiter;
+
+    @FXML
+    private Rectangle rectangle;
 
     private int movementVariable = 5;
 
@@ -78,9 +82,17 @@ public class HelloController implements Initializable {
             if (dPressed.get()) xMove = move;
 
             // if (checkForCollision(waiter, xMove, yMove)) return; nächster Schritt dann
+            /*if(checkForCollision(waiter, rectangle)){
+                System.out.println("ja");
 
-            waiter.setLayoutX(waiter.getLayoutX() + xMove);
-            waiter.setLayoutY(waiter.getLayoutY() + yMove);
+            }else{
+
+             */
+           waiter.setLayoutX(waiter.getLayoutX() + xMove);
+           waiter.setLayoutY(waiter.getLayoutY() + yMove);
+        //}
+
+
         }
     };
 
@@ -214,5 +226,9 @@ public class HelloController implements Initializable {
         InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
         kitchenAid.setImage(coffee);
+    }
+
+    public boolean checkForCollision(ImageView waiter, Rectangle rectangle){
+        return waiter.getBoundsInParent().intersects(rectangle.getBoundsInParent());
     }
 }
