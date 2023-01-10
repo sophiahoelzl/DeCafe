@@ -8,20 +8,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class HelloController implements Initializable {
+
+
     @FXML
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
@@ -40,6 +40,10 @@ public class HelloController implements Initializable {
 
     @FXML
     private ImageView waiter;
+
+   @FXML
+    public Label orderlabel = new Label();
+    public ImageView first;
 
     private int movementVariable = 5;
 
@@ -185,24 +189,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson() {
-
-        System.out.println("wtf");
-
-        customer.searchForTable();
-        //ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        //service.schedule(new HelloController(), 5, TimeUnit.SECONDS);
-
+    public void displayPerson(MouseEvent event) {
+        customer.displayPerson(orderlabel, first);
     }
-/*
-    @Override
-    public void run(){
-        try {
-            customer.searchForTable();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-*/
 }

@@ -1,19 +1,10 @@
 package com.example.decafe;
 
 import javafx.animation.FadeTransition;
-import javafx.beans.value.WritableStringValue;
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class Customer {
@@ -25,23 +16,7 @@ public class Customer {
     private ImageView pics[] = new ImageView[8];
     private ImageView customerImage = new ImageView();
 
-
-    @FXML
-    public ImageView first;
-    @FXML
-    public ImageView second;
-    @FXML
-    public ImageView third;
-    @FXML
-    public ImageView fourth;
-    @FXML
-    public ImageView fifth;
-    @FXML
-    public ImageView sixth;
-    @FXML
-    public ImageView seventh;
-    @FXML
-    public ImageView eighth;
+    private boolean alreadyorder = false;
 
 
     //Getter
@@ -126,25 +101,29 @@ public class Customer {
 
         pics = makeArrayCustomer();
         customerImage = getRandomPic(pics);
-        displayPerson(customerImage);
-
-        System.out.println("wtf3");
     }
 
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public void displayPerson (ImageView image){
+    public void displayPerson (Label orderlabel, ImageView customerPic){
 
-        image.setVisible(false);
-        image.setStyle("visibility: false;");
+        order = getOrder();
 
-        /*
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(5), image);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(5);
-        fadeTransition.play();
-        */
+        if (!alreadyorder) {
+            orderlabel.setText(order);
+            alreadyorder = true;
+        }
+        else {
+            orderlabel.setText(":)");
+            alreadyorder = false;
 
-        System.out.println("wtf4");
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), orderlabel);
+            fadeTransition.setFromValue(2);
+            fadeTransition.setToValue(0);
+            fadeTransition.play();
+
+            leave(customerPic);
+
+        }
 
     }
 
@@ -153,9 +132,14 @@ public class Customer {
 
     }
 
+
     //Funktion damit der Kunde geht
     public void leave (ImageView image) {
 
-        image.setStyle("visibility: false;");
+        FadeTransition fadeTransition2 = new FadeTransition(Duration.seconds(2), image);
+        fadeTransition2.setFromValue(2);
+        fadeTransition2.setToValue(0);
+        fadeTransition2.play();
+        //image.setStyle("visibility: false;");
     }
 }
