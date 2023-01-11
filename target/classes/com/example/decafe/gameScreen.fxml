@@ -74,7 +74,7 @@
             <Image url="@cofiBrew.png" />
          </image>
       </ImageView>
-      <Button layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
+      <Button fx:id="label" layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
       <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="621.0" layoutY="110.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
          <image>
             <Image url="@characterOben.png" />
@@ -156,5 +156,6 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Label fx:id="controlLabel" layoutX="356.0" layoutY="14.0" onMouseClicked="#noProduct" prefHeight="41.0" prefWidth="590.0" text="Click here to remove product" />
    </children>
 </AnchorPane>
