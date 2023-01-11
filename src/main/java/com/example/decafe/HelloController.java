@@ -7,7 +7,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,11 +33,12 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
+    public Label controlLabel;
 
-    public Machine coffeeeMachine = new Machine(0);
-    public Machine cakeMachine = new Machine(0);
+    public Machine coffeeeMachine = new Machine(0, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(0, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     public Customer customer = new Customer();
-
+    public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
     private BooleanProperty sPressed = new SimpleBooleanProperty();
@@ -188,37 +191,30 @@ public class HelloController implements Initializable {
 
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        if (coffeeeMachine.getProduced()) {
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffeeMachine.png";
-            coffeeeMachine.productTaken();
-        } else {
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "CoffeeMachineWithCoffee.png";
-            coffeeeMachine.produceProduct();
+        double x1 = coffeeMachine.getLayoutX();
+        double y1 = coffeeMachine.getLayoutY();
+        double x2 = waiter.getLayoutX();
+        double y2 = waiter.getLayoutY();
 
-        }
-        InputStream stream = new FileInputStream(filePath);
-        Image coffee = new Image(stream);
-        coffeeMachine.setImage(coffee);
+        coffeeeMachine.displayProduct(x1, y1, x2, y2, waiter, coffeeMachine, CofiBrew);
     }
 
     // when cake machine is running
     public void showCake() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        if (cakeMachine.getProduced()) {
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAid.png";
-            ;
-            cakeMachine.productTaken();
-        } else {
-            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "kitchenAidUsed.png";
-            ;
-            cakeMachine.produceProduct();
-        }
+        double x1 = kitchenAid.getLayoutX();
+        double y1 = kitchenAid.getLayoutY();
+        double x2 = waiter.getLayoutX();
+        double y2 = waiter.getLayoutY();
+
+        cakeMachine.displayProduct(x1, y1, x2, y2, waiter, kitchenAid, CofiBrew);
+    }
+
+    public void noProduct() throws FileNotFoundException {
+        String filePath = CofiBrew.getImageWithoutProduct();
         InputStream stream = new FileInputStream(filePath);
-        Image coffee = new Image(stream);
-        kitchenAid.setImage(coffee);
+        Image cofi = new Image(stream);
+        waiter.setImage(cofi);
+        CofiBrew.setProduct("none");
     }
 
 

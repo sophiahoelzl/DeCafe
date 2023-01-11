@@ -54,7 +54,7 @@
             <Image url="@chairRight.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="515.0" layoutY="620.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="614.0" layoutY="567.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@chairBottom.png" />
          </image>
@@ -71,6 +71,8 @@
       </ImageView>
       <Button layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
       <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <Button fx:id="label" layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
+      <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="621.0" layoutY="110.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
          <image>
             <Image url="@characterOben.png" />
          </image>
@@ -157,5 +159,6 @@
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
+      <Label fx:id="controlLabel" layoutX="356.0" layoutY="14.0" onMouseClicked="#noProduct" prefHeight="41.0" prefWidth="590.0" text="Click here to remove product" />
    </children>
 </AnchorPane>
