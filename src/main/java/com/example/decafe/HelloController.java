@@ -4,16 +4,13 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,13 +19,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Random;
 import java.util.ResourceBundle;
 
+
 public class HelloController implements Initializable {
+
+
     @FXML
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
@@ -36,6 +34,7 @@ public class HelloController implements Initializable {
 
     public Machine coffeeeMachine = new Machine(0);
     public Machine cakeMachine = new Machine(0);
+    public Customer customer = new Customer();
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -47,8 +46,26 @@ public class HelloController implements Initializable {
     @FXML
     private ImageView waiter;
 
-    @FXML
-    private Rectangle rectangle;
+   @FXML
+    public Label orderlabel1 = new Label();
+    public Label orderlabel2 = new Label();
+    public Label orderlabel3 = new Label();
+    public Label orderlabel4 = new Label();
+    public Label orderlabel5 = new Label();
+    public Label orderlabel6 = new Label();
+    public Label orderlabel7 = new Label();
+    public Label orderlabel8 = new Label();
+    public ImageView first;
+    public ImageView second;
+    public ImageView third;
+    public ImageView fourth;
+    public ImageView fifth;
+    public ImageView sixth;
+    public ImageView seventh;
+    public ImageView eighth;
+
+    private ImageView pics[] = new ImageView[8];
+    private ImageView customerImage = new ImageView();
 
     private int movementVariable = 5;
 
@@ -153,13 +170,7 @@ public class HelloController implements Initializable {
     public void changeCoffeeImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            filePath = f.getAbsolutePath().replace("\\", "\\\\") + "\\src\\main\\resources\\com\\example\\decafe\\hotcoffee.png";
-            ;
-        } else {
-            filePath = f.getAbsolutePath().replace("/", "//") + "//src//main//resources//com//example//decafe//hotcoffee.png";
-            ;
-        }
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "hotcoffee.png";
         InputStream stream = new FileInputStream(filePath);
         Image hotCoffee = new Image(stream);
         startButton.setImage(hotCoffee);
@@ -169,13 +180,7 @@ public class HelloController implements Initializable {
     public void changeCoffeeImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            filePath = f.getAbsolutePath() + "\\src\\main\\resources\\com\\example\\decafe\\coffee.png";
-            ;
-        } else {
-            filePath = f.getAbsolutePath() + "/src/main/resources/com/example/decafe/coffee.png";
-            ;
-        }
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
         InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
         startButton.setImage(coffee);
@@ -186,22 +191,10 @@ public class HelloController implements Initializable {
         File f = new File("");
         String filePath;
         if (coffeeeMachine.getProduced()) {
-            if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                filePath = f.getAbsolutePath() + "\\src\\main\\resources\\com\\example\\decafe\\coffeeMachine.png";
-                ;
-            } else {
-                filePath = f.getAbsolutePath() + "/src/main/resources/com/example/decafe/coffeeMachine.png";
-                ;
-            }
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffeeMachine.png";
             coffeeeMachine.productTaken();
         } else {
-            if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                filePath = f.getAbsolutePath() + "\\src\\main\\resources\\com\\example\\decafe\\coffee.png";
-                ;
-            } else {
-                filePath = f.getAbsolutePath() + "/src/main/resources/com/example/decafe/coffee.png";
-                ;
-            }
+            filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "CoffeeMachineWithCoffee.png";
             coffeeeMachine.produceProduct();
 
         }
@@ -226,6 +219,73 @@ public class HelloController implements Initializable {
         InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
         kitchenAid.setImage(coffee);
+    }
+
+
+    public void displayPerson(MouseEvent event) throws InterruptedException {
+
+        ImageView cust = (ImageView)event.getSource();
+        Label order = new Label();
+
+        if (first.equals(cust)) {
+            order = orderlabel1;
+        } else if (second.equals(cust)) {
+            order = orderlabel2;
+        } else if (third.equals(cust)) {
+            order = orderlabel3;
+        } else if (fourth.equals(cust)) {
+            order = orderlabel4;
+        } else if (fifth.equals(cust)) {
+            order = orderlabel5;
+        } else if (sixth.equals(cust)) {
+            order = orderlabel6;
+        } else if (seventh.equals(cust)) {
+            order = orderlabel7;
+        } else if (eighth.equals(cust)) {
+            order = orderlabel8;
+        }
+
+        customer.displayPerson(order, cust);
+    }
+
+    public ImageView[] makeArrayCustomer() {
+
+        pics[0] = first;
+        pics[1] = second;
+        pics[2] = third;
+        pics[3] = fourth;
+        pics[4] = fifth;
+        pics[5] = sixth;
+        pics[6] = seventh;
+        pics[7] = eighth;
+
+        return pics;
+    }
+
+    public ImageView getRandomPic(ImageView[] pics){
+
+        Random random = new Random();
+        int index = random.nextInt(8);
+
+        if (pics[index].getStyle() == "visibility: true;"){
+            getRandomPic(pics);
+        }
+
+        return pics[index];
+    }
+
+    public void searchForTable() {
+
+        pics = makeArrayCustomer();
+        customerImage = getRandomPic(pics);
+        makePersonVisible(customerImage);
+
+    }
+
+    public void makePersonVisible(ImageView customerImage){
+
+        customerImage.setVisible(true);
+
     }
 
     public boolean checkForCollision(ImageView waiter, Rectangle rectangle){
