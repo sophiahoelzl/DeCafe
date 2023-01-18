@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -22,8 +24,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class HelloController implements Initializable {
@@ -39,6 +40,7 @@ public class HelloController implements Initializable {
     public Machine cakeMachine = new Machine(0, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
+
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
     private BooleanProperty sPressed = new SimpleBooleanProperty();
@@ -66,6 +68,8 @@ public class HelloController implements Initializable {
     public ImageView sixth;
     public ImageView seventh;
     public ImageView eighth;
+    public ProgressBar progressCoffee;
+    public ProgressBar progressCake;
 
     private ImageView pics[] = new ImageView[8];
     private ImageView customerImage = new ImageView();
@@ -214,7 +218,9 @@ public class HelloController implements Initializable {
         double x2 = waiter.getLayoutX();
         double y2 = waiter.getLayoutY();
 
-        coffeeeMachine.displayProduct(x1, y1, x2, y2, waiter, coffeeMachine, CofiBrew);
+        if (coffeeeMachine.checkApperance(x1, y1, x2, y2)) {
+            coffeeeMachine.displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
+        }
     }
 
     // when cake machine is running
@@ -224,7 +230,9 @@ public class HelloController implements Initializable {
         double x2 = waiter.getLayoutX();
         double y2 = waiter.getLayoutY();
 
-        cakeMachine.displayProduct(x1, y1, x2, y2, waiter, kitchenAid, CofiBrew);
+        if (cakeMachine.checkApperance(x1, y1, x2, y2)) {
+            cakeMachine.displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
+        }
     }
 
     public void noProduct() throws FileNotFoundException {
@@ -240,26 +248,52 @@ public class HelloController implements Initializable {
 
         ImageView cust = (ImageView)event.getSource();
         Label order = new Label();
+        double x1 = 0.0;
+        double y1 = 0.0;
 
         if (first.equals(cust)) {
             order = orderlabel1;
+            x1 = first.getLayoutX();
+            y1 = first.getLayoutY();
         } else if (second.equals(cust)) {
             order = orderlabel2;
+            x1 = second.getLayoutX();
+            y1 = second.getLayoutY();
         } else if (third.equals(cust)) {
             order = orderlabel3;
+            x1 = third.getLayoutX();
+            y1 = third.getLayoutY();
         } else if (fourth.equals(cust)) {
             order = orderlabel4;
+            x1 = fourth.getLayoutX();
+            y1 = fourth.getLayoutY();
         } else if (fifth.equals(cust)) {
             order = orderlabel5;
+            x1 = fifth.getLayoutX();
+            y1 = fifth.getLayoutY();
         } else if (sixth.equals(cust)) {
             order = orderlabel6;
+            x1 = sixth.getLayoutX();
+            y1 = sixth.getLayoutY();
         } else if (seventh.equals(cust)) {
             order = orderlabel7;
+            x1 = seventh.getLayoutX();
+            y1 = seventh.getLayoutY();
         } else if (eighth.equals(cust)) {
             order = orderlabel8;
+            x1 = eighth.getLayoutX();
+            y1 = eighth.getLayoutY();
         }
 
-        customer.displayPerson(order, cust);
+        double x2 = waiter.getLayoutX();
+        double y2 = waiter.getLayoutY();
+
+        Point2D c = new Point2D(x1, y1);
+        Point2D w = new Point2D(x2, y2);
+        controlLabel.setText(String.valueOf(c.distance(w)));
+        if (c.distance(w) < 120) {
+            customer.displayPerson(order, cust);
+        }
     }
 
     public ImageView[] makeArrayCustomer() {
@@ -293,6 +327,18 @@ public class HelloController implements Initializable {
         pics = makeArrayCustomer();
         customerImage = getRandomPic(pics);
         makePersonVisible(customerImage);
+
+        Timer t = new Timer();
+        t.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        customerImage.setVisible(false);
+                        t.cancel();
+                    }
+                },
+                10000
+        );
 
     }
 

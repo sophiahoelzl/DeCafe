@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -69,8 +70,11 @@
             <Image url="@cofiBrew.png" />
          </image>
       </ImageView>
-      <Button layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
-      <Button fx:id="label" layoutX="127.0" layoutY="214.0" mnemonicParsing="false" opacity="0.0" text="Button" />
+      <ImageView fitHeight="94.0" fitWidth="77.0" layoutX="611.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@chairRight.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
          <image>
             <Image url="@characterOben.png" />
@@ -111,7 +115,17 @@
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="fifth" fitHeight="100.0" fitWidth="73.0" layoutX="609.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+         <image>
+            <Image url="@characterRechts.png" />
+         </image>
+      </ImageView>
       <Button layoutX="436.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="Button" />
+      <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
       <Label fx:id="orderlabel2" alignment="CENTER" layoutX="780.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
             <Font size="16.0" />
@@ -147,17 +161,8 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="906.0" layoutY="29.0" mnemonicParsing="false" opacity="0.0" />
-      <ImageView fitHeight="94.0" fitWidth="77.0" layoutX="611.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@chairRight.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="fifth" fitHeight="100.0" fitWidth="73.0" layoutX="609.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
-         <image>
-            <Image url="@characterRechts.png" />
-         </image>
-      </ImageView>
       <Label fx:id="controlLabel" layoutX="356.0" layoutY="14.0" onMouseClicked="#noProduct" prefHeight="41.0" prefWidth="590.0" text="Click here to remove product" />
+      <ProgressBar fx:id="progressCake" layoutX="-12.0" layoutY="371.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
+      <ProgressBar fx:id="progressCoffee" layoutX="-12.0" layoutY="261.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
    </children>
 </AnchorPane>
