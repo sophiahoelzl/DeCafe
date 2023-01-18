@@ -292,7 +292,7 @@ public class HelloController implements Initializable {
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
         if (c.distance(w) < 120) {
-            customer.displayPerson(order, cust);
+            customer.displayPerson(order, cust , CofiBrew);
         }
     }
 
@@ -315,7 +315,7 @@ public class HelloController implements Initializable {
         Random random = new Random();
         int index = random.nextInt(8);
 
-        if (pics[index].getStyle() == "visibility: true;"){
+        if (pics[index].isVisible()){
             getRandomPic(pics);
         }
 
@@ -324,9 +324,9 @@ public class HelloController implements Initializable {
 
     public void searchForTable() {
 
-        pics = makeArrayCustomer();
-        customerImage = getRandomPic(pics);
-        makePersonVisible(customerImage);
+        pics = makeArrayCustomer(); //make picture Array
+        customerImage = getRandomPic(pics); //get random picture from Array
+        makePersonVisible(customerImage); //make this picture visible
 
         Timer t = new Timer();
         t.schedule(
@@ -337,7 +337,7 @@ public class HelloController implements Initializable {
                         t.cancel();
                     }
                 },
-                10000
+                60000
         );
 
     }

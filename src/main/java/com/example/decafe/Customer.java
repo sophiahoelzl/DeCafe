@@ -24,22 +24,6 @@ public class Customer {
         return positionX;
     }
 
-    public ImageView[] makeArrayCustomer() {
-
-        pics[0] = new ImageView(String.valueOf(getClass().getResource("characterOben.png")));
-        pics[1] = new ImageView(String.valueOf(getClass().getResource("characterOben.png")));
-        pics[2] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
-        pics[3] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
-        pics[4] = new ImageView(String.valueOf(getClass().getResource("characterLinks.png")));
-        pics[5] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
-        pics[6] = new ImageView(String.valueOf(getClass().getResource("characterUnten.png")));
-        pics[7] = new ImageView(String.valueOf(getClass().getResource("characterRechts.png")));
-
-        System.out.println("wtf2");
-
-        return pics;
-    }
-
     public int getPositionY() {
         return positionY;
     }
@@ -58,8 +42,8 @@ public class Customer {
         int number = random.nextInt(2);
 
         switch (number) {
-            case 0 -> order = "Cake";
-            case 1 -> order = "Coffee";
+            case 0 -> order = "cake";
+            case 1 -> order = "coffee";
         }
 
         return order;
@@ -86,45 +70,29 @@ public class Customer {
         this.order = order;
     }
 
-    public ImageView getRandomPic(ImageView[] pics){
-
-        Random random = new Random();
-        int index = random.nextInt(8);
-
-        System.out.println(pics[index].getImage().getUrl());
-
-        return pics[index];
-    }
-
-    //Gast sucht nach einem Tisch wo er sich hinsetzten kann
-    public void searchForTable() {
-
-        pics = makeArrayCustomer();
-        customerImage = getRandomPic(pics);
-    }
-
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public void displayPerson (Label orderlabel, ImageView customerPic) throws InterruptedException {
-
-        order = getOrder();
+    public void displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew) {
 
         if (!alreadyorder) {
+            order = getOrder();
             orderlabel.setText(order);
             alreadyorder = true;
         }
         else {
-            orderlabel.setText(":)");
-            alreadyorder = false;
+            if (CofiBrew.getProduct().equals(order)){
+                orderlabel.setText(":)");
+                alreadyorder = false;
 
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), orderlabel);
-            fadeTransition.setFromValue(2);
-            fadeTransition.setToValue(0);
-            fadeTransition.play();
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), orderlabel);
+                fadeTransition.setFromValue(2);
+                fadeTransition.setToValue(0);
+                fadeTransition.play();
 
-            leave(customerPic);
-
+                leave(customerPic);
+            }else {
+                orderlabel.setText("no!");
+            }
         }
-
     }
 
     //Funktion um die Bestellung vom Kunden anzeigen zu lassen - vllt auch im HelloController
@@ -141,6 +109,6 @@ public class Customer {
         fadeTransition2.setToValue(0);
         fadeTransition2.play();
 
-        image.setStyle("visibility: false;");
+        image.setVisible(false);
     }
 }
