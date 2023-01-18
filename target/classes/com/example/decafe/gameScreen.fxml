@@ -75,47 +75,42 @@
             <Image url="@chairRight.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterOben.png" />
          </image>
       </ImageView>
-      <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="second" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="second" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterOben.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="third" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="third" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterUnten.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="fourth" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="fourth" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterUnten.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="sixth" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="sixth" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterUnten.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="seventh" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="seventh" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterUnten.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="eighth" fitHeight="100.0" fitWidth="73.0" layoutX="861.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="eighth" fitHeight="100.0" fitWidth="73.0" layoutX="861.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="fifth" fitHeight="100.0" fitWidth="73.0" layoutX="609.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" style="visibility: false;">
+      <ImageView fx:id="fifth" fitHeight="100.0" fitWidth="73.0" layoutX="609.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@characterRechts.png" />
          </image>
