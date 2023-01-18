@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
+<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
-      <ImageView fitHeight="744.0" fitWidth="1750.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="743.0" fitWidth="979.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@cafeIndoor.png" />
+            <Image url="@cafeIndoorNew.png" />
          </image>
       </ImageView>
       <ImageView fx:id="coffeeMachine" fitHeight="117.0" fitWidth="75.0" layoutX="9.0" layoutY="208.0" onMouseClicked="#showCoffee" pickOnBounds="true" preserveRatio="true">
