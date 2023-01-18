@@ -100,23 +100,41 @@ public class HelloController implements Initializable {
             double xMove = 0;
             double yMove = 0;
 
-            if (wPressed.get()) yMove = -move;
-            if (sPressed.get()) yMove = move;
-            if (aPressed.get()) xMove = -move;
-            if (dPressed.get()) xMove = move;
+            if (wPressed.get()) yMove = -move; // if waiter should go up
+            System.out.println(yMove);
+            if (sPressed.get()) yMove = move; // if waiter should go down
+            System.out.println(yMove);
 
-            // if (checkForCollision(waiter, xMove, yMove)) return; nächster Schritt dann
-            /*if(checkForCollision(waiter, rectangle)){
-                System.out.println("ja");
+            if (aPressed.get()) xMove = -move; // if waiter should move left
+            System.out.println(xMove);
 
-            }else{
+            if (dPressed.get()) xMove = move; // if waiter should move right
+            System.out.println(xMove);
 
-             */
-           waiter.setLayoutX(waiter.getLayoutX() + xMove);
-           waiter.setLayoutY(waiter.getLayoutY() + yMove);
-        //}
+            if(checkForCollision(waiter) == 1){ // left boundary
+                System.out.println("detect");
+                waiter.setLayoutX(waiter.getLayoutX() - xMove);
+                //waiter.setLayoutY(waiter.getLayoutY() + yMove);
+            }
+            if(checkForCollision(waiter) == 2){ // right boundary
+                waiter.setLayoutX(waiter.getLayoutX() - xMove);
+                waiter.setLayoutY(waiter.getLayoutY() + yMove);
+            }
+            if(checkForCollision(waiter) == 3){ // upper boundary
+                waiter.setLayoutX(waiter.getLayoutX() + xMove);
+                waiter.setLayoutY(waiter.getLayoutY() - yMove);
+            }
+            if(checkForCollision(waiter) == 4){ // bottom boundary
+                waiter.setLayoutX(waiter.getLayoutX() + xMove);
+                waiter.setLayoutY(waiter.getLayoutY() - yMove);
+            }
 
+            else{
+                waiter.setLayoutX(waiter.getLayoutX() + xMove);
+                waiter.setLayoutY(waiter.getLayoutY() + yMove);
 
+            }
+            System.out.println(waiter.getLayoutX() +  ", " + waiter.getLayoutY());
         }
     };
 
@@ -330,7 +348,24 @@ public class HelloController implements Initializable {
 
     }
 
-    public boolean checkForCollision(ImageView waiter, Rectangle rectangle){
-        return waiter.getBoundsInParent().intersects(rectangle.getBoundsInParent());
+    public int checkForCollision(ImageView waiter){
+        if(waiter.getLayoutX() <= 49){ // hitting left boundary
+            return 1;
+        }
+        if(waiter.getLayoutX() >= 840){ // hitting right boundary
+            return 2;
+        }
+        if(waiter.getLayoutY() <= 59.5){ // hitting upper boundary
+            return 3;
+        }
+        if(waiter.getLayoutY() >= 670) { // hitting bottom boundary
+            return 4;
+        }
+        else{
+            return 0;
+        }
+
     }
-}
+
+
+    }
