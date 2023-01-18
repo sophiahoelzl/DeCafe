@@ -4,23 +4,17 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
@@ -38,7 +32,6 @@ public class HelloController implements Initializable {
 
     public Machine coffeeeMachine = new Machine(0, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(0, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
@@ -86,9 +79,15 @@ public class HelloController implements Initializable {
     public Label customerBot3;
     public Label customerBot4;
     public Label plant;
+    public Label coinLabel;
 
-    private ImageView pics[] = new ImageView[8];
+    //private final ImageView[] pics = {first, second, third, fourth, fifth, sixth, seventh, eighth};
+    //private List<ImageView> pics = new ArrayList<ImageView>();
+    private ImageView[] pics = new ImageView[8];
     private ImageView customerImage = new ImageView();
+    public List<Customer> customerList = new ArrayList<>();
+    public Random random = new Random();
+
 
     private int movementVariable = 5;
 
@@ -99,6 +98,23 @@ public class HelloController implements Initializable {
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
         HelloApplication.stage.show();
+
+        /*
+        pics = makeArrayCustomer();
+
+        Timer t = new Timer();
+        for (int i = 0; i < 3; i++) {
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable(pics);
+                            t.cancel();
+                        }
+                    },
+                    3000
+            );
+        }*/
     }
 
     // for smoother motion
@@ -189,6 +205,7 @@ public class HelloController implements Initializable {
         }
     }
 
+
     @FXML
     public void keyReleased(KeyEvent event) {
         switch (event.getCode()) {
@@ -253,7 +270,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) throws InterruptedException {
+    public void displayPerson(MouseEvent event) throws FileNotFoundException {
 
         ImageView cust = (ImageView) event.getSource();
         Label order = new Label();
@@ -301,8 +318,12 @@ public class HelloController implements Initializable {
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
+
+        Customer customer = new Customer(cust, order);
+        customerList.add(customer);
+
         if (c.distance(w) < 120) {
-            customer.displayPerson(order, cust, CofiBrew);
+            customer.displayPerson(order, cust, CofiBrew, coinLabel);
         }
     }
 
@@ -322,7 +343,6 @@ public class HelloController implements Initializable {
 
     public ImageView getRandomPic(ImageView[] pics) {
 
-        Random random = new Random();
         int index = random.nextInt(8);
 
         if (pics[index].isVisible()) {
@@ -332,11 +352,11 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
-    public void searchForTable() {
+    public void searchForTable(MouseEvent event) {
 
-        pics = makeArrayCustomer(); //make picture Array
+        pics = makeArrayCustomer();
         customerImage = getRandomPic(pics); //get random picture from Array
-        makePersonVisible(customerImage); //make this picture visible
+        customerImage.setVisible(true);//make this picture visible
 
         Timer t = new Timer();
         t.schedule(
@@ -349,12 +369,6 @@ public class HelloController implements Initializable {
                 },
                 60000
         );
-
-    }
-
-    public void makePersonVisible(ImageView customerImage) {
-
-        customerImage.setVisible(true);
 
     }
 
@@ -440,4 +454,5 @@ public class HelloController implements Initializable {
         }
         return false;
     }
+
 }

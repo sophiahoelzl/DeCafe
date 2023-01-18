@@ -5,32 +5,29 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Customer {
     private int positionX; // X-Koordinate vom Gast
     private int positionY; // Y-Koordinate vom Gast
-    private String image;  // Bild vom Gast
     private int tableNr; //Tischnummer auf dem der Gast sitzt
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
-    private ImageView pics[] = new ImageView[8];
-    private ImageView customerImage = new ImageView();
+    private int coin = 0;
+
+    private ImageView customer;
+    private Label orderr;
+    public HelloController controller = new HelloController();
 
     private boolean alreadyorder = false;
 
-
-    //Getter
-    public int getPositionX() {
-        return positionX;
+    Customer(ImageView image, Label label){
+        this.customer = image;
+        this.orderr = label;
     }
 
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public String getImage() {
-        return image;
-    }
 
     public int getTableNr() {
         return tableNr;
@@ -58,20 +55,12 @@ public class Customer {
         this.positionY = positionY;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public void setTableNr(int tableNr) {
-        this.tableNr = tableNr;
-    }
-
     public void setOrder(String order) {
         this.order = order;
     }
 
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public void displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew) {
+    public void displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel) throws FileNotFoundException {
 
         if (!alreadyorder) {
             order = getOrder();
@@ -81,34 +70,47 @@ public class Customer {
         else {
             if (CofiBrew.getProduct().equals(order)){
                 orderlabel.setText(":)");
+                coin += 1;
+                coinlabel.setText(String.valueOf(coin));
                 alreadyorder = false;
+                CofiBrew.setProduct("none");
+                controller.noProduct();
 
-                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), orderlabel);
-                fadeTransition.setFromValue(2);
-                fadeTransition.setToValue(0);
-                fadeTransition.play();
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                leave(customerPic, orderlabel);
+                                t.cancel();
+                            }
+                        },
+                        1000
+                );
 
-                leave(customerPic);
             }else {
-                orderlabel.setText("no!");
+                orderlabel.setText(":(");
+
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                leave(customerPic, orderlabel);
+                                t.cancel();
+                            }
+                        },
+                        1000
+                );
             }
         }
     }
 
-    //Funktion um die Bestellung vom Kunden anzeigen zu lassen - vllt auch im HelloController
-    public void displayOrder(String order){
-
-    }
-
-
     //Funktion damit der Kunde geht
-    public void leave (ImageView image) {
-
-        FadeTransition fadeTransition2 = new FadeTransition(Duration.seconds(2), image);
-        fadeTransition2.setFromValue(2);
-        fadeTransition2.setToValue(0);
-        fadeTransition2.play();
-
+    public void leave (ImageView image, Label label) {
+        label.setText("");
         image.setVisible(false);
+        controller.customerList.remove(customer);
     }
 }
+
