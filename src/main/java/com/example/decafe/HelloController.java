@@ -51,7 +51,7 @@ public class HelloController implements Initializable {
     @FXML
     private ImageView waiter;
 
-   @FXML
+    @FXML
     public Label orderlabel1 = new Label();
     public Label orderlabel2 = new Label();
     public Label orderlabel3 = new Label();
@@ -70,6 +70,22 @@ public class HelloController implements Initializable {
     public ImageView eighth;
     public ProgressBar progressCoffee;
     public ProgressBar progressCake;
+    public Label table1;
+    public Label table2;
+    public Label table3;
+    public Label table4;
+    public Label plantsAbove;
+    public Label countRight;
+    public Label countBelow;
+    public Label customerTop1;
+    public Label customerTop2;
+    public Label customerTop3;
+    public Label customerTop4;
+    public Label customerBot1;
+    public Label customerBot2;
+    public Label customerBot3;
+    public Label customerBot4;
+    public Label plant;
 
     private ImageView pics[] = new ImageView[8];
     private ImageView customerImage = new ImageView();
@@ -89,6 +105,9 @@ public class HelloController implements Initializable {
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long timestamp) {
+            //File f = new File("");
+            //String filePath;
+            //filePath = "";
             double move = movementVariable;
 
             // if two keys are pressed at once and player moves diagonally
@@ -99,87 +118,42 @@ public class HelloController implements Initializable {
             // for collision detection later
             double xMove = 0;
             double yMove = 0;
-            boolean right = false;
-            boolean left = false;
-            boolean up = false;
-            boolean down = false;
 
             if (wPressed.get()) {
                 yMove = -move;
-                up = true;
+                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrew.png";
             }// if waiter should go up
-            System.out.println(yMove);
+
             if (sPressed.get()) {
                 yMove = move;
-                down = true;
+                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewUnten.png";
             }// if waiter should go down
-            System.out.println(yMove);
 
             if (aPressed.get()) {
                 xMove = -move;
-                left = true;
+                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewLinks.png";
             }// if waiter should move left
-            System.out.println(xMove);
 
             if (dPressed.get()) {
                 xMove = move; // if waiter should move right
-                right = true;
-            }
-            System.out.println(xMove);
-
-            if(checkForCollision(waiter) == 3){ // upper boundary
-                if (up) {
-                    //waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() - yMove);
-                } else {
-                    waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() + yMove);
-                }
-            }
-            if (checkForCollision(waiter) == 7){
-                System.out.println("hier");
-                if (left) {
-                    waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                } else if (up) {
-                    waiter.setLayoutY(waiter.getLayoutY() - yMove);
-                } else {
-                        waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                        waiter.setLayoutY(waiter.getLayoutY() + yMove);
-                }
+                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewRechts.png";
             }
 
-            if(checkForCollision(waiter) == 4){ // bottom boundary
-                if (down) {
-                    //waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() - yMove);
-                } else {
-                    waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() + yMove);
-                }
+            waiter.setLayoutX(waiter.getLayoutX() + xMove);
+            waiter.setLayoutY(waiter.getLayoutY() + yMove);
+            if (checkForCollision(waiter)) {
+                waiter.setLayoutX(waiter.getLayoutX() - xMove);
+                waiter.setLayoutY(waiter.getLayoutY() - yMove);
             }
-            if(checkForCollision(waiter) == 1){ // left boundary
-                System.out.println("detect");
-                if (left) {
-                    waiter.setLayoutX(waiter.getLayoutX() - xMove);
-                } else {
-                    waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() + yMove);
-                }
+
+            /*InputStream stream = null;
+            try {
+                stream = new FileInputStream(filePath);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            if(checkForCollision(waiter) == 2){ // right boundary
-                if (right) {
-                    waiter.setLayoutX(waiter.getLayoutX() - xMove);
-                } else {
-                    waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                    waiter.setLayoutY(waiter.getLayoutY() + yMove);
-                }
-                //waiter.setLayoutY(waiter.getLayoutY() + yMove);
-            }
-            if (checkForCollision(waiter) == 0){
-                waiter.setLayoutX(waiter.getLayoutX() + xMove);
-                waiter.setLayoutY(waiter.getLayoutY() + yMove);
-            }
-            System.out.println(waiter.getLayoutX() +  ", " + waiter.getLayoutY());
+            Image cofi = new Image(stream);
+            waiter.setImage(cofi);*/
         }
     };
 
@@ -258,24 +232,14 @@ public class HelloController implements Initializable {
 
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
-        double x1 = coffeeMachine.getLayoutX();
-        double y1 = coffeeMachine.getLayoutY();
-        double x2 = waiter.getLayoutX();
-        double y2 = waiter.getLayoutY();
-
-        if (coffeeeMachine.checkApperance(x1, y1, x2, y2)) {
+        if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
             coffeeeMachine.displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
         }
     }
 
     // when cake machine is running
     public void showCake() throws FileNotFoundException {
-        double x1 = kitchenAid.getLayoutX();
-        double y1 = kitchenAid.getLayoutY();
-        double x2 = waiter.getLayoutX();
-        double y2 = waiter.getLayoutY();
-
-        if (cakeMachine.checkApperance(x1, y1, x2, y2)) {
+        if (waiter.getBoundsInParent().intersects(kitchenAid.getBoundsInParent())) {
             cakeMachine.displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
         }
     }
@@ -291,7 +255,7 @@ public class HelloController implements Initializable {
 
     public void displayPerson(MouseEvent event) throws InterruptedException {
 
-        ImageView cust = (ImageView)event.getSource();
+        ImageView cust = (ImageView) event.getSource();
         Label order = new Label();
         double x1 = 0.0;
         double y1 = 0.0;
@@ -333,11 +297,12 @@ public class HelloController implements Initializable {
         double x2 = waiter.getLayoutX();
         double y2 = waiter.getLayoutY();
 
+
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
         if (c.distance(w) < 120) {
-            customer.displayPerson(order, cust , CofiBrew);
+            customer.displayPerson(order, cust, CofiBrew);
         }
     }
 
@@ -355,12 +320,12 @@ public class HelloController implements Initializable {
         return pics;
     }
 
-    public ImageView getRandomPic(ImageView[] pics){
+    public ImageView getRandomPic(ImageView[] pics) {
 
         Random random = new Random();
         int index = random.nextInt(8);
 
-        if (pics[index].isVisible()){
+        if (pics[index].isVisible()) {
             getRandomPic(pics);
         }
 
@@ -387,32 +352,92 @@ public class HelloController implements Initializable {
 
     }
 
-    public void makePersonVisible(ImageView customerImage){
+    public void makePersonVisible(ImageView customerImage) {
 
         customerImage.setVisible(true);
 
     }
 
-    public int checkForCollision(ImageView waiter){
-        if (waiter.getLayoutY() <= 59.5 && waiter.getLayoutX() <= 49){
-            return 7;
-        } else if(waiter.getLayoutY() <= 59.5){ // hitting upper boundary
-            return 3;
-        }
-        else if(waiter.getLayoutY() >= 671) { // hitting bottom boundary
-            return 4;
-
-        } else if(waiter.getLayoutX() <= 49){ // hitting left boundary
-            return 1;
-        }
-         else if(waiter.getLayoutX() >= 840){ // hitting right boundary
-            return 2;
-        }
-        else{
-            return 0;
+    public boolean checkForCollision(ImageView waiter) {
+        if (waiter.getLayoutY() <= 59.5) { // hitting upper boundary
+            return true;
         }
 
+        if (waiter.getLayoutY() >= 671) { // hitting bottom boundary
+            return true;
+
+        }
+        if (waiter.getLayoutX() <= 50) { // hitting left boundary
+            return true;
+        }
+
+        if (waiter.getLayoutX() >= 845) { // hitting right boundary
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(table1.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(table2.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(table3.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(table4.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerTop1.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerTop2.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerTop3.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerTop4.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerBot1.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerBot2.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerBot3.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(customerBot4.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(plantsAbove.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(countBelow.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(countRight.getBoundsInParent())){
+            return true;
+        }
+
+        if (waiter.getBoundsInParent().intersects(plant.getBoundsInParent())) {
+            return true;
+        }
+        return false;
     }
-
-
-    }
+}
