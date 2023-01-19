@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.css.PseudoClass;
-import javafx.geometry.Point2D;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,13 +71,6 @@ public class Machine {
 
     }
 
-    public boolean checkApperance(double x1, double y1, double x2, double y2){
-        Point2D c = new Point2D(x1, y1);
-        Point2D w = new Point2D(x2, y2);
-
-        return c.distance(w) < 80;
-    }
-
     public void doAnimation (Timer t, ImageView machine, ProgressBar progress, Image product){
         machine.setDisable(true);
         progress.setVisible(true);
@@ -133,7 +125,7 @@ public class Machine {
     }
 
     //Funktion um ein Produkt anzeigen zu lassen
-    public void displayProduct (ImageView waiter, ImageView machine, Player cofiBrew, ProgressBar progess) throws FileNotFoundException {
+    public void displayProduct (ImageView waiter, ImageView machine, Player cofiBrew, ProgressBar progress) throws FileNotFoundException {
 
         Timer t = new Timer();
 
@@ -178,13 +170,9 @@ public class Machine {
         waiter.setImage(cofi);
 
         if (gotProduced) {
-            doAnimation(t, machine, progess, product);
+            doAnimation(t, machine, progress, product);
         } else {
-            if (this.getProduced()) {
-                progess.setVisible(true);
-            } else {
-                progess.setVisible(false);
-            }
+            progress.setVisible(this.getProduced());
             machine.setImage(product);
         }
 

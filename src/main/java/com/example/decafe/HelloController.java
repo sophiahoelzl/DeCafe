@@ -4,23 +4,17 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
@@ -86,12 +80,16 @@ public class HelloController implements Initializable {
     public Label customerBot3;
     public Label customerBot4;
     public Label plant;
+    public Label edgeBot;
+    public Label edgeTop;
+    public Label edgeLeft;
+    public Label edgeRight;
 
     private ImageView pics[] = new ImageView[8];
     private ImageView customerImage = new ImageView();
 
-    private int movementVariable = 5;
-
+    private int movementVariable = 4;
+    public ArrayList <Label> collisionObjects = new ArrayList<Label>();
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
@@ -166,47 +164,45 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
+        collisionObjects.add(plantsAbove);
+        collisionObjects.add(plant);
+        collisionObjects.add(table1);
+        collisionObjects.add(table2);
+        collisionObjects.add(table3);
+        collisionObjects.add(table4);
+        collisionObjects.add(customerBot1);
+        collisionObjects.add(customerBot2);
+        collisionObjects.add(customerBot3);
+        collisionObjects.add(customerBot4);
+        collisionObjects.add(customerTop1);
+        collisionObjects.add(customerTop2);
+        collisionObjects.add(customerTop3);
+        collisionObjects.add(customerTop4);
+        collisionObjects.add(countBelow);
+        collisionObjects.add(countRight);
+        collisionObjects.add(edgeBot);
+        collisionObjects.add(edgeLeft);
+        collisionObjects.add(edgeRight);
+        collisionObjects.add(edgeTop);
     }
 
     @FXML
     public void keyPressed(KeyEvent event) {
         switch (event.getCode()) {
-            case W:
-                wPressed.set(true);
-                break;
-
-            case A:
-                aPressed.set(true);
-                break;
-
-            case S:
-                sPressed.set(true);
-                break;
-
-            case D:
-                dPressed.set(true);
-                break;
+            case W -> wPressed.set(true);
+            case A -> aPressed.set(true);
+            case S -> sPressed.set(true);
+            case D -> dPressed.set(true);
         }
     }
 
     @FXML
     public void keyReleased(KeyEvent event) {
         switch (event.getCode()) {
-            case W:
-                wPressed.set(false);
-                break;
-
-            case A:
-                aPressed.set(false);
-                break;
-
-            case S:
-                sPressed.set(false);
-                break;
-
-            case D:
-                dPressed.set(false);
-                break;
+            case W -> wPressed.set(false);
+            case A -> aPressed.set(false);
+            case S -> sPressed.set(false);
+            case D -> dPressed.set(false);
         }
     }
 
@@ -253,7 +249,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) throws InterruptedException {
+    public void displayPerson(MouseEvent event) {
 
         ImageView cust = (ImageView) event.getSource();
         Label order = new Label();
@@ -301,7 +297,7 @@ public class HelloController implements Initializable {
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
-        if (c.distance(w) < 120) {
+        if (c.distance(w) < 125) {
             customer.displayPerson(order, cust, CofiBrew);
         }
     }
@@ -359,85 +355,12 @@ public class HelloController implements Initializable {
     }
 
     public boolean checkForCollision(ImageView waiter) {
-        if (waiter.getLayoutY() <= 59.5) { // hitting upper boundary
-            return true;
+        for (int i=0; i < collisionObjects.size(); i++){
+            if (waiter.getBoundsInParent().intersects(collisionObjects.get(i).getBoundsInParent())){
+                return true;
+            }
         }
 
-        if (waiter.getLayoutY() >= 671) { // hitting bottom boundary
-            return true;
-
-        }
-        if (waiter.getLayoutX() <= 50) { // hitting left boundary
-            return true;
-        }
-
-        if (waiter.getLayoutX() >= 845) { // hitting right boundary
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(table1.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(table2.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(table3.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(table4.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerTop1.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerTop2.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerTop3.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerTop4.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerBot1.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerBot2.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerBot3.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(customerBot4.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(plantsAbove.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(countBelow.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(countRight.getBoundsInParent())){
-            return true;
-        }
-
-        if (waiter.getBoundsInParent().intersects(plant.getBoundsInParent())) {
-            return true;
-        }
         return false;
     }
 }
