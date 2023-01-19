@@ -12,12 +12,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -90,13 +93,22 @@ public class HelloController implements Initializable {
     public Label edgeLeft;
     public Label edgeRight;
     public Label coinLabel;
+    public ImageView cofiBrewImage;
+    public Label endLabel1;
+    public Label endLabel2;
+    public Label endLabel3;
+    public Label endLabel4;
+    public Button buttonPlayAgain;
+    public Button buttonBackToStart;
+    public Label labelCredits;
+    public ImageView endScreenBackground;
+
 
     private ImageView[] pics = new ImageView[8];
     private ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
-
 
     private int movementVariable = 4;
     public ArrayList<Label> collisionObjects = new ArrayList<Label>();
@@ -306,7 +318,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) throws FileNotFoundException, InterruptedException {
+    public void displayPerson(MouseEvent event) throws IOException, InterruptedException {
 
         ImageView cust = (ImageView) event.getSource();
         double x1 = 0.0;
@@ -351,73 +363,107 @@ public class HelloController implements Initializable {
             if (customer.displayPerson(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter)) {
                 coin += 5;
                 coinLabel.setText(String.valueOf(coin));
+                switchToEndWindow();
             }
         }
     }
 
-        public ImageView[] makeArrayCustomer () {
+    public ImageView[] makeArrayCustomer() {
 
-            pics[0] = first;
-            pics[1] = second;
-            pics[2] = third;
-            pics[3] = fourth;
-            pics[4] = fifth;
-            pics[5] = sixth;
-            pics[6] = seventh;
-            pics[7] = eighth;
+        pics[0] = first;
+        pics[1] = second;
+        pics[2] = third;
+        pics[3] = fourth;
+        pics[4] = fifth;
+        pics[5] = sixth;
+        pics[6] = seventh;
+        pics[7] = eighth;
 
-            return pics;
-        }
-
-        private List<Integer> num = new ArrayList<Integer>() {{
-            add(0);
-            add(1);
-            add(2);
-            add(3);
-            add(4);
-            add(5);
-            add(6);
-            add(7);
-        }};
-
-        public ImageView getRandomPic (ImageView[]pics, List < Integer > num){
-
-            int index = num.get(random.nextInt(num.size()));
-
-            if (!num.contains(index)) {
-                getRandomPic(pics, num);
-            }
-
-            num.remove(Integer.valueOf(index));
-
-            return pics[index];
-        }
-
-        public void searchForTable (){
-
-            if (customerList.size() < 3) {
-                pics = makeArrayCustomer();
-                customerImage = getRandomPic(pics, num); //get random picture from Array
-                customerImage.setVisible(true);//make this picture visible
-
-                Label order = getLabel(customerImage);
-
-                Customer customer = new Customer(customerImage, order);
-                customerList.add(customer);
-
-            } else {
-                System.out.println("no more customers");
-            }
-
-        }
-
-        public boolean checkForCollision (ImageView waiter){
-            for (int i = 0; i < collisionObjects.size(); i++) {
-                if (waiter.getBoundsInParent().intersects(collisionObjects.get(i).getBoundsInParent())) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        return pics;
     }
+
+    private List<Integer> num = new ArrayList<Integer>() {{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+        add(6);
+        add(7);
+    }};
+
+    public ImageView getRandomPic(ImageView[] pics, List<Integer> num) {
+
+        int index = num.get(random.nextInt(num.size()));
+
+        if (!num.contains(index)) {
+            getRandomPic(pics, num);
+        }
+
+        num.remove(Integer.valueOf(index));
+
+        return pics[index];
+    }
+
+    public void searchForTable() {
+
+        if (customerList.size() < 3) {
+            pics = makeArrayCustomer();
+            customerImage = getRandomPic(pics, num); //get random picture from Array
+            customerImage.setVisible(true);//make this picture visible
+
+            Label order = getLabel(customerImage);
+
+            Customer customer = new Customer(customerImage, order);
+            customerList.add(customer);
+
+        } else {
+            System.out.println("no more customers");
+        }
+
+    }
+
+    public boolean checkForCollision(ImageView waiter) {
+        for (int i = 0; i < collisionObjects.size(); i++) {
+            if (waiter.getBoundsInParent().intersects(collisionObjects.get(i).getBoundsInParent())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void switchToEndWindow() throws IOException { // switch to end window
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml")); // load belonging fxml file
+        Scene scene = new Scene(fxmlLoader.load(), 979, 743); // measurements half of main window
+        //Stage stage = new Stage(); wäre für alert Fenster
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+
+
+        // stage.initOwner(HelloApplication.stage);
+        // stage.initModality(Modality.APPLICATION_MODAL);
+        // after window opens main window cannot be used until this stage is closed
+
+        HelloApplication.stage.show();
+    }
+
+    public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+    }
+
+    public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+    }
+
+}

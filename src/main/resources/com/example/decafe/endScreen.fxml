@@ -7,53 +7,56 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="979.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
-      <ImageView fitHeight="743.0" fitWidth="979.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="endScreenBackground" fitHeight="743.0" fitWidth="979.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@endscreenFromInside.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="476.0" fitWidth="659.0" layoutX="41.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cofiBrewImage" fitHeight="476.0" fitWidth="659.0" layoutX="41.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@cofiBrewEndScreen.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="387.0" layoutY="334.0" prefHeight="48.0" prefWidth="205.0" text="Congratulations!">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="387.0" layoutY="401.0" prefHeight="48.0" prefWidth="205.0" text="EMPLOYEE OF">
-         <font>
-            <Font name="Calibri Bold" size="24.0" />
-         </font>
-      </Label>
-      <Button layoutX="722.0" layoutY="409.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="167.0" style="-fx-background-color: #ddab8d; -fx-border-color: #ce8966; -fx-border-radius: 5; -fx-border-width: 5;" text="BACK TO START MENU" textFill="#a16027">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button layoutX="722.0" layoutY="325.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="167.0" style="-fx-background-color: #ddab8d; -fx-border-color: #ce8966; -fx-border-width: 5; -fx-border-radius: 5;" text="PLAY AGAIN" textFill="#a16027">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Label layoutX="650.0" prefHeight="39.0" prefWidth="323.0" text="© Sara Höferer, Sophia Hölzl, Christiane Haider">
+      <Label fx:id="labelCredits" layoutX="650.0" prefHeight="39.0" prefWidth="323.0" text="© Sara Höferer, Sophia Hölzl, Christiane Haider">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="387.0" layoutY="367.0" prefHeight="48.0" prefWidth="205.0" text="You are now">
+      <ImageView fitHeight="105.0" fitWidth="237.0" layoutX="371.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@employeeOfTheMonth.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="buttonBackToStart" layoutX="666.0" layoutY="401.0" mnemonicParsing="false" onMouseClicked="#switchToStartScreen" prefHeight="88.0" prefWidth="189.0" style="-fx-background-color: #ddab8d;" textFill="#a16027">
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="387.0" layoutY="436.0" prefHeight="48.0" prefWidth="205.0" text="THE MONTH!">
+         <graphic>
+            <ImageView fitHeight="119.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@toStartMenuButton.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="buttonPlayAgain" layoutX="664.0" layoutY="299.0" mnemonicParsing="false" onMouseClicked="#switchToGameScreen" prefHeight="84.0" prefWidth="236.0" style="-fx-background-color: #ddab8d;" textFill="#a16027">
          <font>
-            <Font name="Calibri Bold" size="24.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
-      </Label>
+         <graphic>
+            <ImageView fitHeight="82.0" fitWidth="216.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@buttonPlayAgain.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="32.0" fitWidth="266.0" layoutX="371.0" layoutY="356.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@congratulations.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
