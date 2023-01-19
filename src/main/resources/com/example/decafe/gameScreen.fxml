@@ -115,7 +115,7 @@
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
-      <Button layoutX="436.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="Button" />
+      <!--<Button layoutX="436.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="Button" />-->
       <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
             <Font size="16.0" />
@@ -179,5 +179,10 @@
       <Label fx:id="edgeLeft" disable="true" layoutX="22.0" layoutY="55.0" prefHeight="705.0" prefWidth="30.0" />
       <Label fx:id="edgeBot" disable="true" layoutX="-10.0" layoutY="746.0" prefHeight="20.0" prefWidth="1007.0" />
       <Label fx:id="edgeRight" disable="true" layoutX="993.0" layoutY="16.0" prefHeight="743.0" prefWidth="12.0" />
+      <Label fx:id="table2" layoutX="776.0" layoutY="195.0" prefHeight="100.0" prefWidth="62.0" />
+      <Label fx:id="coinLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="26.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font></Label>
    </children>
 </AnchorPane>

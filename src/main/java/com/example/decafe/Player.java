@@ -65,6 +65,10 @@ public class Player {
         this.input = input;
     }
 
+    public void setImageWithoutProduct(String imageWithoutProduct){
+        this.imageWithoutProduct = imageWithoutProduct;
+    }
+
     //Funktion damit sich der Spieler bewegt
     public void move (String input){
 

@@ -1,6 +1,9 @@
 package com.example.decafe;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,10 +18,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 
 
 public class HelloController implements Initializable {
@@ -86,12 +91,11 @@ public class HelloController implements Initializable {
     public Label edgeRight;
     public Label coinLabel;
 
-    //private final ImageView[] pics = {first, second, third, fourth, fifth, sixth, seventh, eighth};
-    //private List<ImageView> pics = new ArrayList<ImageView>();
     private ImageView[] pics = new ImageView[8];
     private ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
+    public int coin = 0;
 
 
     private int movementVariable = 4;
@@ -103,23 +107,6 @@ public class HelloController implements Initializable {
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
         HelloApplication.stage.show();
-
-        /*
-        pics = makeArrayCustomer();
-
-        Timer t = new Timer();
-        for (int i = 0; i < 3; i++) {
-            t.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            searchForTable(pics);
-                            t.cancel();
-                        }
-                    },
-                    3000
-            );
-        }*/
     }
 
     // for smoother motion
@@ -207,6 +194,14 @@ public class HelloController implements Initializable {
         collisionObjects.add(edgeLeft);
         collisionObjects.add(edgeRight);
         collisionObjects.add(edgeTop);
+
+        pics = makeArrayCustomer();
+
+        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(3), ev -> {
+            searchForTable(pics);
+        }));
+        timeline2.setCycleCount(Animation.INDEFINITE);
+        timeline2.play();
     }
 
     @FXML
@@ -229,6 +224,8 @@ public class HelloController implements Initializable {
             case D -> dPressed.set(false);
         }
     }
+
+
 
     // start screen - change coffee button on mouse entered
     public void changeCoffeeImage() throws FileNotFoundException {
@@ -272,44 +269,71 @@ public class HelloController implements Initializable {
         CofiBrew.setProduct("none");
     }
 
+    public Label getLabel(ImageView cust){
 
-    public void displayPerson(MouseEvent event) throws FileNotFoundException {
+        Label customorder = new Label();
+
+        if (first.equals(cust)) {
+            customorder = orderlabel1;
+        } else if (second.equals(cust)) {
+            customorder = orderlabel2;
+        } else if (third.equals(cust)) {
+            customorder = orderlabel3;
+        } else if (fourth.equals(cust)) {
+            customorder = orderlabel4;
+        } else if (fifth.equals(cust)) {
+            customorder = orderlabel5;
+        } else if (sixth.equals(cust)) {
+            customorder = orderlabel6;
+        } else if (seventh.equals(cust)) {
+            customorder = orderlabel7;
+        } else if (eighth.equals(cust)) {
+            customorder = orderlabel8;
+        }
+
+        return customorder;
+
+    }
+
+    public Customer findCustomer(List<Customer> customerList, ImageView cust){
+
+        for (Customer customer : customerList) {
+            if (customer.getImage().equals(cust)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+
+    public void displayPerson(MouseEvent event) throws FileNotFoundException, InterruptedException {
 
         ImageView cust = (ImageView) event.getSource();
-        Label order = new Label();
         double x1 = 0.0;
         double y1 = 0.0;
 
         if (first.equals(cust)) {
-            order = orderlabel1;
             x1 = first.getLayoutX();
             y1 = first.getLayoutY();
         } else if (second.equals(cust)) {
-            order = orderlabel2;
             x1 = second.getLayoutX();
             y1 = second.getLayoutY();
         } else if (third.equals(cust)) {
-            order = orderlabel3;
             x1 = third.getLayoutX();
             y1 = third.getLayoutY();
         } else if (fourth.equals(cust)) {
-            order = orderlabel4;
             x1 = fourth.getLayoutX();
             y1 = fourth.getLayoutY();
         } else if (fifth.equals(cust)) {
-            order = orderlabel5;
             x1 = fifth.getLayoutX();
             y1 = fifth.getLayoutY();
         } else if (sixth.equals(cust)) {
-            order = orderlabel6;
             x1 = sixth.getLayoutX();
             y1 = sixth.getLayoutY();
         } else if (seventh.equals(cust)) {
-            order = orderlabel7;
             x1 = seventh.getLayoutX();
             y1 = seventh.getLayoutY();
         } else if (eighth.equals(cust)) {
-            order = orderlabel8;
             x1 = eighth.getLayoutX();
             y1 = eighth.getLayoutY();
         }
@@ -317,17 +341,21 @@ public class HelloController implements Initializable {
         double x2 = waiter.getLayoutX();
         double y2 = waiter.getLayoutY();
 
-
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
 
-        Customer customer = new Customer(cust, order);
-        customerList.add(customer);
+        Customer customer = findCustomer(customerList, cust);
 
+        if (c.distance(w) < 120) {
+            if (customer.displayPerson(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter)){
+                coin += 5;
+                coinLabel.setText(String.valueOf(coin));
+            }
         if (c.distance(w) < 125) {
             customer.displayPerson(order, cust, CofiBrew, coinLabel);
         }
+
     }
 
     public ImageView[] makeArrayCustomer() {
@@ -344,34 +372,46 @@ public class HelloController implements Initializable {
         return pics;
     }
 
-    public ImageView getRandomPic(ImageView[] pics) {
+    private List<Integer> num = new ArrayList<Integer>(){{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+        add(6);
+        add(7);
+    }};
 
-        int index = random.nextInt(8);
+    public ImageView getRandomPic(ImageView[] pics, List<Integer> num) {
 
-        if (pics[index].isVisible()) {
-            getRandomPic(pics);
+        int index = num.get(random.nextInt(num.size()));
+
+        if (!num.contains(index)){
+            getRandomPic(pics, num);
         }
+
+        num.remove(Integer.valueOf(index));
 
         return pics[index];
     }
 
-    public void searchForTable(MouseEvent event) {
+    public void searchForTable(ImageView[] pics) {
 
-        pics = makeArrayCustomer();
-        customerImage = getRandomPic(pics); //get random picture from Array
-        customerImage.setVisible(true);//make this picture visible
+        if (customerList.size() < 3){
+            //pics = makeArrayCustomer();
+            customerImage = getRandomPic(pics, num); //get random picture from Array
+            customerImage.setVisible(true);//make this picture visible
 
-        Timer t = new Timer();
-        t.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        customerImage.setVisible(false);
-                        t.cancel();
-                    }
-                },
-                60000
-        );
+            Label order = getLabel(customerImage);
+
+            Customer customer = new Customer(customerImage, order);
+            customerList.add(customer);
+
+        }
+        else {
+            System.out.println("no more customers");
+        }
 
     }
 

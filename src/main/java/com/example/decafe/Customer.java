@@ -1,39 +1,49 @@
 package com.example.decafe;
 
-import javafx.animation.FadeTransition;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Customer {
-    private int positionX; // X-Koordinate vom Gast
-    private int positionY; // Y-Koordinate vom Gast
-    private int tableNr; //Tischnummer auf dem der Gast sitzt
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
     private int coin = 0;
 
     private ImageView customer;
     private Label orderr;
-    public HelloController controller = new HelloController();
 
-    private boolean alreadyorder = false;
+    public boolean alreadyOrdered;
 
     Customer(ImageView image, Label label){
         this.customer = image;
         this.orderr = label;
+        this.alreadyOrdered = false;
+    }
+
+    public int getCoin(){
+        return coin;
     }
 
 
-    public int getTableNr() {
-        return tableNr;
+    public ImageView getImage(){
+        return this.customer;
     }
 
-    public String getOrder() {
+    public Label getLabel(){
+        return this.orderr;
+    }
+
+    public String getRandomOrder() {
 
         Random random = new Random();
         int number = random.nextInt(2);
@@ -46,71 +56,82 @@ public class Customer {
         return order;
     }
 
-    //Setter
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
 
     public void setOrder(String order) {
         this.order = order;
     }
 
-    //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public void displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel) throws FileNotFoundException {
+    public String getOrder(){
+        return order;
+    }
 
-        if (!alreadyorder) {
-            order = getOrder();
+    //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
+    public boolean displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel, Customer customer, List<Customer> customerList, ImageView waiter) throws FileNotFoundException, InterruptedException {
+
+        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(60), ev -> {
+            leave(customerPic, orderlabel, customerList);
+        }));
+        timeline2.setCycleCount(Animation.INDEFINITE);
+        timeline2.play();
+
+        if (!customer.alreadyOrdered) {
+            order = getRandomOrder();
+            setOrder(order);
             orderlabel.setText(order);
-            alreadyorder = true;
+            this.alreadyOrdered = true;
+            System.out.println(alreadyOrdered);
+
         }
         else {
-            if (CofiBrew.getProduct().equals(order)){
+            if (CofiBrew.getProduct().equals(customer.getOrder())){
                 orderlabel.setText(":)");
-                coin += 1;
+                coin += 5;
                 coinlabel.setText(String.valueOf(coin));
-                alreadyorder = false;
-                CofiBrew.setProduct("none");
-                controller.noProduct();
+                this.alreadyOrdered = false;
 
-                Timer t = new Timer();
-                t.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                leave(customerPic, orderlabel);
-                                t.cancel();
-                            }
-                        },
-                        1000
-                );
+                String filePath = CofiBrew.getImageWithoutProduct();
+                InputStream stream = new FileInputStream(filePath);
+                Image cofi = new Image(stream);
+                waiter.setImage(cofi);
+                CofiBrew.setProduct("none");
+
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                    leave(customerPic, orderlabel, customerList);
+                }));
+                timeline.setCycleCount(Animation.INDEFINITE);
+                timeline.play();
+
+                return true;
+
 
             }else {
                 orderlabel.setText(":(");
 
-                Timer t = new Timer();
-                t.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                leave(customerPic, orderlabel);
-                                t.cancel();
-                            }
-                        },
-                        1000
-                );
+                String filePath = CofiBrew.getImageWithoutProduct();
+                InputStream stream = new FileInputStream(filePath);
+                Image cofi = new Image(stream);
+                waiter.setImage(cofi);
+                CofiBrew.setProduct("none");
+
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                    leave(customerPic, orderlabel, customerList);
+                }));
+                timeline.setCycleCount(Animation.INDEFINITE);
+                timeline.play();
+
+                return false;
+
             }
         }
+
+        return false;
     }
 
-    //Funktion damit der Kunde geht
-    public void leave (ImageView image, Label label) {
+    public void leave (ImageView image, Label label, List<Customer> customerList) {
         label.setText("");
         image.setVisible(false);
-        controller.customerList.remove(customer);
+
+        customerList.removeIf(customer -> customer.getImage().equals(image));
     }
 }
 
