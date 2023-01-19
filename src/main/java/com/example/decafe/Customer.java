@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.util.*;
 
 
-public class Customer extends HelloController{
+public class Customer{
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
     private int coin = 0;
     private int index;

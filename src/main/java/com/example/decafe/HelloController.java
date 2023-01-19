@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,10 +39,13 @@ public class HelloController implements Initializable {
     public ImageView kitchenAid;
     public ImageView controlLabel;
 
-    public Machine coffeeeMachine = new Machine(1, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(1, "kitchenAidUsed.png", "kitchenAid.png", "cake");
+    public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
+    public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
+    public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollshuh.png", "used.jpg", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -93,6 +98,9 @@ public class HelloController implements Initializable {
     public Label edgeRight;
     public Label coinLabel;
     public ImageView Gamestartbutton;
+    public ImageView upgradeCoffee;
+    public ImageView upgradeCake;
+    public ImageView upgradePlayer;
 
     public ImageView[] pics;
     public ImageView customerImage = new ImageView();
@@ -124,6 +132,7 @@ public class HelloController implements Initializable {
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
         HelloApplication.stage.show();
+
     }
     // jump from start screen to game screen
     public void startGame() throws IOException {
@@ -212,7 +221,6 @@ public class HelloController implements Initializable {
         pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
 
         if (pics[0] != null && !start){
-            start = true;
             Timer t = new Timer();
             t.schedule(
                     new TimerTask() {
@@ -246,6 +254,7 @@ public class HelloController implements Initializable {
                     },
                     10000
             );
+            start = true;
         }
     }
 
@@ -430,7 +439,8 @@ public class HelloController implements Initializable {
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
                     coin += 5;
-                    if (coin < 20) {
+                    if (coin < 80) {
+                        checkUpgradePossibel();
                         coinLabel.setText(String.valueOf(coin));
                     } else {
                         startEnd();
@@ -449,6 +459,66 @@ public class HelloController implements Initializable {
                 );
             }
         }
+    }
+
+    public void checkUpgradePossibel() throws FileNotFoundException {
+        String filePath;
+
+        if (coin >= coffeeUpgrade.getCoinsNeeded() && !coffeeUpgrade.isUsed()){
+            filePath = coffeeUpgrade.getPathNotUsed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            upgradeCoffee.setImage(upgrade);
+            upgradeCoffee.setDisable(false);
+        } else {
+            filePath = coffeeUpgrade.getPathUSed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            upgradeCoffee.setImage(upgrade);
+            upgradeCoffee.setDisable(true);
+        }
+        if (coin >= cakeUpgrade.getCoinsNeeded() && !cakeUpgrade.isUsed()){
+            filePath = cakeUpgrade.getPathNotUsed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            upgradeCake.setDisable(false);
+            upgradeCake.setImage(upgrade);
+        } else {
+            filePath = cakeUpgrade.getPathUSed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            upgradeCake.setImage(upgrade);
+            upgradeCake.setDisable(true);
+        }
+        if (coin >= playerUpgrade.getCoinsNeeded() && !playerUpgrade.isUsed()){
+            filePath = playerUpgrade.getPathNotUsed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            upgradePlayer.setDisable(false);
+            upgradePlayer.setImage(upgrade);
+        } else {
+            filePath = playerUpgrade.getPathUSed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrade = new Image(stream);
+            //upgradePlayer.setImage(upgrade);
+            upgradePlayer.setDisable(true);
+        }
+
+    }
+
+    public void doUpgrade(MouseEvent e) throws FileNotFoundException {
+        if (((ImageView)e.getSource()).getId().equals("coffee")){
+            coin = coffeeUpgrade.doUpgrade(upgradeCoffee, coin);
+            coffeeeMachine.setDuration(2);
+        } else if (((ImageView)e.getSource()).getId().equals("cake")){
+            coin = cakeUpgrade.doUpgrade(upgradeCake, coin);
+            cakeMachine.setDuration(2);
+        } else if (((ImageView)e.getSource()).getId().equals("player")){
+            coin = playerUpgrade.doUpgrade(upgradePlayer, coin);
+            movementVariable = 6;
+        }
+        coinLabel.setText(String.valueOf(coin));
+        checkUpgradePossibel();
     }
 
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
