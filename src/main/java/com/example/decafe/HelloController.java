@@ -352,10 +352,7 @@ public class HelloController implements Initializable {
                 coin += 5;
                 coinLabel.setText(String.valueOf(coin));
             }
-        if (c.distance(w) < 125) {
-            customer.displayPerson(order, cust, CofiBrew, coinLabel);
         }
-
     }
 
     public ImageView[] makeArrayCustomer() {
@@ -396,7 +393,8 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
-    public void searchForTable(ImageView[] pics) {
+
+    private void searchForTable(ImageView[] pics) {
 
         if (customerList.size() < 3){
             //pics = makeArrayCustomer();
