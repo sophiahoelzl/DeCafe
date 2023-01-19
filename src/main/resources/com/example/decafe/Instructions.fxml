@@ -2,19 +2,18 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
-
 <?import javafx.scene.layout.AnchorPane?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
-      <ImageView fitHeight="681.0" fitWidth="977.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="782.0" fitWidth="980.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@startScreen.png" />
+            <Image url="@Instructions.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="startButton" fitHeight="132.0" fitWidth="138.0" layoutX="429.0" layoutY="80.0" onMouseClicked="#startInstructions" onMouseEntered="#changeCoffeeImage" onMouseExited="#changeCoffeeImageBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="Gamestartbutton" fitHeight="82.0" fitWidth="174.0" layoutX="733.0" layoutY="511.0" onMouseClicked="#startGame" onMouseEntered="#changeStartImage" onMouseExited="#changeStartImageBack" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@coffee.png" />
+            <Image url="@startHover.png" />
          </image>
       </ImageView>
    </children>

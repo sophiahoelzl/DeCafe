@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -90,6 +91,7 @@ public class HelloController implements Initializable {
     public Label edgeLeft;
     public Label edgeRight;
     public Label coinLabel;
+    public ImageView Gamestartbutton;
 
     private ImageView[] pics = new ImageView[8];
     private ImageView customerImage = new ImageView();
@@ -104,6 +106,14 @@ public class HelloController implements Initializable {
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+    }
+
+    public void startInstructions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
@@ -243,8 +253,28 @@ public class HelloController implements Initializable {
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
         InputStream stream = new FileInputStream(filePath);
+        Image start = new Image(stream);
+        startButton.setImage(start);
+    }
+
+
+    public void changeStartImage() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image start = new Image(stream);
+        Gamestartbutton.setImage(start);
+    }
+
+    // start screen - change coffee button on mouse exited
+    public void changeStartImageBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
+        InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
-        startButton.setImage(coffee);
+        Gamestartbutton.setImage(coffee);
     }
 
     // when coffee is produced, change appearance
@@ -380,9 +410,12 @@ public class HelloController implements Initializable {
             add(7);
         }};
 
-        public ImageView getRandomPic (ImageView[]pics, List < Integer > num){
+    public int i;
+
+        public ImageView getRandomPic (ImageView[]pics, List <Integer> num){
 
             int index = num.get(random.nextInt(num.size()));
+            i = index;
 
             if (!num.contains(index)) {
                 getRandomPic(pics, num);

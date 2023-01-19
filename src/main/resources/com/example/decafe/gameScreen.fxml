@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="743.0" fitWidth="979.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@cafeIndoorNew.png" />
+            <Image url="@cafeIndoor.png" />
          </image>
       </ImageView>
       <ImageView fx:id="coffeeMachine" fitHeight="117.0" fitWidth="75.0" layoutX="9.0" layoutY="208.0" onMouseClicked="#showCoffee" pickOnBounds="true" preserveRatio="true">
@@ -25,7 +25,7 @@
             <Image url="@kitchenAid.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="41.0" fitWidth="56.0" layoutX="22.0" layoutY="444.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="59.0" fitWidth="61.0" layoutX="15.0" layoutY="436.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@cake.png" />
          </image>
