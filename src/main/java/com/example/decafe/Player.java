@@ -3,8 +3,8 @@ package com.example.decafe;
 import java.io.File;
 
 public class Player {
-    private int positionX; // X-Koordinate vom Kellner
-    private int positionY; // Y-Koordinate vom kellner
+    private double positionX; // X-Koordinate vom Kellner
+    private double positionY; // Y-Koordinate vom kellner
     private String imageWithoutProduct; //Bild vom Kellner
     private String imageWithCoffee;
     private String imageWithCake;
@@ -20,11 +20,11 @@ public class Player {
     }
 
     //Getter
-    public int getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
-    public int getPositionX() {
+    public double getPositionX() {
         return positionX;
     }
 
@@ -49,11 +49,11 @@ public class Player {
     }
 
     //Setter
-    public void setPositionY(int positionY) {
+    public void setPositionY(double positionY) {
         this.positionY = positionY;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(double positionX) {
         this.positionX = positionX;
     }
 
@@ -63,6 +63,10 @@ public class Player {
 
     public void setInput(String input) {
         this.input = input;
+    }
+
+    public void setImageWithoutProduct(String imageWithoutProduct){
+        this.imageWithoutProduct = imageWithoutProduct;
     }
 
     //Funktion damit sich der Spieler bewegt
