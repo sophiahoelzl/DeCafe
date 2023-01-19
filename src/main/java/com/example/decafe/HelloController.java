@@ -478,8 +478,6 @@ public class HelloController implements Initializable {
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
 
-        } else {
-            System.out.println("no more customers");
         }
 
     }
