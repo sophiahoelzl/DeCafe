@@ -115,7 +115,7 @@
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
-      <Button layoutX="436.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="Button" />
+      <Button layoutX="1000.0" layoutY="1000.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="" />
       <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
             <Font size="16.0" />
