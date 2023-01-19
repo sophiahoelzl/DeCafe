@@ -34,7 +34,7 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
-    public Label controlLabel;
+    public ImageView controlLabel;
 
     public Machine coffeeeMachine = new Machine(5, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(5, "kitchenAidUsed.png", "kitchenAid.png", "cake");
@@ -373,7 +373,7 @@ public class HelloController implements Initializable {
 
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
-        controlLabel.setText(String.valueOf(c.distance(w)));
+       // controlLabel.setText(String.valueOf(c.distance(w)));
 
         Customer customer = findCustomer(customerList, cust);
 

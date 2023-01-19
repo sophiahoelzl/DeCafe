@@ -18,6 +18,7 @@ import java.util.Random;
 public class Customer {
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
     private int coin = 0;
+    private int index;
 
     private ImageView customer;
     private Label orderr;
