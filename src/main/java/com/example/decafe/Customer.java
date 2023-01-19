@@ -11,36 +11,56 @@ import javafx.util.Duration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
-public class Customer {
+public class Customer extends HelloController{
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
     private int coin = 0;
     private int index;
 
     private ImageView customer;
     private Label orderr;
+    private int table;
+    private Timer x;
 
     public boolean alreadyOrdered;
 
-    Customer(ImageView image, Label label){
+    Customer(ImageView image, Label label, int table) {
         this.customer = image;
         this.orderr = label;
         this.alreadyOrdered = false;
+        this.table = table;
+        this.x = new Timer();
     }
 
-    public int getCoin(){
-        return coin;
+    public void waitingTime(ImageView customerpic, Label order, List<Customer> customerList, List <Integer> num) {
+        x.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        leave(customerpic, order, customerList, num);
+                        x.cancel();
+                    }
+                },
+                60000
+        );
+    }
+
+    public boolean isAlreadyOrdered() {
+        return this.alreadyOrdered;
+    }
+
+    public int getTable() {
+        return table;
     }
 
 
-    public ImageView getImage(){
+    public ImageView getImage() {
         return this.customer;
     }
 
-    public Label getLabel(){
+    public Label getLabel() {
         return this.orderr;
     }
 
@@ -57,82 +77,78 @@ public class Customer {
         return order;
     }
 
-
     public void setOrder(String order) {
         this.order = order;
     }
 
-    public String getOrder(){
+    public String getOrder() {
         return order;
     }
 
-    //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
-    public boolean displayPerson (Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel, Customer customer, List<Customer> customerList, ImageView waiter) throws FileNotFoundException, InterruptedException {
-
-        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(60), ev -> {
-            leave(customerPic, orderlabel, customerList);
-        }));
-        timeline2.setCycleCount(Animation.INDEFINITE);
-        timeline2.play();
-
-        if (!customer.alreadyOrdered) {
-            order = getRandomOrder();
-            setOrder(order);
-            orderlabel.setText(order);
-            this.alreadyOrdered = true;
-            System.out.println(alreadyOrdered);
-
-        }
-        else {
-            if (CofiBrew.getProduct().equals(customer.getOrder())){
-                orderlabel.setText(":)");
-                coin += 5;
-                coinlabel.setText(String.valueOf(coin));
-                this.alreadyOrdered = false;
-
-                String filePath = CofiBrew.getImageWithoutProduct();
-                InputStream stream = new FileInputStream(filePath);
-                Image cofi = new Image(stream);
-                waiter.setImage(cofi);
-                CofiBrew.setProduct("none");
-
-                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                    leave(customerPic, orderlabel, customerList);
-                }));
-                timeline.setCycleCount(Animation.INDEFINITE);
-                timeline.play();
-
-                return true;
-
-
-            }else {
-                orderlabel.setText(":(");
-
-                String filePath = CofiBrew.getImageWithoutProduct();
-                InputStream stream = new FileInputStream(filePath);
-                Image cofi = new Image(stream);
-                waiter.setImage(cofi);
-                CofiBrew.setProduct("none");
-
-                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                    leave(customerPic, orderlabel, customerList);
-                }));
-                timeline.setCycleCount(Animation.INDEFINITE);
-                timeline.play();
-
-                return false;
-
-            }
-        }
-
-        return false;
+    public void displayOrder(Label orderlabel) {
+        orderlabel.setVisible(true);
+        order = getRandomOrder();
+        setOrder(order);
+        orderlabel.setText(order);
+        this.alreadyOrdered = true;
     }
 
-    public void leave (ImageView image, Label label, List<Customer> customerList) {
-        label.setText("");
-        image.setVisible(false);
+    //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
+    public boolean checkOrder(Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel, Customer customer, List<Customer> customerList, ImageView waiter,  List <Integer> num) throws FileNotFoundException, InterruptedException {
+        Timer t = new Timer();
+        if (CofiBrew.getProduct().equals(customer.getOrder())) {
+            orderlabel.setText(":)");
+            coin += 5;
+            coinlabel.setText(String.valueOf(coin));
+            this.alreadyOrdered = false;
 
+            String filePath = CofiBrew.getImageWithoutProduct();
+            InputStream stream = new FileInputStream(filePath);
+            Image cofi = new Image(stream);
+            waiter.setImage(cofi);
+            CofiBrew.setProduct("none");
+
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            leave(customerPic, orderlabel, customerList, num);
+                            t.cancel();
+                        }
+                    },
+                    1000
+            );
+            this.x.cancel();
+            return true;
+        } else {
+            orderlabel.setText(":(");
+
+            String filePath = CofiBrew.getImageWithoutProduct();
+            InputStream stream = new FileInputStream(filePath);
+            Image cofi = new Image(stream);
+            waiter.setImage(cofi);
+            CofiBrew.setProduct("none");
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            leave(customerPic, orderlabel, customerList, num);
+                            t.cancel();
+                        }
+                    },
+                    1000
+            );
+            this.x.cancel();
+            return false;
+        }
+    }
+
+
+    public void leave (ImageView image, Label label, List<Customer> customerList, List<Integer> num) {
+        label.setVisible(false);
+        image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image));
+        num.add(this.table);
     }
 }
 

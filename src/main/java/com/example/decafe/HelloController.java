@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -36,8 +37,8 @@ public class HelloController implements Initializable {
     public ImageView kitchenAid;
     public ImageView controlLabel;
 
-    public Machine coffeeeMachine = new Machine(5, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(5, "kitchenAidUsed.png", "kitchenAid.png", "cake");
+    public Machine coffeeeMachine = new Machine(1, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(1, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
 
@@ -93,16 +94,37 @@ public class HelloController implements Initializable {
     public Label coinLabel;
     public ImageView Gamestartbutton;
 
-    private ImageView[] pics = new ImageView[8];
-    private ImageView customerImage = new ImageView();
+    public ImageView[] pics;
+    public ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
 
 
     private int movementVariable = 4;
-    public ArrayList<Label> collisionObjects = new ArrayList<Label>();
+    public Label[] collisions;
 
+    public int number;
+    public boolean start = false;
+
+    private List<Integer> num = new ArrayList<Integer>() {{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+        add(6);
+        add(7);
+    }};
+
+    public void startEnd() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+    }
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
@@ -185,34 +207,46 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
-        collisionObjects.add(plantsAbove);
-        collisionObjects.add(plant);
-        collisionObjects.add(table1);
-        collisionObjects.add(table2);
-        collisionObjects.add(table3);
-        collisionObjects.add(table4);
-        collisionObjects.add(customerBot1);
-        collisionObjects.add(customerBot2);
-        collisionObjects.add(customerBot3);
-        collisionObjects.add(customerBot4);
-        collisionObjects.add(customerTop1);
-        collisionObjects.add(customerTop2);
-        collisionObjects.add(customerTop3);
-        collisionObjects.add(customerTop4);
-        collisionObjects.add(countBelow);
-        collisionObjects.add(countRight);
-        collisionObjects.add(edgeBot);
-        collisionObjects.add(edgeLeft);
-        collisionObjects.add(edgeRight);
-        collisionObjects.add(edgeTop);
+        collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-       /* pics = makeArrayCustomer();
+        pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
 
-        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(3), ev -> {
-            searchForTable(pics);
-        }));
-        timeline2.setCycleCount(Animation.INDEFINITE);
-        timeline2.play();*/
+        if (pics[0] != null && !start){
+            start = true;
+            Timer t = new Timer();
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    1000
+            );
+            Timer x = new Timer();
+            x.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    5000
+            );
+            Timer y = new Timer();
+            y.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    10000
+            );
+        }
     }
 
     @FXML
@@ -235,7 +269,6 @@ public class HelloController implements Initializable {
             case D -> dPressed.set(false);
         }
     }
-
 
     // start screen - change coffee button on mouse entered
     public void changeCoffeeImage() throws FileNotFoundException {
@@ -336,7 +369,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) throws FileNotFoundException, InterruptedException {
+    public void displayPerson(MouseEvent event) throws IOException, InterruptedException {
 
         ImageView cust = (ImageView) event.getSource();
         double x1 = 0.0;
@@ -373,84 +406,92 @@ public class HelloController implements Initializable {
 
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
-       // controlLabel.setText(String.valueOf(c.distance(w)));
+        // controlLabel.setText(String.valueOf(c.distance(w)));
 
         Customer customer = findCustomer(customerList, cust);
 
-        if (c.distance(w) < 125) {
-            if (customer.displayPerson(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter)) {
-                coin += 5;
-                coinLabel.setText(String.valueOf(coin));
-            }
-        }
-    }
-
-        public ImageView[] makeArrayCustomer () {
-
-            pics[0] = first;
-            pics[1] = second;
-            pics[2] = third;
-            pics[3] = fourth;
-            pics[4] = fifth;
-            pics[5] = sixth;
-            pics[6] = seventh;
-            pics[7] = eighth;
-
-            return pics;
-        }
-
-        private List<Integer> num = new ArrayList<Integer>() {{
-            add(0);
-            add(1);
-            add(2);
-            add(3);
-            add(4);
-            add(5);
-            add(6);
-            add(7);
-        }};
-
-    public int i;
-
-        public ImageView getRandomPic (ImageView[]pics, List <Integer> num){
-
-            int index = num.get(random.nextInt(num.size()));
-            i = index;
-
-            if (!num.contains(index)) {
-                getRandomPic(pics, num);
+        if (c.distance(w) < 128) {
+            if (customerList.size() < 3){
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                searchForTable();
+                                t.cancel();
+                            }
+                        },
+                        3000
+                );
             }
 
-            num.remove(Integer.valueOf(index));
-
-            return pics[index];
-        }
-
-        public void searchForTable (){
-
-            if (customerList.size() < 3) {
-                pics = makeArrayCustomer();
-                customerImage = getRandomPic(pics, num); //get random picture from Array
-                customerImage.setVisible(true);//make this picture visible
-
-                Label order = getLabel(customerImage);
-
-                Customer customer = new Customer(customerImage, order);
-                customerList.add(customer);
-
+            if (!customer.isAlreadyOrdered()){
+                customer.displayOrder(customer.getLabel());
             } else {
-                System.out.println("no more customers");
-            }
-
-        }
-
-        public boolean checkForCollision (ImageView waiter){
-            for (int i = 0; i < collisionObjects.size(); i++) {
-                if (waiter.getBoundsInParent().intersects(collisionObjects.get(i).getBoundsInParent())) {
-                    return true;
+                if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
+                    coin += 5;
+                    if (coin < 20) {
+                        coinLabel.setText(String.valueOf(coin));
+                    } else {
+                        startEnd();
+                    }
                 }
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                searchForTable();
+                                t.cancel();
+                            }
+                        },
+                        5000
+                );
             }
-
-            return false;
         }
     }
+
+    public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
+        Random random = new Random();
+        int index = num.get(random.nextInt(num.size()));
+        number = index;
+
+        if (!num.contains(index)) {
+            getRandomPic(pics, num);
+        }
+
+        num.remove(Integer.valueOf(index));
+
+        return pics[index];
+    }
+
+    public void searchForTable (){
+        if (customerList.size() < 3) {
+            ImageView customerImage = new ImageView();
+            customerImage = getRandomPic(pics, num); //get random picture from Array
+            customerImage.setVisible(true);//make this picture visible
+
+            Label order = getLabel(customerImage);
+
+
+            Customer customer = new Customer(customerImage, order, number);
+            customerList.add(customer);
+            customer.waitingTime(customerImage, order, customerList, num);
+
+        } else {
+            System.out.println("no more customers");
+        }
+
+    }
+
+
+    public boolean checkForCollision (ImageView waiter){
+        for (int i = 0; i < collisions.length; i++) {
+            if (waiter.getBoundsInParent().intersects(collisions[i].getBoundsInParent())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
