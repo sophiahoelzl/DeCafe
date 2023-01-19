@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -36,10 +37,10 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
-    public Label controlLabel;
+    public ImageView controlLabel;
 
-    public Machine coffeeeMachine = new Machine(5, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(5, "kitchenAidUsed.png", "kitchenAid.png", "cake");
+    public Machine coffeeeMachine = new Machine(1, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(1, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
 
@@ -93,29 +94,55 @@ public class HelloController implements Initializable {
     public Label edgeLeft;
     public Label edgeRight;
     public Label coinLabel;
+    public ImageView Gamestartbutton;
     public ImageView cofiBrewImage;
-    public Label endLabel1;
-    public Label endLabel2;
-    public Label endLabel3;
-    public Label endLabel4;
     public Button buttonPlayAgain;
     public Button buttonBackToStart;
     public Label labelCredits;
     public ImageView endScreenBackground;
 
 
-    private ImageView[] pics = new ImageView[8];
-    private ImageView customerImage = new ImageView();
+    public ImageView[] pics;
+    public ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
 
     private int movementVariable = 4;
-    public ArrayList<Label> collisionObjects = new ArrayList<Label>();
+    public Label[] collisions;
 
+    public int number;
+    public boolean start = false;
+
+    private List<Integer> num = new ArrayList<Integer>() {{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+        add(6);
+        add(7);
+    }};
+
+    public void startEnd() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+    }
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+    }
+
+    public void startInstructions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
@@ -187,34 +214,46 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
-        collisionObjects.add(plantsAbove);
-        collisionObjects.add(plant);
-        collisionObjects.add(table1);
-        collisionObjects.add(table2);
-        collisionObjects.add(table3);
-        collisionObjects.add(table4);
-        collisionObjects.add(customerBot1);
-        collisionObjects.add(customerBot2);
-        collisionObjects.add(customerBot3);
-        collisionObjects.add(customerBot4);
-        collisionObjects.add(customerTop1);
-        collisionObjects.add(customerTop2);
-        collisionObjects.add(customerTop3);
-        collisionObjects.add(customerTop4);
-        collisionObjects.add(countBelow);
-        collisionObjects.add(countRight);
-        collisionObjects.add(edgeBot);
-        collisionObjects.add(edgeLeft);
-        collisionObjects.add(edgeRight);
-        collisionObjects.add(edgeTop);
+        collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-       /* pics = makeArrayCustomer();
+        pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
 
-        Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(3), ev -> {
-            searchForTable(pics);
-        }));
-        timeline2.setCycleCount(Animation.INDEFINITE);
-        timeline2.play();*/
+        if (pics[0] != null && !start){
+            start = true;
+            Timer t = new Timer();
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    1000
+            );
+            Timer x = new Timer();
+            x.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    5000
+            );
+            Timer y = new Timer();
+            y.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable();
+                            t.cancel();
+                        }
+                    },
+                    10000
+            );
+        }
     }
 
     @FXML
@@ -238,7 +277,6 @@ public class HelloController implements Initializable {
         }
     }
 
-
     // start screen - change coffee button on mouse entered
     public void changeCoffeeImage() throws FileNotFoundException {
         File f = new File("");
@@ -255,8 +293,28 @@ public class HelloController implements Initializable {
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
         InputStream stream = new FileInputStream(filePath);
+        Image start = new Image(stream);
+        startButton.setImage(start);
+    }
+
+
+    public void changeStartImage() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image start = new Image(stream);
+        Gamestartbutton.setImage(start);
+    }
+
+    // start screen - change coffee button on mouse exited
+    public void changeStartImageBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
+        InputStream stream = new FileInputStream(filePath);
         Image coffee = new Image(stream);
-        startButton.setImage(coffee);
+        Gamestartbutton.setImage(coffee);
     }
 
     // when coffee is produced, change appearance
@@ -355,7 +413,7 @@ public class HelloController implements Initializable {
 
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
-        controlLabel.setText(String.valueOf(c.distance(w)));
+        // controlLabel.setText(String.valueOf(c.distance(w)));
 
         Customer customer = findCustomer(customerList, cust);
 
@@ -392,10 +450,54 @@ public class HelloController implements Initializable {
         add(6);
         add(7);
     }};
+        if (c.distance(w) < 128) {
+            if (customerList.size() < 3){
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                searchForTable();
+                                t.cancel();
+                            }
+                        },
+                        3000
+                );
+            }
+
+            if (!customer.isAlreadyOrdered()){
+                customer.displayOrder(customer.getLabel());
+            } else {
+                if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
+                    coin += 5;
+                    if (coin < 20) {
+                        coinLabel.setText(String.valueOf(coin));
+                    } else {
+                        startEnd();
+                    }
+                }
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                searchForTable();
+                                t.cancel();
+                            }
+                        },
+                        5000
+                );
+            }
+        }
+    }
 
     public ImageView getRandomPic(ImageView[] pics, List<Integer> num) {
 
         int index = num.get(random.nextInt(num.size()));
+    public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
+        Random random = new Random();
+        int index = num.get(random.nextInt(num.size()));
+        number = index;
 
         if (!num.contains(index)) {
             getRandomPic(pics, num);
@@ -406,6 +508,11 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
+    public void searchForTable (){
+        if (customerList.size() < 3) {
+            ImageView customerImage = new ImageView();
+            customerImage = getRandomPic(pics, num); //get random picture from Array
+            customerImage.setVisible(true);//make this picture visible
     public void searchForTable() {
 
         if (customerList.size() < 3) {
@@ -418,11 +525,18 @@ public class HelloController implements Initializable {
             Customer customer = new Customer(customerImage, order);
             customerList.add(customer);
 
+            Customer customer = new Customer(customerImage, order, number);
+            customerList.add(customer);
+            customer.waitingTime(customerImage, order, customerList, num);
+
         } else {
             System.out.println("no more customers");
         }
+        }
 
     }
+    }
+
 
     public boolean checkForCollision(ImageView waiter) {
         for (int i = 0; i < collisionObjects.size(); i++) {
@@ -430,7 +544,16 @@ public class HelloController implements Initializable {
                 return true;
             }
         }
+    public boolean checkForCollision (ImageView waiter){
+        for (int i = 0; i < collisions.length; i++) {
+            if (waiter.getBoundsInParent().intersects(collisions[i].getBoundsInParent())) {
+                return true;
+            }
+        }
 
+        return false;
+    }
+}
         return false;
     }
 
