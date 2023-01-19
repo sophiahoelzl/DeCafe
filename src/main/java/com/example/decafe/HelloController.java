@@ -30,9 +30,9 @@ public class HelloController implements Initializable {
     public ImageView kitchenAid;
     public Label controlLabel;
 
-    public Machine coffeeeMachine = new Machine(0, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(0, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    public Customer customer = new Customer();
+    public Machine coffeeeMachine = new Machine(5, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(5, "kitchenAidUsed.png", "kitchenAid.png", "cake");
+    //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();

@@ -40,9 +40,7 @@ public class Machine {
         return capacity;
     }
 
-    public int getDuration() {
-        return duration;
-    }
+    public int getDuration() { return duration; }
 
     public Boolean getProduced() {
         return produced;
@@ -57,18 +55,8 @@ public class Machine {
         this.duration = duration;
     }
 
-    //Funktion um ein Produkt zu erzeugen
-    public void produceProduct(){
-        produced = true;
-    }
-
-    public void productTaken(){
-        produced = false;
-    }
-
-    //Funktion um eine bestimmte Zeit zu warten
-    public void wait (int duration){
-
+    public void setProduced(Boolean produced){
+        this.produced = produced;
     }
 
     public void doAnimation (Timer t, ImageView machine, ProgressBar progress, Image product){
@@ -81,7 +69,7 @@ public class Machine {
                         new KeyValue(progress.progressProperty(), 0)
                 ),
                 new KeyFrame(
-                        Duration.seconds(5),
+                        Duration.seconds(this.getDuration()),
                         new KeyValue(progress.progressProperty(), 1)
                 )
         );
@@ -120,7 +108,7 @@ public class Machine {
                         t.cancel();
                     }
                 },
-                5000
+                this.duration* 1000L
         );
     }
 
@@ -134,19 +122,19 @@ public class Machine {
         boolean gotProduced = false;
 
         if (!this.produced && cofiBrew.getProduct().equals("none")) {
-            this.produceProduct();
+            this.setProduced(true);
             gotProduced = true;
         } else if (!this.produced && cofiBrew.getProduct().equals("coffee")) {
-            this.produceProduct();
+            this.setProduced(true);
             gotProduced = true;
             filepathTwo = cofiBrew.getImageWithCoffee();
         } else if (!this.produced && cofiBrew.getProduct().equals("cake")) {
-            this.produceProduct();
+            this.setProduced(true);
             gotProduced = true;
             filepathTwo = cofiBrew.getImageWithCake();
         } else {
             if (cofiBrew.getProduct().equals("none")){
-                this.productTaken();
+                this.setProduced(false);
                 filePath = this.PathMachineWithoutProduct;
                 cofiBrew.setProduct(this.type);
                 if (this.type.equals("coffee")){
