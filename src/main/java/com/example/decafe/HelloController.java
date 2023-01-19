@@ -84,9 +84,15 @@ public class HelloController implements Initializable {
     public Label edgeTop;
     public Label edgeLeft;
     public Label edgeRight;
+    public Label coinLabel;
 
-    private ImageView pics[] = new ImageView[8];
+    //private final ImageView[] pics = {first, second, third, fourth, fifth, sixth, seventh, eighth};
+    //private List<ImageView> pics = new ArrayList<ImageView>();
+    private ImageView[] pics = new ImageView[8];
     private ImageView customerImage = new ImageView();
+    public List<Customer> customerList = new ArrayList<>();
+    public Random random = new Random();
+
 
     private int movementVariable = 4;
     public ArrayList <Label> collisionObjects = new ArrayList<Label>();
@@ -97,6 +103,23 @@ public class HelloController implements Initializable {
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
         HelloApplication.stage.show();
+
+        /*
+        pics = makeArrayCustomer();
+
+        Timer t = new Timer();
+        for (int i = 0; i < 3; i++) {
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            searchForTable(pics);
+                            t.cancel();
+                        }
+                    },
+                    3000
+            );
+        }*/
     }
 
     // for smoother motion
@@ -196,6 +219,7 @@ public class HelloController implements Initializable {
         }
     }
 
+
     @FXML
     public void keyReleased(KeyEvent event) {
         switch (event.getCode()) {
@@ -249,7 +273,7 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) {
+    public void displayPerson(MouseEvent event) throws FileNotFoundException {
 
         ImageView cust = (ImageView) event.getSource();
         Label order = new Label();
@@ -297,8 +321,12 @@ public class HelloController implements Initializable {
         Point2D c = new Point2D(x1, y1);
         Point2D w = new Point2D(x2, y2);
         controlLabel.setText(String.valueOf(c.distance(w)));
+
+        Customer customer = new Customer(cust, order);
+        customerList.add(customer);
+
         if (c.distance(w) < 125) {
-            customer.displayPerson(order, cust, CofiBrew);
+            customer.displayPerson(order, cust, CofiBrew, coinLabel);
         }
     }
 
@@ -318,7 +346,6 @@ public class HelloController implements Initializable {
 
     public ImageView getRandomPic(ImageView[] pics) {
 
-        Random random = new Random();
         int index = random.nextInt(8);
 
         if (pics[index].isVisible()) {
@@ -328,11 +355,11 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
-    public void searchForTable() {
+    public void searchForTable(MouseEvent event) {
 
-        pics = makeArrayCustomer(); //make picture Array
+        pics = makeArrayCustomer();
         customerImage = getRandomPic(pics); //get random picture from Array
-        makePersonVisible(customerImage); //make this picture visible
+        customerImage.setVisible(true);//make this picture visible
 
         Timer t = new Timer();
         t.schedule(
@@ -345,12 +372,6 @@ public class HelloController implements Initializable {
                 },
                 60000
         );
-
-    }
-
-    public void makePersonVisible(ImageView customerImage) {
-
-        customerImage.setVisible(true);
 
     }
 
