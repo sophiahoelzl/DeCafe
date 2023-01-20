@@ -156,10 +156,11 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Label fx:id="controlLabel" layoutX="356.0" layoutY="14.0" onMouseClicked="#noProduct" prefHeight="41.0" prefWidth="590.0" text="Click here to remove product" />
       <ProgressBar fx:id="progressCake" layoutX="-12.0" layoutY="371.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
       <ProgressBar fx:id="progressCoffee" layoutX="-12.0" layoutY="261.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
       <Label fx:id="table1" disable="true" layoutX="516.0" layoutY="195.0" prefHeight="100.0" prefWidth="63.0" />
-      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="77.0" prefHeight="43.0" prefWidth="198.0" />
+      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="77.0" prefHeight="43.0" prefWidth="256.0" />
       <Label fx:id="countRight" layoutX="275.0" layoutY="306.0" prefHeight="267.0" prefWidth="16.0" />
       <Label fx:id="countBelow" layoutX="22.0" layoutY="548.0" prefHeight="36.0" prefWidth="256.0" />
       <Label fx:id="customerTop1" disable="true" layoutX="536.0" layoutY="140.0" prefHeight="19.0" prefWidth="34.0" />
@@ -182,9 +183,24 @@
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font></Label>
-      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="463.0" layoutY="6.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="310.0" layoutY="76.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@trashcan.png" />
+         </image>
+      </ImageView>
+      <ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeUsed.png" />
+         </image>
+      </ImageView>
+      <ImageView id="cake" fx:id="upgradeCake" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="470.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@cakeUsed.png" />
+         </image>
+      </ImageView>
+      <ImageView id="player" fx:id="upgradePlayer" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="570.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@upgradeRollshuh.png" />
          </image>
       </ImageView>
    </children>

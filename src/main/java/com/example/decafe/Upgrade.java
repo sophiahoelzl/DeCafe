@@ -45,7 +45,7 @@ public class Upgrade {
         return pathNotUsed;
     }
 
-    public int doUpgrade(ImageView upgrade, int coin) throws FileNotFoundException {
+    public int doUpgrades(ImageView upgrade, int coin) throws FileNotFoundException {
         InputStream stream = new FileInputStream(this.getPathUSed());
         Image usedUpgrade = new Image(stream);
         upgrade.setImage(usedUpgrade);

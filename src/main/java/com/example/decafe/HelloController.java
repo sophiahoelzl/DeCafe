@@ -1,6 +1,7 @@
 package com.example.decafe;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,15 +29,14 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
-    public ImageView controlLabel;
+    public ImageView trashcan;
 
     public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
     public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
     public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
-    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollshuh.png", "used.jpg", "player");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhUsed.png", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -236,7 +236,7 @@ public class HelloController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle) throws FileNotFoundException{
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
@@ -296,9 +296,6 @@ public class HelloController implements Initializable {
             );
             start = true;
         }
-
-
-
     }
 
     @FXML
@@ -401,6 +398,8 @@ public class HelloController implements Initializable {
         Image backToStart = new Image(stream);
         backToStartImage.setImage(backToStart);
     }
+
+
 
 
     // when coffee is produced, change appearance
@@ -564,7 +563,9 @@ public class HelloController implements Initializable {
                     }
 
                     if (coin < 80) {
-                        //checkUpgradePossibel();
+                        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
+                        checkUpgradePossibel(cakeUpgrade, upgradeCake);
+                        checkUpgradePossibel(playerUpgrade, upgradePlayer);
                         coinLabel.setText(String.valueOf(coin));
                     }else {
                         switchToEndWindow();
@@ -587,6 +588,41 @@ public class HelloController implements Initializable {
                 );
             }
         }
+    }
+
+    public void checkUpgradePossibel(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
+        if (!upgrade.isUsed() && coin >= upgrade.getCoinsNeeded()){
+            upgradeImage.setDisable(false);
+            String filePath;
+            filePath = upgrade.getPathNotUsed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrades = new Image(stream);
+            upgradeImage.setImage(upgrades);
+        } else {
+            upgradeImage.setDisable(true);
+            String filePath;
+            filePath = upgrade.getPathUSed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrades = new Image(stream);
+            upgradeImage.setImage(upgrades);
+        }
+    }
+
+    public void doUpgrade (MouseEvent e) throws FileNotFoundException {
+        if (((ImageView) e.getSource()).getId().equals("coffee")){
+            coin = coffeeUpgrade.doUpgrades(upgradeCoffee, coin);
+            coffeeeMachine.setDuration(2);
+        } else if (((ImageView) e.getSource()).getId().equals("cake")){
+            coin = cakeUpgrade.doUpgrades(upgradeCake, coin);
+            cakeMachine.setDuration(2);
+        } else if (((ImageView) e.getSource()).getId().equals("player")){
+            coin = playerUpgrade.doUpgrades(upgradePlayer, coin);
+            movementVariable = 6;
+        }
+        coinLabel.setText(String.valueOf(coin));
+        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
+        checkUpgradePossibel(cakeUpgrade, upgradeCake);
+        checkUpgradePossibel(playerUpgrade, upgradePlayer);
     }
 
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
@@ -629,5 +665,9 @@ public class HelloController implements Initializable {
         }
 
         return false;
+    }
+
+    public void endGame(){
+        Platform.exit();
     }
 }
