@@ -1,17 +1,15 @@
 package com.example.decafe;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 
-public class Customer{
+public class Customer {
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
     private int coin = 0;
     private int index;
@@ -21,6 +19,7 @@ public class Customer{
     private int table;
     private Timer x;
     private ImageView smiley;
+    private ImageView coinImage;
 
     public boolean alreadyOrdered;
     public boolean green;
@@ -28,13 +27,14 @@ public class Customer{
     public boolean red;
     public String colorsmiley;
 
-    Customer(ImageView image, Label label, int table, ImageView smiley) {
+    Customer(ImageView image, Label label, int table, ImageView smiley, ImageView coinImage) {
         this.customer = image;
         this.orderr = label;
         this.alreadyOrdered = false;
         this.table = table;
         this.x = new Timer();
         this.smiley = smiley;
+        this.coinImage = coinImage;
     }
 
     public String getSmiley(){
@@ -69,23 +69,7 @@ public class Customer{
         return smileyRed;
     }
 
-    public Timer timer = new Timer();
-
     public void waitingTime(ImageView customerpic, Label order, List<Customer> customerList, List <Integer> num)  {
-
-       /* x.schedule(
-                new TimerTask() {
-
-                    @Override
-                    public void run() {
-                        leave(customerpic, order, customerList, num);
-                        x.cancel();
-                    }
-                },
-                60000
-        );*/
-
-
         TimerTask timerTask = new TimerTask() {
 
             int seconds = 60;
@@ -108,8 +92,6 @@ public class Customer{
                     green = true;
                     yellow = false;
                     red = false;
-
-                    System.out.println("jetzt grün");
                 }else if (seconds == 30){
                     String filePath = getSmileyYellow();
                     smiley.setVisible(true);
@@ -124,8 +106,6 @@ public class Customer{
                     green = false;
                     yellow = true;
                     red = false;
-
-                    System.out.println("jetzt gelb");
                 }else if (seconds == 15){
                     String filePath = getSmileyRed();
                     smiley.setVisible(true);
@@ -140,8 +120,6 @@ public class Customer{
                     green = false;
                     yellow = false;
                     red = true;
-
-                    System.out.println("jetzt rot");
                 }
                 else if (seconds == 0){
                     leave(customerpic, order, customerList, num);
@@ -149,7 +127,7 @@ public class Customer{
             }
         };
 
-        timer.schedule(timerTask, 0, 1000);
+        x.schedule(timerTask, 0, 1000);
 
     }
 
@@ -181,6 +159,10 @@ public class Customer{
         }
 
         return order;
+    }
+
+    public ImageView getCoinImage() {
+        return coinImage;
     }
 
     public void setOrder(String order) {
@@ -219,9 +201,8 @@ public class Customer{
                 colorsmiley = sm;
             }
 
-            coinlabel.setText(String.valueOf(coin));
             this.alreadyOrdered = false;
-            timer.cancel();
+            this.x.cancel();
             smiley.setVisible(false);
 
             String filePath = CofiBrew.getImageWithoutProduct();
@@ -270,10 +251,8 @@ public class Customer{
         label.setVisible(false);
         image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image));
-        num.add(this.table);
         smiley.setVisible(false);
-        timer.cancel();
-
+        this.x.cancel();
     }
 }
 
