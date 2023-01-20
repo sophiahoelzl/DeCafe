@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -106,6 +108,15 @@ public class HelloController implements Initializable {
     public ImageView smileysixth;
     public ImageView smileyseventh;
     public ImageView smileyeighth;
+
+    public ImageView coinfirst;
+    public ImageView coinsecond;
+    public ImageView cointhird;
+    public ImageView coinfourth;
+    public ImageView coinfifth;
+    public ImageView coinsixth;
+    public ImageView coinseventh;
+    public ImageView coineigth;
 
 
     public ImageView[] pics;
@@ -477,6 +488,32 @@ public class HelloController implements Initializable {
 
     }
 
+    public ImageView getCoinLabel(ImageView cust) {
+
+        ImageView coin = new ImageView();
+
+        if (first.equals(cust)) {
+            coin = coinfirst;
+        } else if (second.equals(cust)) {
+            coin = coinsecond;
+        } else if (third.equals(cust)) {
+            coin = cointhird;
+        } else if (fourth.equals(cust)) {
+            coin = coinfourth;
+        } else if (fifth.equals(cust)) {
+            coin = coinfifth;
+        } else if (sixth.equals(cust)) {
+            coin = coinsixth;
+        } else if (seventh.equals(cust)) {
+            coin = coinseventh;
+        } else if (eighth.equals(cust)) {
+            coin = coineigth;
+        }
+
+        return coin;
+
+    }
+
     public Customer findCustomer(List<Customer> customerList, ImageView cust) {
 
         for (Customer customer : customerList) {
@@ -552,40 +589,44 @@ public class HelloController implements Initializable {
                 customer.displayOrder(customer.getLabel());
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
-                    //coin += 5;
-                    smileycolor = customer.getSmiley();
-                    if (Objects.equals(smileycolor, "green")){
-                        coin += 5;
-                    }else if (Objects.equals(smileycolor, "yellow")){
-                        coin += 4;
-                    }else if (Objects.equals(smileycolor, "red")){
-                        coin += 3;
+                    File f = new File("");
+                    String filePath = "";
+                    if (customer.getSmiley().equals("green")){
+                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "5coins.png";
+                    } else if (customer.getSmiley().equals("yellow")){
+                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "4coins.png";
+                    } else if (customer.getSmiley().equals("red")){
+                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "3coins.png";
                     }
-
-                    if (coin < 80) {
-                        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
-                        checkUpgradePossibel(cakeUpgrade, upgradeCake);
-                        checkUpgradePossibel(playerUpgrade, upgradePlayer);
-                        coinLabel.setText(String.valueOf(coin));
-                    }else {
-                        switchToEndWindow();
-                    }
-                }
-                Timer t = new Timer();
-                t.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                try {
-                                    searchForTable();
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
+                    InputStream stream = new FileInputStream(filePath);
+                    Image money = new Image(stream);
+                    customer.getCoinImage().setImage(money);
+                    customer.getCoinImage().setVisible(true);
+                    customer.getCoinImage().setDisable(false);
+                    customer.getCoinImage().setOnMouseClicked(event1 -> {
+                        try {
+                            getMoney(event1, customer);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    Timer t = new Timer();
+                    t.schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        searchForTable();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    t.cancel();
                                 }
-                                t.cancel();
-                            }
-                        },
-                        5000
-                );
+                            },
+                            5000
+                    );
+                }
             }
         }
     }
@@ -640,16 +681,17 @@ public class HelloController implements Initializable {
     }
 
     public void searchForTable () throws FileNotFoundException {
-        if (customerList.size() < 3) {
+        if (customerList.size() < 3 && num.size() != 0) {
             //ImageView customerImage = new ImageView();
             customerImage = getRandomPic(pics, num); //get random picture from Array
             customerImage.setVisible(true);//make this picture visible
 
             Label order = getLabel(customerImage);
             ImageView smiley = getSmileyLabel(customerImage);
+            ImageView coin = getCoinLabel(customerImage);
 
 
-            Customer customer = new Customer(customerImage, order, number, smiley);
+            Customer customer = new Customer(customerImage, order, number, smiley, coin);
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
 
@@ -665,6 +707,46 @@ public class HelloController implements Initializable {
         }
 
         return false;
+    }
+
+    public void getMoney(MouseEvent e, Customer customer) throws IOException {
+        smileycolor = customer.getSmiley();
+        num.add(customer.getTable());
+
+        if (Objects.equals(smileycolor, "green")){
+            coin += 5;
+        }else if (Objects.equals(smileycolor, "yellow")){
+            coin += 4;
+        }else if (Objects.equals(smileycolor, "red")){
+            coin += 3;
+        }
+
+        ((ImageView)e.getSource()).setVisible(false);
+        ((ImageView)e.getSource()).setDisable(true);
+
+        if (coin < 80) {
+            checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
+            checkUpgradePossibel(cakeUpgrade, upgradeCake);
+            checkUpgradePossibel(playerUpgrade, upgradePlayer);
+            coinLabel.setText(String.valueOf(coin));
+            Timer t = new Timer();
+            t.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            t.cancel();
+                        }
+                    },
+                    5000
+            );
+        }else {
+            switchToEndWindow();
+        }
     }
 
     public void endGame(){
