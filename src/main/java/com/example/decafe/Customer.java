@@ -187,7 +187,7 @@ public class Customer {
         Timer t = new Timer();
         String sm;
         if (CofiBrew.getProduct().equals(customer.getOrder())) {
-            orderlabel.setText(":)");
+            orderlabel.setText("");
 
             sm = getSmiley();
             if (sm.equals("green")){
