@@ -97,6 +97,7 @@ public class HelloController implements Initializable {
     public ImageView backToStartImage;
     public Label labelCredits;
     public ImageView endScreenBackground;
+    public ImageView quitEndScreenImage;
 
     public ImageView smileyfirst;
     public ImageView smileysecond;
@@ -236,7 +237,7 @@ public class HelloController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) throws FileNotFoundException{
+    public void initialize(URL url, ResourceBundle resourceBundle){
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
@@ -385,8 +386,8 @@ public class HelloController implements Initializable {
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backToStartMenuBrighter.png";
         InputStream stream = new FileInputStream(filePath);
-        Image backToStartDark = new Image(stream);
-        backToStartImage.setImage(backToStartDark);
+        Image backToStartBrighter = new Image(stream);
+        backToStartImage.setImage(backToStartBrighter);
     }
 
     // end screen - change BacktoStartMenu Button when mouse exited
@@ -399,9 +400,25 @@ public class HelloController implements Initializable {
         backToStartImage.setImage(backToStart);
     }
 
+    // end screen - change BacktoStartMenu Button when mouse entered
+    public void changeQuitEndScreen() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreenBrighter.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image quitEndScreenBrighter = new Image(stream);
+        quitEndScreenImage.setImage(quitEndScreenBrighter);
+    }
 
-
-
+    // end screen - change BacktoStartMenu Button when mouse exited
+    public void changeQuitEndScreenBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreen.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image quitEndScreen = new Image(stream);
+        quitEndScreenImage.setImage(quitEndScreen);
+    }
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
@@ -562,7 +579,7 @@ public class HelloController implements Initializable {
                         coin += 3;
                     }
 
-                    if (coin < 80) {
+                    if (coin < 5) {
                         checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
                         checkUpgradePossibel(cakeUpgrade, upgradeCake);
                         checkUpgradePossibel(playerUpgrade, upgradePlayer);
@@ -652,9 +669,7 @@ public class HelloController implements Initializable {
             Customer customer = new Customer(customerImage, order, number, smiley);
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
-
         }
-
     }
 
     public boolean checkForCollision (ImageView waiter){
@@ -669,5 +684,6 @@ public class HelloController implements Initializable {
 
     public void endGame(){
         Platform.exit();
+
     }
 }
