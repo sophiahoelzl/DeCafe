@@ -509,7 +509,9 @@ public class HelloController implements Initializable {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
                     coin += 5;
                     if (coin < 80) {
-                        checkUpgradePossibel();
+                        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
+                        checkUpgradePossibel(cakeUpgrade, upgradeCake);
+                        checkUpgradePossibel(playerUpgrade, upgradePlayer);
                         coinLabel.setText(String.valueOf(coin));
                     }else {
                         switchToEndWindow();
@@ -528,6 +530,38 @@ public class HelloController implements Initializable {
                 );
             }
         }
+    }
+
+    public void checkUpgradePossibel(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
+        if (!upgrade.isUsed() && coin >= upgrade.getCoinsNeeded()){
+            upgradeImage.setDisable(false);
+            String filePath;
+            filePath = upgrade.getPathNotUsed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrades = new Image(stream);
+            upgradeImage.setImage(upgrades);
+        } else {
+            upgradeImage.setDisable(true);
+            String filePath;
+            filePath = upgrade.getPathUSed();
+            InputStream stream = new FileInputStream(filePath);
+            Image upgrades = new Image(stream);
+            upgradeImage.setImage(upgrades);
+        }
+    }
+
+    public void doUpgrade (MouseEvent e) throws FileNotFoundException {
+        if (((ImageView) e.getSource()).getId().equals("coffee")){
+            coin = coffeeUpgrade.doUpgrades(upgradeCoffee, coin);
+            coffeeeMachine.setDuration(2);
+        } else if (((ImageView) e.getSource()).getId().equals("cake")){
+            coin = cakeUpgrade.doUpgrades(upgradeCake, coin);
+            cakeMachine.setDuration(2);
+        } else if (((ImageView) e.getSource()).getId().equals("player")){
+            coin = playerUpgrade.doUpgrades(upgradePlayer, coin);
+            movementVariable = 6;
+        }
+        coinLabel.setText(String.valueOf(coin));
     }
 
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
