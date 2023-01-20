@@ -1,33 +1,23 @@
 package com.example.decafe;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
-
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
 
 
 public class HelloController implements Initializable {
@@ -562,6 +552,9 @@ public class HelloController implements Initializable {
             movementVariable = 6;
         }
         coinLabel.setText(String.valueOf(coin));
+        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
+        checkUpgradePossibel(cakeUpgrade, upgradeCake);
+        checkUpgradePossibel(playerUpgrade, upgradePlayer);
     }
 
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
