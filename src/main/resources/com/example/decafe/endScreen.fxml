@@ -33,7 +33,7 @@
             <Image url="@playAgain.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="backToStartImage" fitHeight="119.0" fitWidth="220.0" layoutX="672.0" layoutY="383.0" onMouseClicked="#switchToStartScreen" onMouseEntered="#changeBackToStartMenu" onMouseExited="#changeBackToStartMenuBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="backToStartImage" fitHeight="119.0" fitWidth="220.0" layoutX="672.0" layoutY="372.0" onMouseClicked="#switchToStartScreen" onMouseEntered="#changeBackToStartMenu" onMouseExited="#changeBackToStartMenuBack" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@toStartMenuButton.png" />
          </image>
@@ -161,6 +161,11 @@
       <ImageView fitHeight="14.0" fitWidth="8.0" layoutX="552.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@sparkle.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="quitEndScreenImage" fitHeight="76.0" fitWidth="216.0" layoutX="674.0" layoutY="492.0" onKeyPressed="#changeQuitEndScreen" onKeyReleased="#changeQuitEndScreenBack" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@quitEndScreen.png" />
          </image>
       </ImageView>
    </children>
