@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,10 +39,13 @@ public class HelloController implements Initializable {
     public ImageView kitchenAid;
     public ImageView controlLabel;
 
-    public Machine coffeeeMachine = new Machine(1, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(1, "kitchenAidUsed.png", "kitchenAid.png", "cake");
+    public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
+    public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
+    public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollshuh.png", "used.jpg", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -92,14 +97,22 @@ public class HelloController implements Initializable {
     public Label edgeLeft;
     public Label edgeRight;
     public Label coinLabel;
-    public ImageView Gamestartbutton;
+    public ImageView upgradeCoffee;
+    public ImageView upgradeCake;
+    public ImageView upgradePlayer;
+    public ImageView gameStartButton;
+    public ImageView cofiBrewImage;
+    public ImageView playAgainImage;
+    public ImageView backToStartImage;
+    public Label labelCredits;
+    public ImageView endScreenBackground;
+
 
     public ImageView[] pics;
     public ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
-
 
     private int movementVariable = 4;
     public Label[] collisions;
@@ -118,13 +131,8 @@ public class HelloController implements Initializable {
         add(7);
     }};
 
-    public void startEnd() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
-    }
+
+
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
@@ -134,7 +142,34 @@ public class HelloController implements Initializable {
         HelloApplication.stage.show();
     }
 
-    public void startInstructions() throws IOException {
+    public void switchToEndWindow() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+
+    }
+
+    public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+        HelloApplication.stage.show();
+    }
+
+    public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+        HelloApplication.stage.show();
+    }
+
+    public void switchToInstructions() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
@@ -212,7 +247,6 @@ public class HelloController implements Initializable {
         pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
 
         if (pics[0] != null && !start){
-            start = true;
             Timer t = new Timer();
             t.schedule(
                     new TimerTask() {
@@ -246,6 +280,7 @@ public class HelloController implements Initializable {
                     },
                     10000
             );
+            start = true;
         }
     }
 
@@ -290,25 +325,68 @@ public class HelloController implements Initializable {
         startButton.setImage(start);
     }
 
-
+    // instructions - change start button on mouse entered
     public void changeStartImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
         InputStream stream = new FileInputStream(filePath);
         Image start = new Image(stream);
-        Gamestartbutton.setImage(start);
+        gameStartButton.setImage(start);
     }
 
-    // start screen - change coffee button on mouse exited
+    // instructions - change start button on mouse exited
     public void changeStartImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
         InputStream stream = new FileInputStream(filePath);
-        Image coffee = new Image(stream);
-        Gamestartbutton.setImage(coffee);
+        Image startButton = new Image(stream);
+        gameStartButton.setImage(startButton);
     }
+
+    // end screen - change PlayAgain Button when mouse entered
+    public void changePlayAgain() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgainBrighter.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image playAgainBrighter = new Image(stream);
+        playAgainImage.setImage(playAgainBrighter);
+    }
+
+    // end screen - change PlayAgain Button when mouse exited
+    public void changePlayAgainBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgain.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image playAgain = new Image(stream);
+        playAgainImage.setImage(playAgain);
+    }
+
+    // end screen - change BacktoStartMenu Button when mouse entered
+    public void changeBackToStartMenu() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backToStartMenuBrighter.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image backToStartDark = new Image(stream);
+        backToStartImage.setImage(backToStartDark);
+    }
+
+    // end screen - change BacktoStartMenu Button when mouse exited
+    public void changeBackToStartMenuBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "toStartMenuButton.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image backToStart = new Image(stream);
+        backToStartImage.setImage(backToStart);
+    }
+
+
+
 
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
@@ -430,10 +508,11 @@ public class HelloController implements Initializable {
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
                     coin += 5;
-                    if (coin < 20) {
+                    if (coin < 80) {
+                        checkUpgradePossibel();
                         coinLabel.setText(String.valueOf(coin));
-                    } else {
-                        startEnd();
+                    }else {
+                        switchToEndWindow();
                     }
                 }
                 Timer t = new Timer();
@@ -481,7 +560,6 @@ public class HelloController implements Initializable {
         }
 
     }
-
 
     public boolean checkForCollision (ImageView waiter){
         for (int i = 0; i < collisions.length; i++) {

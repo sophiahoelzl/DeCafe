@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
+<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
       <ImageView fitHeight="743.0" fitWidth="979.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -159,7 +159,7 @@
       <ProgressBar fx:id="progressCake" layoutX="-12.0" layoutY="371.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
       <ProgressBar fx:id="progressCoffee" layoutX="-12.0" layoutY="261.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
       <Label fx:id="table1" disable="true" layoutX="516.0" layoutY="195.0" prefHeight="100.0" prefWidth="63.0" />
-      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="77.0" prefHeight="43.0" prefWidth="198.0" />
+      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="77.0" prefHeight="43.0" prefWidth="256.0" />
       <Label fx:id="countRight" layoutX="275.0" layoutY="306.0" prefHeight="267.0" prefWidth="16.0" />
       <Label fx:id="countBelow" layoutX="22.0" layoutY="548.0" prefHeight="36.0" prefWidth="256.0" />
       <Label fx:id="customerTop1" disable="true" layoutX="536.0" layoutY="140.0" prefHeight="19.0" prefWidth="34.0" />
@@ -182,9 +182,24 @@
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font></Label>
-      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="463.0" layoutY="6.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="310.0" layoutY="76.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@trashcan.png" />
+         </image>
+      </ImageView>
+      <ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeUsed.png" />
+         </image>
+      </ImageView>
+      <ImageView id="cake" fx:id="upgradeCake" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="470.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@cakeUsed.png" />
+         </image>
+      </ImageView>
+      <ImageView id="player" fx:id="upgradePlayer" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="570.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@upgradeRollshuh.png" />
          </image>
       </ImageView>
    </children>
