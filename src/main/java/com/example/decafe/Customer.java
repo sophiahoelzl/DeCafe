@@ -1,13 +1,10 @@
 package com.example.decafe;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Duration;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -23,20 +20,62 @@ public class Customer{
     private Label orderr;
     private int table;
     private Timer x;
+    private ImageView smiley;
 
     public boolean alreadyOrdered;
+    public boolean green;
+    public boolean yellow;
+    public boolean red;
+    public String colorsmiley;
 
-    Customer(ImageView image, Label label, int table) {
+    Customer(ImageView image, Label label, int table, ImageView smiley) {
         this.customer = image;
         this.orderr = label;
         this.alreadyOrdered = false;
         this.table = table;
         this.x = new Timer();
+        this.smiley = smiley;
     }
 
-    public void waitingTime(ImageView customerpic, Label order, List<Customer> customerList, List <Integer> num) {
-        x.schedule(
+    public String getSmiley(){
+        if (green){
+            return "green";
+        }else if (yellow){
+            return "yellow";
+        }else if (red){
+            return "red";
+        }
+        return null;
+    }
+
+    public String getSmileyGreen(){
+        File f = new File("");
+        String smileyGreen = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileygreen.png";
+
+        return smileyGreen;
+    }
+
+    public String getSmileyYellow(){
+        File f = new File("");
+        String smileyYellow = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileyyellow.png";
+
+        return smileyYellow;
+    }
+
+    public String getSmileyRed(){
+        File f = new File("");
+        String smileyRed = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileyred.png";
+
+        return smileyRed;
+    }
+
+    public Timer timer = new Timer();
+
+    public void waitingTime(ImageView customerpic, Label order, List<Customer> customerList, List <Integer> num)  {
+
+       /* x.schedule(
                 new TimerTask() {
+
                     @Override
                     public void run() {
                         leave(customerpic, order, customerList, num);
@@ -44,7 +83,74 @@ public class Customer{
                     }
                 },
                 60000
-        );
+        );*/
+
+
+        TimerTask timerTask = new TimerTask() {
+
+            int seconds = 60;
+            @Override
+            public void run() {
+
+                seconds --;
+
+                if (seconds == 59){
+                    String filePath = getSmileyGreen();
+                    smiley.setVisible(true);
+                    InputStream stream = null;
+                    try {
+                        stream = new FileInputStream(filePath);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Image sm = new Image(stream);
+                    smiley.setImage(sm);
+                    green = true;
+                    yellow = false;
+                    red = false;
+
+                    System.out.println("jetzt grün");
+                }else if (seconds == 30){
+                    String filePath = getSmileyYellow();
+                    smiley.setVisible(true);
+                    InputStream stream = null;
+                    try {
+                        stream = new FileInputStream(filePath);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Image sm = new Image(stream);
+                    smiley.setImage(sm);
+                    green = false;
+                    yellow = true;
+                    red = false;
+
+                    System.out.println("jetzt gelb");
+                }else if (seconds == 15){
+                    String filePath = getSmileyRed();
+                    smiley.setVisible(true);
+                    InputStream stream = null;
+                    try {
+                        stream = new FileInputStream(filePath);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Image sm = new Image(stream);
+                    smiley.setImage(sm);
+                    green = false;
+                    yellow = false;
+                    red = true;
+
+                    System.out.println("jetzt rot");
+                }
+                else if (seconds == 0){
+                    leave(customerpic, order, customerList, num);
+                }
+            }
+        };
+
+        timer.schedule(timerTask, 0, 1000);
+
     }
 
     public boolean isAlreadyOrdered() {
@@ -93,14 +199,30 @@ public class Customer{
         this.alreadyOrdered = true;
     }
 
+
     //Funktion um Bild von Gast anzuzeigen - vllt auch in HelloController
     public boolean checkOrder(Label orderlabel, ImageView customerPic, Player CofiBrew, Label coinlabel, Customer customer, List<Customer> customerList, ImageView waiter,  List <Integer> num) throws FileNotFoundException, InterruptedException {
         Timer t = new Timer();
+        String sm;
         if (CofiBrew.getProduct().equals(customer.getOrder())) {
             orderlabel.setText(":)");
-            coin += 5;
+
+            sm = getSmiley();
+            if (sm.equals("green")){
+                coin += 5;
+                colorsmiley = sm;
+            }else if (sm.equals("yellow")){
+                coin += 4;
+                colorsmiley = sm;
+            }else if (sm.equals("red")){
+                coin += 3;
+                colorsmiley = sm;
+            }
+
             coinlabel.setText(String.valueOf(coin));
             this.alreadyOrdered = false;
+            timer.cancel();
+            smiley.setVisible(false);
 
             String filePath = CofiBrew.getImageWithoutProduct();
             InputStream stream = new FileInputStream(filePath);
@@ -149,6 +271,9 @@ public class Customer{
         image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image));
         num.add(this.table);
+        smiley.setVisible(false);
+        timer.cancel();
+
     }
 }
 

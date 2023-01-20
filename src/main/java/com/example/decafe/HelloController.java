@@ -1,6 +1,7 @@
 package com.example.decafe;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+
 import java.io.*;
 import java.net.URL;
 import java.util.*;
@@ -27,15 +29,14 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
-    public ImageView controlLabel;
+    public ImageView trashcan;
 
     public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
     public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
     public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
-    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollshuh.png", "used.jpg", "player");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhUsed.png", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -98,14 +99,24 @@ public class HelloController implements Initializable {
     public ImageView endScreenBackground;
     public ImageView quitEndScreenImage;
 
+    public ImageView smileyfirst;
+    public ImageView smileysecond;
+    public ImageView smileythird;
+    public ImageView smileyfourth;
+    public ImageView smileyfifth;
+    public ImageView smileysixth;
+    public ImageView smileyseventh;
+    public ImageView smileyeighth;
+
 
     public ImageView[] pics;
     public ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
+    public String smileycolor;
 
-    private int movementVariable = 6;
+    private int movementVariable = 4;
     public Label[] collisions;
 
     public int number;
@@ -224,8 +235,9 @@ public class HelloController implements Initializable {
         }
     };
 
+
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle) throws FileNotFoundException{
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
@@ -243,7 +255,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -254,7 +270,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -265,7 +285,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -443,6 +467,33 @@ public class HelloController implements Initializable {
 
     }
 
+
+    public ImageView getSmileyLabel(ImageView cust) {
+
+        ImageView smileylabel = new ImageView();
+
+        if (first.equals(cust)) {
+            smileylabel = smileyfirst;
+        } else if (second.equals(cust)) {
+            smileylabel = smileysecond;
+        } else if (third.equals(cust)) {
+            smileylabel = smileythird;
+        } else if (fourth.equals(cust)) {
+            smileylabel = smileyfourth;
+        } else if (fifth.equals(cust)) {
+            smileylabel = smileyfifth;
+        } else if (sixth.equals(cust)) {
+            smileylabel = smileysixth;
+        } else if (seventh.equals(cust)) {
+            smileylabel = smileyseventh;
+        } else if (eighth.equals(cust)) {
+            smileylabel = smileyeighth;
+        }
+
+        return smileylabel;
+
+    }
+
     public Customer findCustomer(List<Customer> customerList, ImageView cust) {
 
         for (Customer customer : customerList) {
@@ -502,7 +553,11 @@ public class HelloController implements Initializable {
                         new TimerTask() {
                             @Override
                             public void run() {
-                                searchForTable();
+                                try {
+                                    searchForTable();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
                                 t.cancel();
                             }
                         },
@@ -514,8 +569,17 @@ public class HelloController implements Initializable {
                 customer.displayOrder(customer.getLabel());
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
-                    coin += 5;
-                    if (coin < 5) {
+                    //coin += 5;
+                    smileycolor = customer.getSmiley();
+                    if (Objects.equals(smileycolor, "green")){
+                        coin += 5;
+                    }else if (Objects.equals(smileycolor, "yellow")){
+                        coin += 4;
+                    }else if (Objects.equals(smileycolor, "red")){
+                        coin += 3;
+                    }
+
+                    if (coin < 80) {
                         checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
                         checkUpgradePossibel(cakeUpgrade, upgradeCake);
                         checkUpgradePossibel(playerUpgrade, upgradePlayer);
@@ -529,7 +593,11 @@ public class HelloController implements Initializable {
                         new TimerTask() {
                             @Override
                             public void run() {
-                                searchForTable();
+                                try {
+                                    searchForTable();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
                                 t.cancel();
                             }
                         },
@@ -588,16 +656,17 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
-    public void searchForTable (){
+    public void searchForTable () throws FileNotFoundException {
         if (customerList.size() < 3) {
-            ImageView customerImage = new ImageView();
+            //ImageView customerImage = new ImageView();
             customerImage = getRandomPic(pics, num); //get random picture from Array
             customerImage.setVisible(true);//make this picture visible
 
             Label order = getLabel(customerImage);
+            ImageView smiley = getSmileyLabel(customerImage);
 
 
-            Customer customer = new Customer(customerImage, order, number);
+            Customer customer = new Customer(customerImage, order, number, smiley);
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
         }
