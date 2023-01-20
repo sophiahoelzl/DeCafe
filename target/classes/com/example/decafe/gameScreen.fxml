@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="743.0" fitWidth="979.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@cafeIndoorNew.png" />
+            <Image url="@cafeIndoor.png" />
          </image>
       </ImageView>
       <ImageView fx:id="coffeeMachine" fitHeight="117.0" fitWidth="75.0" layoutX="9.0" layoutY="208.0" onMouseClicked="#showCoffee" pickOnBounds="true" preserveRatio="true">
@@ -25,7 +25,7 @@
             <Image url="@kitchenAid.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="41.0" fitWidth="56.0" layoutX="22.0" layoutY="444.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="59.0" fitWidth="61.0" layoutX="15.0" layoutY="436.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@cake.png" />
          </image>
@@ -115,7 +115,7 @@
             <Image url="@characterRechts.png" />
          </image>
       </ImageView>
-      <Button layoutX="436.0" layoutY="94.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="Button" />
+      <Button layoutX="1000.0" layoutY="1000.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="" />
       <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
             <Font size="16.0" />
@@ -156,25 +156,36 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="controlLabel" layoutX="356.0" layoutY="14.0" onMouseClicked="#noProduct" prefHeight="41.0" prefWidth="590.0" text="Click here to remove product" />
       <ProgressBar fx:id="progressCake" layoutX="-12.0" layoutY="371.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
       <ProgressBar fx:id="progressCoffee" layoutX="-12.0" layoutY="261.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
-      <Label fx:id="table1" layoutX="516.0" layoutY="195.0" prefHeight="100.0" prefWidth="63.0" />
-      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="74.0" prefHeight="43.0" prefWidth="198.0" />
-      <Label fx:id="countRight" layoutX="275.0" layoutY="306.0" prefHeight="267.0" prefWidth="18.0" />
-      <Label fx:id="countBelow" layoutX="22.0" layoutY="552.0" prefHeight="30.0" prefWidth="256.0" />
-      <Label fx:id="customerTop1" layoutX="536.0" layoutY="140.0" prefHeight="19.0" prefWidth="34.0" />
-      <Label fx:id="customerTop2" layoutX="795.0" layoutY="141.0" prefHeight="17.0" prefWidth="34.0" />
-      <Label fx:id="customerTop3" layoutX="532.0" layoutY="332.0" prefHeight="25.0" prefWidth="34.0" />
-      <Label fx:id="customerTop4" layoutX="794.0" layoutY="331.0" prefHeight="25.0" prefWidth="34.0" />
-      <Label fx:id="customerBot1" layoutX="631.0" layoutY="520.0" prefHeight="60.0" prefWidth="18.0" />
-      <Label fx:id="customerBot2" layoutX="536.0" layoutY="638.0" prefHeight="25.0" prefWidth="34.0" />
-      <Label fx:id="customerBot3" layoutX="892.0" layoutY="520.0" prefHeight="60.0" prefWidth="12.0" />
-      <Label fx:id="customerBot4" layoutX="793.0" layoutY="638.0" prefHeight="17.0" prefWidth="34.0" />
-      <Label fx:id="table3" layoutX="516.0" layoutY="499.0" prefHeight="100.0" prefWidth="69.0" />
-      <Label fx:id="table4" layoutX="774.0" layoutY="499.0" prefHeight="100.0" prefWidth="63.0" />
+      <Label fx:id="table1" disable="true" layoutX="516.0" layoutY="195.0" prefHeight="100.0" prefWidth="63.0" />
+      <Label fx:id="plantsAbove" layoutX="94.0" layoutY="77.0" prefHeight="43.0" prefWidth="198.0" />
+      <Label fx:id="countRight" layoutX="275.0" layoutY="306.0" prefHeight="267.0" prefWidth="16.0" />
+      <Label fx:id="countBelow" layoutX="22.0" layoutY="548.0" prefHeight="36.0" prefWidth="256.0" />
+      <Label fx:id="customerTop1" disable="true" layoutX="536.0" layoutY="140.0" prefHeight="19.0" prefWidth="34.0" />
+      <Label fx:id="customerTop2" disable="true" layoutX="795.0" layoutY="141.0" prefHeight="17.0" prefWidth="34.0" />
+      <Label fx:id="customerTop3" disable="true" layoutX="532.0" layoutY="332.0" prefHeight="25.0" prefWidth="34.0" />
+      <Label fx:id="customerTop4" disable="true" layoutX="794.0" layoutY="331.0" prefHeight="25.0" prefWidth="34.0" />
+      <Label fx:id="customerBot1" disable="true" layoutX="631.0" layoutY="520.0" prefHeight="60.0" prefWidth="18.0" />
+      <Label fx:id="customerBot2" disable="true" layoutX="536.0" layoutY="638.0" prefHeight="25.0" prefWidth="34.0" />
+      <Label fx:id="customerBot3" disable="true" layoutX="892.0" layoutY="520.0" prefHeight="60.0" prefWidth="12.0" />
+      <Label fx:id="customerBot4" disable="true" layoutX="793.0" layoutY="638.0" prefHeight="23.0" prefWidth="34.0" />
+      <Label fx:id="table3" disable="true" layoutX="516.0" layoutY="499.0" prefHeight="100.0" prefWidth="69.0" />
+      <Label fx:id="table4" disable="true" layoutX="774.0" layoutY="499.0" prefHeight="100.0" prefWidth="63.0" />
       <Label fx:id="plant" layoutX="923.0" layoutY="91.0" prefHeight="35.0" prefWidth="34.0" />
-      <Label fx:id="table2" layoutX="776.0" layoutY="195.0" prefHeight="100.0" prefWidth="62.0" />
-      <Label fx:id="coinLabel" layoutX="66.0" layoutY="26.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: white;" />
+      <Label fx:id="table2" disable="true" layoutX="776.0" layoutY="195.0" prefHeight="100.0" prefWidth="62.0" />
+      <Label fx:id="edgeTop" disable="true" layoutX="6.0" layoutY="35.0" prefHeight="22.0" prefWidth="976.0" />
+      <Label fx:id="edgeLeft" disable="true" layoutX="22.0" layoutY="55.0" prefHeight="705.0" prefWidth="30.0" />
+      <Label fx:id="edgeBot" disable="true" layoutX="-10.0" layoutY="746.0" prefHeight="20.0" prefWidth="1007.0" />
+      <Label fx:id="edgeRight" disable="true" layoutX="993.0" layoutY="16.0" prefHeight="743.0" prefWidth="12.0" />
+      <Label fx:id="coinLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="26.0" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font></Label>
+      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="463.0" layoutY="6.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@trashcan.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
