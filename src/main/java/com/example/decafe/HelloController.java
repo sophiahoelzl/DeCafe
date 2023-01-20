@@ -1,6 +1,7 @@
 package com.example.decafe;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -27,15 +28,14 @@ public class HelloController implements Initializable {
     ImageView startButton = new ImageView();
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
-    public ImageView controlLabel;
+    public ImageView trashcan;
 
     public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    //public Customer customer = new Customer();
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
     public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
     public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
-    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollshuh.png", "used.jpg", "player");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhUsed.png", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -596,5 +596,9 @@ public class HelloController implements Initializable {
         }
 
         return false;
+    }
+
+    public void endGame(){
+        Platform.exit();
     }
 }

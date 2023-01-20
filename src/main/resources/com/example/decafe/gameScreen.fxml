@@ -182,24 +182,29 @@
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font></Label>
-      <ImageView fx:id="controlLabel" fitHeight="66.0" fitWidth="58.0" layoutX="310.0" layoutY="76.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="trashcan" fitHeight="66.0" fitWidth="58.0" layoutX="310.0" layoutY="76.0" onMouseClicked="#noProduct" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@trashcan.png" />
          </image>
       </ImageView>
-      <ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="coffee" fx:id="upgradeCoffee" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="169.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeUsed.png" />
          </image>
       </ImageView>
-      <ImageView id="cake" fx:id="upgradeCake" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="470.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="cake" fx:id="upgradeCake" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="237.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@cakeUsed.png" />
          </image>
       </ImageView>
-      <ImageView id="player" fx:id="upgradePlayer" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="570.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="player" fx:id="upgradePlayer" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="309.0" layoutY="5.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@upgradeRollshuh.png" />
+            <Image url="@rollschuhUsed.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="78.0" fitWidth="82.0" layoutX="892.0" onMouseClicked="#endGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@exitsign.png" />
          </image>
       </ImageView>
    </children>
