@@ -12,7 +12,7 @@
             <Image url="@startScreen.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="startButton" fitHeight="132.0" fitWidth="138.0" layoutX="429.0" layoutY="80.0" onMouseClicked="#startGame" onMouseEntered="#changeCoffeeImage" onMouseExited="#changeCoffeeImageBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="startButton" fitHeight="132.0" fitWidth="138.0" layoutX="429.0" layoutY="80.0" onMouseClicked="#switchToInstructions" onMouseEntered="#changeCoffeeImage" onMouseExited="#changeCoffeeImageBack" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffee.png" />
          </image>

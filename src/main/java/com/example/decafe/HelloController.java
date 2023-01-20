@@ -1,10 +1,6 @@
 package com.example.decafe;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,14 +16,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
 
 
 public class HelloController implements Initializable {
@@ -94,10 +86,10 @@ public class HelloController implements Initializable {
     public Label edgeLeft;
     public Label edgeRight;
     public Label coinLabel;
-    public ImageView Gamestartbutton;
+    public ImageView gameStartButton;
     public ImageView cofiBrewImage;
-    public Button buttonPlayAgain;
-    public Button buttonBackToStart;
+    public ImageView playAgainImage;
+    public ImageView backToStartImage;
     public Label labelCredits;
     public ImageView endScreenBackground;
 
@@ -125,13 +117,8 @@ public class HelloController implements Initializable {
         add(7);
     }};
 
-    public void startEnd() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
-    }
+
+
     // jump from start screen to game screen
     public void startGame() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
@@ -141,7 +128,31 @@ public class HelloController implements Initializable {
         HelloApplication.stage.show();
     }
 
-    public void startInstructions() throws IOException {
+    public void switchToEndWindow() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.show();
+    }
+
+    public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+    }
+
+    public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+    }
+
+    public void switchToInstructions() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
@@ -297,25 +308,68 @@ public class HelloController implements Initializable {
         startButton.setImage(start);
     }
 
-
+    // instructions - change start button on mouse entered
     public void changeStartImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
         InputStream stream = new FileInputStream(filePath);
         Image start = new Image(stream);
-        Gamestartbutton.setImage(start);
+        gameStartButton.setImage(start);
     }
 
-    // start screen - change coffee button on mouse exited
+    // instructions - change start button on mouse exited
     public void changeStartImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
         InputStream stream = new FileInputStream(filePath);
-        Image coffee = new Image(stream);
-        Gamestartbutton.setImage(coffee);
+        Image startButton = new Image(stream);
+        gameStartButton.setImage(startButton);
     }
+
+    // end screen - change PlayAgain Button when mouse entered
+    public void changePlayAgain() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgainBrighter.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image playAgainBrighter = new Image(stream);
+        playAgainImage.setImage(playAgainBrighter);
+    }
+
+    // end screen - change PlayAgain Button when mouse exited
+    public void changePlayAgainBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgain.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image playAgain = new Image(stream);
+        playAgainImage.setImage(playAgain);
+    }
+
+    // end screen - change BacktoStartMenu Button when mouse entered
+    public void changeBackToStartMenu() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backToStartMenuBrighter.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image backToStartDark = new Image(stream);
+        backToStartImage.setImage(backToStartDark);
+    }
+
+    // end screen - change BacktoStartMenu Button when mouse exited
+    public void changeBackToStartMenuBack() throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "toStartMenuButton.png";
+        InputStream stream = new FileInputStream(filePath);
+        Image backToStart = new Image(stream);
+        backToStartImage.setImage(backToStart);
+    }
+
+
+
 
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
@@ -417,39 +471,6 @@ public class HelloController implements Initializable {
 
         Customer customer = findCustomer(customerList, cust);
 
-        if (c.distance(w) < 125) {
-            if (customer.displayPerson(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter)) {
-                coin += 5;
-                coinLabel.setText(String.valueOf(coin));
-                switchToEndWindow();
-            }
-        }
-    }
-
-    public ImageView[] makeArrayCustomer() {
-
-        pics[0] = first;
-        pics[1] = second;
-        pics[2] = third;
-        pics[3] = fourth;
-        pics[4] = fifth;
-        pics[5] = sixth;
-        pics[6] = seventh;
-        pics[7] = eighth;
-
-        return pics;
-    }
-
-    private List<Integer> num = new ArrayList<Integer>() {{
-        add(0);
-        add(1);
-        add(2);
-        add(3);
-        add(4);
-        add(5);
-        add(6);
-        add(7);
-    }};
         if (c.distance(w) < 128) {
             if (customerList.size() < 3){
                 Timer t = new Timer();
@@ -470,10 +491,10 @@ public class HelloController implements Initializable {
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
                     coin += 5;
-                    if (coin < 20) {
+                    if (coin < 10) {
                         coinLabel.setText(String.valueOf(coin));
                     } else {
-                        startEnd();
+                        switchToEndWindow();
                     }
                 }
                 Timer t = new Timer();
@@ -491,9 +512,6 @@ public class HelloController implements Initializable {
         }
     }
 
-    public ImageView getRandomPic(ImageView[] pics, List<Integer> num) {
-
-        int index = num.get(random.nextInt(num.size()));
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
         Random random = new Random();
         int index = num.get(random.nextInt(num.size()));
@@ -513,37 +531,18 @@ public class HelloController implements Initializable {
             ImageView customerImage = new ImageView();
             customerImage = getRandomPic(pics, num); //get random picture from Array
             customerImage.setVisible(true);//make this picture visible
-    public void searchForTable() {
-
-        if (customerList.size() < 3) {
-            pics = makeArrayCustomer();
-            customerImage = getRandomPic(pics, num); //get random picture from Array
-            customerImage.setVisible(true);//make this picture visible
 
             Label order = getLabel(customerImage);
 
-            Customer customer = new Customer(customerImage, order);
-            customerList.add(customer);
 
             Customer customer = new Customer(customerImage, order, number);
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
 
-        } else {
-            System.out.println("no more customers");
-        }
         }
 
     }
-    }
 
-
-    public boolean checkForCollision(ImageView waiter) {
-        for (int i = 0; i < collisionObjects.size(); i++) {
-            if (waiter.getBoundsInParent().intersects(collisionObjects.get(i).getBoundsInParent())) {
-                return true;
-            }
-        }
     public boolean checkForCollision (ImageView waiter){
         for (int i = 0; i < collisions.length; i++) {
             if (waiter.getBoundsInParent().intersects(collisions[i].getBoundsInParent())) {
@@ -553,40 +552,7 @@ public class HelloController implements Initializable {
 
         return false;
     }
-}
-        return false;
-    }
-
-    public void switchToEndWindow() throws IOException { // switch to end window
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml")); // load belonging fxml file
-        Scene scene = new Scene(fxmlLoader.load(), 979, 743); // measurements half of main window
-        //Stage stage = new Stage(); wäre für alert Fenster
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
 
 
-        // stage.initOwner(HelloApplication.stage);
-        // stage.initModality(Modality.APPLICATION_MODAL);
-        // after window opens main window cannot be used until this stage is closed
-
-        HelloApplication.stage.show();
-    }
-
-    public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
-    }
-
-    public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
-    }
 
 }

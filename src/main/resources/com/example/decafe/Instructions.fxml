@@ -11,7 +11,7 @@
             <Image url="@Instructions.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="Gamestartbutton" fitHeight="82.0" fitWidth="174.0" layoutX="733.0" layoutY="511.0" onMouseClicked="#startGame" onMouseEntered="#changeStartImage" onMouseExited="#changeStartImageBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="gameStartButton" fitHeight="82.0" fitWidth="174.0" layoutX="733.0" layoutY="511.0" onMouseClicked="#startGame" onMouseEntered="#changeStartImage" onMouseExited="#changeStartImageBack" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@startHover.png" />
          </image>
