@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
+<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
       <ImageView fitHeight="743.0" fitWidth="979.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -195,7 +195,7 @@
       <ImageView fx:id="smileyfirst" fitHeight="36.0" fitWidth="30.0" layoutX="533.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="smileysecond" fitHeight="36.0" fitWidth="30.0" layoutX="797.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="smileyfourth" fitHeight="36.0" fitWidth="30.0" layoutX="797.0" layoutY="329.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="coffee" fx:id="upgradeCoffee" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="169.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeUsed.png" />
          </image>

@@ -236,7 +236,7 @@ public class HelloController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) throws FileNotFoundException{
+    public void initialize(URL url, ResourceBundle resourceBundle){
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
