@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
+<AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="743.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
       <ImageView fitHeight="743.0" fitWidth="979.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -118,42 +118,32 @@
       <Button layoutX="1000.0" layoutY="1000.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="" />
       <Label fx:id="orderlabel1" alignment="CENTER" layoutX="519.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="orderlabel2" alignment="CENTER" layoutX="780.0" layoutY="190.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="orderlabel3" alignment="CENTER" layoutX="519.0" layoutY="285.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="orderlabel4" alignment="CENTER" layoutX="780.0" layoutY="285.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="orderlabel6" alignment="CENTER" layoutX="519.0" layoutY="591.0" prefHeight="20.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="orderlabel7" alignment="CENTER" layoutX="780.0" layoutY="591.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
          <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="orderlabel5" alignment="CENTER" layoutX="538.0" layoutY="541.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="orderlabel8" alignment="CENTER" layoutX="799.0" layoutY="541.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
-         <font>
-            <Font size="16.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
       <ProgressBar fx:id="progressCake" layoutX="-12.0" layoutY="371.0" prefHeight="12.0" prefWidth="52.0" progress="0.0" rotate="90.0" style="-fx-accent: #32CD32;" visible="false" />
@@ -173,7 +163,6 @@
       <Label fx:id="table3" disable="true" layoutX="516.0" layoutY="499.0" prefHeight="100.0" prefWidth="69.0" />
       <Label fx:id="table4" disable="true" layoutX="774.0" layoutY="499.0" prefHeight="100.0" prefWidth="63.0" />
       <Label fx:id="plant" layoutX="923.0" layoutY="91.0" prefHeight="35.0" prefWidth="34.0" />
-      <Label fx:id="table2" disable="true" layoutX="776.0" layoutY="195.0" prefHeight="100.0" prefWidth="62.0" />
       <Label fx:id="edgeTop" disable="true" layoutX="6.0" layoutY="35.0" prefHeight="22.0" prefWidth="976.0" />
       <Label fx:id="edgeLeft" disable="true" layoutX="22.0" layoutY="55.0" prefHeight="705.0" prefWidth="30.0" />
       <Label fx:id="edgeBot" disable="true" layoutX="-10.0" layoutY="746.0" prefHeight="20.0" prefWidth="1007.0" />
@@ -187,7 +176,26 @@
             <Image url="@trashcan.png" />
          </image>
       </ImageView>
-      <ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="table2" disable="true" layoutX="776.0" layoutY="195.0" prefHeight="100.0" prefWidth="62.0" />
+      <Label fx:id="orderlabel5" alignment="CENTER" layoutX="554.0" layoutY="540.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="orderlabel8" alignment="CENTER" layoutX="811.0" layoutY="541.0" prefHeight="17.0" prefWidth="62.0" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="smileyseventh" fitHeight="36.0" fitWidth="30.0" layoutX="795.0" layoutY="634.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileyeighth" fitHeight="36.0" fitWidth="30.0" layoutX="883.0" layoutY="535.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileysixth" fitHeight="36.0" fitWidth="30.0" layoutX="534.0" layoutY="635.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileyfifth" fitHeight="36.0" fitWidth="30.0" layoutX="625.0" layoutY="535.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileythird" fitHeight="36.0" fitWidth="30.0" layoutX="535.0" layoutY="328.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileyfirst" fitHeight="36.0" fitWidth="30.0" layoutX="533.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileysecond" fitHeight="36.0" fitWidth="30.0" layoutX="797.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="smileyfourth" fitHeight="36.0" fitWidth="30.0" layoutX="797.0" layoutY="329.0" pickOnBounds="true" preserveRatio="true" />
+      <!--<ImageView id="coffee" fx:id="upgradeCoffee"  disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="385.0" layoutY="9.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeUsed.png" />
          </image>
@@ -201,6 +209,6 @@
          <image>
             <Image url="@upgradeRollshuh.png" />
          </image>
-      </ImageView>
+      </ImageView>-->
    </children>
 </AnchorPane>

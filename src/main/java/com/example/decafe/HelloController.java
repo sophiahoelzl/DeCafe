@@ -1,33 +1,24 @@
 package com.example.decafe;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
 
 
 public class HelloController implements Initializable {
@@ -107,12 +98,22 @@ public class HelloController implements Initializable {
     public Label labelCredits;
     public ImageView endScreenBackground;
 
+    public ImageView smileyfirst;
+    public ImageView smileysecond;
+    public ImageView smileythird;
+    public ImageView smileyfourth;
+    public ImageView smileyfifth;
+    public ImageView smileysixth;
+    public ImageView smileyseventh;
+    public ImageView smileyeighth;
+
 
     public ImageView[] pics;
     public ImageView customerImage = new ImageView();
     public List<Customer> customerList = new ArrayList<>();
     public Random random = new Random();
     public int coin = 0;
+    public String smileycolor;
 
     private int movementVariable = 4;
     public Label[] collisions;
@@ -233,6 +234,7 @@ public class HelloController implements Initializable {
         }
     };
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
@@ -252,7 +254,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -263,7 +269,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -274,7 +284,11 @@ public class HelloController implements Initializable {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            searchForTable();
+                            try {
+                                searchForTable();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             t.cancel();
                         }
                     },
@@ -282,6 +296,9 @@ public class HelloController implements Initializable {
             );
             start = true;
         }
+
+
+
     }
 
     @FXML
@@ -386,8 +403,6 @@ public class HelloController implements Initializable {
     }
 
 
-
-
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
@@ -433,6 +448,33 @@ public class HelloController implements Initializable {
         }
 
         return customorder;
+
+    }
+
+
+    public ImageView getSmileyLabel(ImageView cust) {
+
+        ImageView smileylabel = new ImageView();
+
+        if (first.equals(cust)) {
+            smileylabel = smileyfirst;
+        } else if (second.equals(cust)) {
+            smileylabel = smileysecond;
+        } else if (third.equals(cust)) {
+            smileylabel = smileythird;
+        } else if (fourth.equals(cust)) {
+            smileylabel = smileyfourth;
+        } else if (fifth.equals(cust)) {
+            smileylabel = smileyfifth;
+        } else if (sixth.equals(cust)) {
+            smileylabel = smileysixth;
+        } else if (seventh.equals(cust)) {
+            smileylabel = smileyseventh;
+        } else if (eighth.equals(cust)) {
+            smileylabel = smileyeighth;
+        }
+
+        return smileylabel;
 
     }
 
@@ -495,7 +537,11 @@ public class HelloController implements Initializable {
                         new TimerTask() {
                             @Override
                             public void run() {
-                                searchForTable();
+                                try {
+                                    searchForTable();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
                                 t.cancel();
                             }
                         },
@@ -507,9 +553,18 @@ public class HelloController implements Initializable {
                 customer.displayOrder(customer.getLabel());
             } else {
                 if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
-                    coin += 5;
+                    //coin += 5;
+                    smileycolor = customer.getSmiley();
+                    if (Objects.equals(smileycolor, "green")){
+                        coin += 5;
+                    }else if (Objects.equals(smileycolor, "yellow")){
+                        coin += 4;
+                    }else if (Objects.equals(smileycolor, "red")){
+                        coin += 3;
+                    }
+
                     if (coin < 80) {
-                        checkUpgradePossibel();
+                        //checkUpgradePossibel();
                         coinLabel.setText(String.valueOf(coin));
                     }else {
                         switchToEndWindow();
@@ -520,7 +575,11 @@ public class HelloController implements Initializable {
                         new TimerTask() {
                             @Override
                             public void run() {
-                                searchForTable();
+                                try {
+                                    searchForTable();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
                                 t.cancel();
                             }
                         },
@@ -544,16 +603,17 @@ public class HelloController implements Initializable {
         return pics[index];
     }
 
-    public void searchForTable (){
+    public void searchForTable () throws FileNotFoundException {
         if (customerList.size() < 3) {
-            ImageView customerImage = new ImageView();
+            //ImageView customerImage = new ImageView();
             customerImage = getRandomPic(pics, num); //get random picture from Array
             customerImage.setVisible(true);//make this picture visible
 
             Label order = getLabel(customerImage);
+            ImageView smiley = getSmileyLabel(customerImage);
 
 
-            Customer customer = new Customer(customerImage, order, number);
+            Customer customer = new Customer(customerImage, order, number, smiley);
             customerList.add(customer);
             customer.waitingTime(customerImage, order, customerList, num);
 
