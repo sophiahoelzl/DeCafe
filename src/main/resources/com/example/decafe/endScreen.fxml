@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="979.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="979.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.decafe.HelloController">
    <children>
       <ImageView fx:id="endScreenBackground" fitHeight="743.0" fitWidth="979.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -163,7 +163,7 @@
             <Image url="@sparkle.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="quitEndScreenImage" fitHeight="76.0" fitWidth="216.0" layoutX="674.0" layoutY="492.0" onKeyPressed="#changeQuitEndScreen" onKeyReleased="#changeQuitEndScreenBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="quitEndScreenImage" fitHeight="76.0" fitWidth="216.0" layoutX="674.0" layoutY="492.0" onMouseClicked="#endGame" onMouseEntered="#changeQuitEndScreen" onMouseExited="#changeQuitEndScreenBack" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@quitEndScreen.png" />
          </image>

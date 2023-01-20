@@ -237,7 +237,7 @@ public class HelloController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) throws FileNotFoundException{
+    public void initialize(URL url, ResourceBundle resourceBundle){
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
@@ -404,20 +404,20 @@ public class HelloController implements Initializable {
     public void changeQuitEndScreen() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreen.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreenBrighter.png";
         InputStream stream = new FileInputStream(filePath);
         Image quitEndScreenBrighter = new Image(stream);
-        backToStartImage.setImage(quitEndScreenBrighter);
+        quitEndScreenImage.setImage(quitEndScreenBrighter);
     }
 
     // end screen - change BacktoStartMenu Button when mouse exited
     public void changeQuitEndScreenBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreenBrighter.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreen.png";
         InputStream stream = new FileInputStream(filePath);
         Image quitEndScreen = new Image(stream);
-        backToStartImage.setImage(quitEndScreen);
+        quitEndScreenImage.setImage(quitEndScreen);
     }
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
@@ -579,7 +579,7 @@ public class HelloController implements Initializable {
                         coin += 3;
                     }
 
-                    if (coin < 80) {
+                    if (coin < 5) {
                         checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
                         checkUpgradePossibel(cakeUpgrade, upgradeCake);
                         checkUpgradePossibel(playerUpgrade, upgradePlayer);
@@ -680,5 +680,10 @@ public class HelloController implements Initializable {
         }
 
         return false;
+    }
+
+    public void endGame(){
+        Platform.exit();
+
     }
 }
