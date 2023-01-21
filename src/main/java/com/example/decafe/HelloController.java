@@ -114,10 +114,10 @@ public class HelloController implements Initializable {
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png", 4);
     public Game Play;
 
-    private int movementVariable = CofiBrew.getMovement();
     private Label[] collisions;
 
     private boolean start = false;
+    public Timer t = new Timer();
 
     public void loadScene(String sceneName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
@@ -143,9 +143,9 @@ public class HelloController implements Initializable {
         loadScene("gameScreen.fxml");
         if (Customer.pics[0] != null && !start){
             Customer cust = new Customer();
-            cust.startTimerSpawn(1, cust.getT());
-            cust.startTimerSpawn(5, cust.getC());
-            cust.startTimerSpawn(10, cust.getY());
+            cust.startTimerSpawn(1, Customer.getT());
+            cust.startTimerSpawn(5, Customer.getT());
+            cust.startTimerSpawn(10, Customer.getT());
             Customer.allCustomers.add(cust);
             start = true;
         }
@@ -182,7 +182,7 @@ public class HelloController implements Initializable {
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long timestamp) {
-            movementVariable = CofiBrew.getMovement();
+            int movementVariable = CofiBrew.getMovement();
             double move = movementVariable; // store movementVariable in new variable
 
             // if two keys are pressed at once and player moves diagonally - correct diagonal speed
@@ -242,13 +242,11 @@ public class HelloController implements Initializable {
         collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
         Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
-        Customer.simleyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth};
+        Customer.smileyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth};
         Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8};
         Customer.coinImages = new ImageView[]{coinfirst, coinsecond, cointhird, coinfourth, coinfifth, coinsixth, coinseventh, coineigth};
-
+        Customer.setT(t);
         Play = new Game(upgradeCoffee, upgradeCake, upgradePlayer);
-
-
     }
 
 
@@ -350,7 +348,7 @@ public class HelloController implements Initializable {
             } else {
                 if (cust.getBoundsInParent().intersects(waiter.getBoundsInParent())) {
                     try {
-                        customer.startTimerSpawn(5, customer.getC());
+                        customer.startTimerSpawn(5, Customer.getT());
                     } catch (NullPointerException e){
                         switchToEndScreen();
                     }
@@ -414,7 +412,7 @@ public class HelloController implements Initializable {
             checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
             coinLabel.setText(String.valueOf(Play.getCoinsEarned()));
             try {
-                customer.startTimerSpawn(5, customer.getY());
+                customer.startTimerSpawn(5, Customer.getT());
             } catch (NullPointerException y){
                 switchToEndScreen();
             }
@@ -429,26 +427,26 @@ public class HelloController implements Initializable {
     }
 
     public void stopTimers(){
-        for (Customer customers : Customer.allCustomers){
-            customers.getT().cancel();
-            customers.getX().cancel();
-            customers.getS().cancel();
-            customers.getY().cancel();
-            customers.getC().cancel();
+        for (Customer customer : Customer.allCustomers){
+            if (customer.getX() != null){
+                customer.getX().cancel();
+            }
         }
+        t.cancel();
+        Customer.getT().cancel();
     }
 
     // end game (called when exit clicked)
     public void endGameQuick(){
         stopTimers();
         Platform.exit();
-
+        System.exit(0);
     }
 
     // end game (called when quit button is clicked)
     public void endGame(){
         stopTimers();
         Platform.exit();
-
+        System.exit(0);
     }
 }
