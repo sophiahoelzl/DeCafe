@@ -5,12 +5,9 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -32,13 +29,6 @@ public class HelloController implements Initializable {
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
     public ImageView trashcan;
-
-    public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
-    public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
-    public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
-    public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
-    public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
-    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhUsed.png", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -119,84 +109,57 @@ public class HelloController implements Initializable {
     public ImageView coinseventh;
     public ImageView coineigth;
 
+    public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png", 4);
+    public Game Play;
 
-    public ImageView[] pics;
-    public ImageView customerImage = new ImageView();
-    public List<Customer> customerList = new ArrayList<>();
-    public Random random = new Random();
-    public int coin = 0;
-    public String smileycolor;
+    private int movementVariable = CofiBrew.getMovement();
+    private Label[] collisions;
 
-    private int movementVariable = 4;
-    public Label[] collisions;
+    private boolean start = false;
 
-    public int number;
-    public boolean start = false;
-
-    private List<Integer> num = new ArrayList<Integer>() {{
-        add(0);
-        add(1);
-        add(2);
-        add(3);
-        add(4);
-        add(5);
-        add(6);
-        add(7);
-    }};
-
-
+    public void loadScene(String sceneName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+        HelloApplication.stage.show();
+    }
 
     // jump from start screen to game screen
     public void startGame() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
+        loadScene("gameScreen.fxml");
+        if (Customer.pics[0] != null && !start){
+            Customer cust = new Customer();
+            cust.startTimerSpawn(1, cust.getT());
+            cust.startTimerSpawn(5, cust.getC());
+            cust.startTimerSpawn(10, cust.getY());
+            Customer.allCustomers.add(cust);
+            start = true;
+        }
     }
 
     public void switchToEndWindow() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
-
+        loadScene("endScreen.fxml");
     }
 
     public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
-        HelloApplication.stage.show();
+        loadScene("startScreen.fxml");
     }
 
     public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
-        HelloApplication.stage.show();
+        loadScene("gameScreen.fxml");
     }
 
     public void switchToInstructions() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
+        loadScene("Instructions.fxml");
     }
 
     // for smoother motion
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long timestamp) {
-            //File f = new File("");
-            //String filePath;
-            //filePath = "";
+            movementVariable = CofiBrew.getMovement();
             double move = movementVariable;
 
             // if two keys are pressed at once and player moves diagonally
@@ -210,22 +173,18 @@ public class HelloController implements Initializable {
 
             if (wPressed.get()) {
                 yMove = -move;
-                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrew.png";
             }// if waiter should go up
 
             if (sPressed.get()) {
                 yMove = move;
-                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewUnten.png";
             }// if waiter should go down
 
             if (aPressed.get()) {
                 xMove = -move;
-                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewLinks.png";
             }// if waiter should move left
 
             if (dPressed.get()) {
                 xMove = move; // if waiter should move right
-                //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewRechts.png";
             }
 
             waiter.setLayoutX(waiter.getLayoutX() + xMove);
@@ -234,15 +193,6 @@ public class HelloController implements Initializable {
                 waiter.setLayoutX(waiter.getLayoutX() - xMove);
                 waiter.setLayoutY(waiter.getLayoutY() - yMove);
             }
-
-            /*InputStream stream = null;
-            try {
-                stream = new FileInputStream(filePath);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Image cofi = new Image(stream);
-            waiter.setImage(cofi);*/
         }
     };
 
@@ -256,58 +206,17 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
+
         collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-        pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
+        Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
+        Customer.simleyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth};
+        Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8};
+        Customer.coinImages = new ImageView[]{coinfirst, coinsecond, cointhird, coinfourth, coinfifth, coinsixth, coinseventh, coineigth};
 
-        if (pics[0] != null && !start){
-            Timer t = new Timer();
-            t.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                searchForTable();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            t.cancel();
-                        }
-                    },
-                    1000
-            );
-            Timer x = new Timer();
-            x.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                searchForTable();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            t.cancel();
-                        }
-                    },
-                    5000
-            );
-            Timer y = new Timer();
-            y.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                searchForTable();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            t.cancel();
-                        }
-                    },
-                    10000
-            );
-            start = true;
-        }
+        Play = new Game(upgradeCoffee, upgradeCake, upgradePlayer);
+
+
     }
 
     @FXML
@@ -331,208 +240,83 @@ public class HelloController implements Initializable {
         }
     }
 
-    // start screen - change coffee button on mouse entered
-    public void changeCoffeeImage() throws FileNotFoundException {
+    public Image createImage(String filename) throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "hotcoffee.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
         InputStream stream = new FileInputStream(filePath);
-        Image hotCoffee = new Image(stream);
-        startButton.setImage(hotCoffee);
+        return new Image(stream);
+    }
+
+    // start screen - change coffee button on mouse entered
+    public void changeCoffeeImage() throws FileNotFoundException {
+        startButton.setImage(createImage("hotcoffee.png"));
     }
 
     // start screen - change coffee button on mouse exited
     public void changeCoffeeImageBack() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image start = new Image(stream);
-        startButton.setImage(start);
+        startButton.setImage(createImage("coffee.png"));
     }
 
     // instructions - change start button on mouse entered
     public void changeStartImage() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image start = new Image(stream);
-        gameStartButton.setImage(start);
+        gameStartButton.setImage(createImage("Start.png"));
     }
 
     // instructions - change start button on mouse exited
     public void changeStartImageBack() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image startButton = new Image(stream);
-        gameStartButton.setImage(startButton);
+        gameStartButton.setImage(createImage("startHover.png"));
     }
 
     // end screen - change PlayAgain Button when mouse entered
     public void changePlayAgain() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgainBrighter.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image playAgainBrighter = new Image(stream);
-        playAgainImage.setImage(playAgainBrighter);
+        playAgainImage.setImage(createImage("playAgainBrighter.png"));
     }
 
     // end screen - change PlayAgain Button when mouse exited
     public void changePlayAgainBack() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "playAgain.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image playAgain = new Image(stream);
-        playAgainImage.setImage(playAgain);
+        playAgainImage.setImage(createImage("playAgain.png"));
     }
 
     // end screen - change BacktoStartMenu Button when mouse entered
     public void changeBackToStartMenu() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backToStartMenuBrighter.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image backToStartBrighter = new Image(stream);
-        backToStartImage.setImage(backToStartBrighter);
+        backToStartImage.setImage(createImage("backToStartMenuBrighter.png"));
     }
 
     // end screen - change BacktoStartMenu Button when mouse exited
     public void changeBackToStartMenuBack() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "toStartMenuButton.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image backToStart = new Image(stream);
-        backToStartImage.setImage(backToStart);
+        backToStartImage.setImage(createImage("toStartMenuButton.png"));
     }
 
     // end screen - change BacktoStartMenu Button when mouse entered
     public void changeQuitEndScreen() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreenBrighter.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image quitEndScreenBrighter = new Image(stream);
-        quitEndScreenImage.setImage(quitEndScreenBrighter);
+        quitEndScreenImage.setImage(createImage("quitEndScreenBrighter.png"));
     }
 
     // end screen - change BacktoStartMenu Button when mouse exited
     public void changeQuitEndScreenBack() throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "quitEndScreen.png";
-        InputStream stream = new FileInputStream(filePath);
-        Image quitEndScreen = new Image(stream);
-        quitEndScreenImage.setImage(quitEndScreen);
+        quitEndScreenImage.setImage(createImage("quitEndScreen.png"));
     }
     // when coffee is produced, change appearance
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
-            coffeeeMachine.displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
+            Play.getCoffeeMachine().displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
         }
     }
 
     // when cake machine is running
     public void showCake() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(kitchenAid.getBoundsInParent())) {
-            cakeMachine.displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
+            Play.getCakeMachine().displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
         }
     }
 
     public void noProduct() throws FileNotFoundException {
-        String filePath = CofiBrew.getImageWithoutProduct();
-        InputStream stream = new FileInputStream(filePath);
-        Image cofi = new Image(stream);
-        waiter.setImage(cofi);
+        waiter.setImage(createImage(CofiBrew.getImageWithoutProduct()));
         CofiBrew.setProduct("none");
     }
 
-    public Label getLabel(ImageView cust) {
-
-        Label customorder = new Label();
-
-        if (first.equals(cust)) {
-            customorder = orderlabel1;
-        } else if (second.equals(cust)) {
-            customorder = orderlabel2;
-        } else if (third.equals(cust)) {
-            customorder = orderlabel3;
-        } else if (fourth.equals(cust)) {
-            customorder = orderlabel4;
-        } else if (fifth.equals(cust)) {
-            customorder = orderlabel5;
-        } else if (sixth.equals(cust)) {
-            customorder = orderlabel6;
-        } else if (seventh.equals(cust)) {
-            customorder = orderlabel7;
-        } else if (eighth.equals(cust)) {
-            customorder = orderlabel8;
-        }
-
-        return customorder;
-
-    }
-
-
-    public ImageView getSmileyLabel(ImageView cust) {
-
-        ImageView smileylabel = new ImageView();
-
-        if (first.equals(cust)) {
-            smileylabel = smileyfirst;
-        } else if (second.equals(cust)) {
-            smileylabel = smileysecond;
-        } else if (third.equals(cust)) {
-            smileylabel = smileythird;
-        } else if (fourth.equals(cust)) {
-            smileylabel = smileyfourth;
-        } else if (fifth.equals(cust)) {
-            smileylabel = smileyfifth;
-        } else if (sixth.equals(cust)) {
-            smileylabel = smileysixth;
-        } else if (seventh.equals(cust)) {
-            smileylabel = smileyseventh;
-        } else if (eighth.equals(cust)) {
-            smileylabel = smileyeighth;
-        }
-
-        return smileylabel;
-
-    }
-
-    public ImageView getCoinLabel(ImageView cust) {
-
-        ImageView coin = new ImageView();
-
-        if (first.equals(cust)) {
-            coin = coinfirst;
-        } else if (second.equals(cust)) {
-            coin = coinsecond;
-        } else if (third.equals(cust)) {
-            coin = cointhird;
-        } else if (fourth.equals(cust)) {
-            coin = coinfourth;
-        } else if (fifth.equals(cust)) {
-            coin = coinfifth;
-        } else if (sixth.equals(cust)) {
-            coin = coinsixth;
-        } else if (seventh.equals(cust)) {
-            coin = coinseventh;
-        } else if (eighth.equals(cust)) {
-            coin = coineigth;
-        }
-
-        return coin;
-
-    }
-
     public Customer findCustomer(List<Customer> customerList, ImageView cust) {
-
         for (Customer customer : customerList) {
             if (customer.getImage().equals(cust)) {
                 return customer;
@@ -542,232 +326,111 @@ public class HelloController implements Initializable {
     }
 
 
-    public void displayPerson(MouseEvent event) throws IOException, InterruptedException {
+    public void displayPerson(MouseEvent event) throws IOException {
 
         ImageView cust = (ImageView) event.getSource();
-        double x1 = 0.0;
-        double y1 = 0.0;
-
-        if (first.equals(cust)) {
-            x1 = first.getLayoutX();
-            y1 = first.getLayoutY();
-        } else if (second.equals(cust)) {
-            x1 = second.getLayoutX();
-            y1 = second.getLayoutY();
-        } else if (third.equals(cust)) {
-            x1 = third.getLayoutX();
-            y1 = third.getLayoutY();
-        } else if (fourth.equals(cust)) {
-            x1 = fourth.getLayoutX();
-            y1 = fourth.getLayoutY();
-        } else if (fifth.equals(cust)) {
-            x1 = fifth.getLayoutX();
-            y1 = fifth.getLayoutY();
-        } else if (sixth.equals(cust)) {
-            x1 = sixth.getLayoutX();
-            y1 = sixth.getLayoutY();
-        } else if (seventh.equals(cust)) {
-            x1 = seventh.getLayoutX();
-            y1 = seventh.getLayoutY();
-        } else if (eighth.equals(cust)) {
-            x1 = eighth.getLayoutX();
-            y1 = eighth.getLayoutY();
-        }
-
-        double x2 = waiter.getLayoutX();
-        double y2 = waiter.getLayoutY();
-
-        Point2D c = new Point2D(x1, y1);
-        Point2D w = new Point2D(x2, y2);
-        // controlLabel.setText(String.valueOf(c.distance(w)));
-
-        Customer customer = findCustomer(customerList, cust);
-
-        if (c.distance(w) < 128) {
-            if (customerList.size() < 3){
-                Timer t = new Timer();
-                t.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                try {
-                                    searchForTable();
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-                                t.cancel();
-                            }
-                        },
-                        3000
-                );
-            }
+        Customer customer = findCustomer(Customer.customerList, cust);
 
             if (!customer.isAlreadyOrdered()){
                 customer.displayOrder(customer.getLabel());
             } else {
-                if (customer.checkOrder(customer.getLabel(), cust, CofiBrew, coinLabel, customer, customerList, waiter, num)) {
-                    File f = new File("");
-                    String filePath = "";
-                    if (customer.getSmiley().equals("green")){
-                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "5coins.png";
-                    } else if (customer.getSmiley().equals("yellow")){
-                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "4coins.png";
-                    } else if (customer.getSmiley().equals("red")){
-                        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "3coins.png";
+                if (cust.getBoundsInParent().intersects(waiter.getBoundsInParent())) {
+                    try {
+                        customer.startTimerSpawn(5, customer.getC());
+                    } catch (NullPointerException e){
+                        switchToEndWindow();
                     }
-                    InputStream stream = new FileInputStream(filePath);
-                    Image money = new Image(stream);
-                    customer.getCoinImage().setImage(money);
-                    customer.getCoinImage().setVisible(true);
-                    customer.getCoinImage().setDisable(false);
-                    customer.getCoinImage().setOnMouseClicked(event1 -> {
-                        try {
-                            getMoney(event1, customer);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    if (customer.checkOrder(CofiBrew, customer, waiter)) {
+                        String moneyImage = "";
+                        if (customer.isGreen()) {
+                            moneyImage = Play.getMoney();
+                        } else if (customer.isYellow()) {
+                            moneyImage = Play.getFourCoins();
+                        } else if (customer.isRed()) {
+                            moneyImage = Play.getThreeCoins();
                         }
-                    });
-                } else {
-                    Timer t = new Timer();
-                    t.schedule(
-                            new TimerTask() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        searchForTable();
-                                    } catch (FileNotFoundException e) {
-                                        e.printStackTrace();
-                                    }
-                                    t.cancel();
+                        customer.getCoinImage().setImage(createImage(moneyImage));
+                        customer.getCoinImage().setOnMouseClicked(event1 -> {
+                            try {
+                                getMoney(event1, customer);
+                            } catch (IOException e) {
+                                try {
+                                    switchToEndWindow();
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
                                 }
-                            },
-                            5000
-                    );
+                            }
+                        });
+                    }
                 }
             }
-        }
     }
 
-    public void checkUpgradePossibel(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
-        if (!upgrade.isUsed() && coin >= upgrade.getCoinsNeeded()){
-            upgradeImage.setDisable(false);
-            String filePath;
-            filePath = upgrade.getPathNotUsed();
-            InputStream stream = new FileInputStream(filePath);
-            Image upgrades = new Image(stream);
-            upgradeImage.setImage(upgrades);
-        } else {
-            upgradeImage.setDisable(true);
-            String filePath;
-            filePath = upgrade.getPathUSed();
-            InputStream stream = new FileInputStream(filePath);
-            Image upgrades = new Image(stream);
-            upgradeImage.setImage(upgrades);
-        }
+    public void checkUpgradePossible(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
+        Play.checkUpgradePossible(upgrade, upgradeImage);
     }
 
     public void doUpgrade (MouseEvent e) throws FileNotFoundException {
-        if (((ImageView) e.getSource()).getId().equals("coffee")){
-            coin = coffeeUpgrade.doUpgrades(upgradeCoffee, coin);
-            coffeeeMachine.setDuration(2);
-        } else if (((ImageView) e.getSource()).getId().equals("cake")){
-            coin = cakeUpgrade.doUpgrades(upgradeCake, coin);
-            cakeMachine.setDuration(2);
-        } else if (((ImageView) e.getSource()).getId().equals("player")){
-            coin = playerUpgrade.doUpgrades(upgradePlayer, coin);
-            movementVariable = 6;
-        }
-        coinLabel.setText(String.valueOf(coin));
-        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
-        checkUpgradePossibel(cakeUpgrade, upgradeCake);
-        checkUpgradePossibel(playerUpgrade, upgradePlayer);
-    }
-
-    public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
-        Random random = new Random();
-        int index = num.get(random.nextInt(num.size()));
-        number = index;
-
-        if (!num.contains(index)) {
-            getRandomPic(pics, num);
-        }
-
-        num.remove(Integer.valueOf(index));
-
-        return pics[index];
-    }
-
-    public void searchForTable () throws FileNotFoundException {
-        if (customerList.size() < 3 && num.size() != 0) {
-            //ImageView customerImage = new ImageView();
-            customerImage = getRandomPic(pics, num); //get random picture from Array
-            customerImage.setVisible(true);//make this picture visible
-
-            Label order = getLabel(customerImage);
-            ImageView smiley = getSmileyLabel(customerImage);
-            ImageView coin = getCoinLabel(customerImage);
-
-
-            Customer customer = new Customer(customerImage, order, number, smiley, coin);
-            customerList.add(customer);
-            customer.waitingTime(customerImage, order, customerList, num);
-
-        }
-
+        Play.doUpgrade(((ImageView)e.getSource()).getId(), CofiBrew);
+        coinLabel.setText(String.valueOf(Play.getCoinsEarned()));
+        checkUpgradePossible(Play.getCoffeeUpgrade(), upgradeCoffee);
+        checkUpgradePossible(Play.getCakeUpgrade(), upgradeCake);
+        checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
     }
 
     public boolean checkForCollision (ImageView waiter){
-        for (int i = 0; i < collisions.length; i++) {
-            if (waiter.getBoundsInParent().intersects(collisions[i].getBoundsInParent())) {
+        for (Label collision : collisions) {
+            if (waiter.getBoundsInParent().intersects(collision.getBoundsInParent())) {
                 return true;
             }
         }
-
         return false;
     }
 
     public void getMoney(MouseEvent e, Customer customer) throws IOException {
-        smileycolor = customer.getSmiley();
-        num.add(customer.getTable());
-
-        if (Objects.equals(smileycolor, "green")){
-            coin += 5;
-        }else if (Objects.equals(smileycolor, "yellow")){
-            coin += 4;
-        }else if (Objects.equals(smileycolor, "red")){
-            coin += 3;
-        }
-
+        Customer.addNum(customer.getTable());
+        Play.setMoney(customer);
         ((ImageView)e.getSource()).setVisible(false);
         ((ImageView)e.getSource()).setDisable(true);
 
-        if (coin < 80) {
-            checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
-            checkUpgradePossibel(cakeUpgrade, upgradeCake);
-            checkUpgradePossibel(playerUpgrade, upgradePlayer);
-            coinLabel.setText(String.valueOf(coin));
-            Timer t = new Timer();
-            t.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                searchForTable();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            t.cancel();
-                        }
-                    },
-                    5000
-            );
+        if (Play.getCoinsEarned() < 80) {
+            checkUpgradePossible(Play.getCoffeeUpgrade(), upgradeCoffee);
+            checkUpgradePossible(Play.getCakeUpgrade(), upgradeCake);
+            checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
+            coinLabel.setText(String.valueOf(Play.getCoinsEarned()));
+            try {
+                customer.startTimerSpawn(5, customer.getY());
+            } catch (NullPointerException y){
+                switchToEndWindow();
+            }
         }else {
+            stopTimers();
             switchToEndWindow();
         }
     }
 
-    public void endGame(){
+    public void searchForTable(){
+        Customer.spawnCustomers();
+    }
+
+    public void stopTimers(){
+        for (Customer customers : Customer.allCustomers){
+            customers.getT().cancel();
+            customers.getX().cancel();
+            customers.getS().cancel();
+            customers.getY().cancel();
+            customers.getC().cancel();
+        }
+    }
+
+    public void endGameQuick(){
+        stopTimers();
         Platform.exit();
 
+    }
+
+    public void endGame(){
+        stopTimers();
+        Platform.exit();
     }
 }

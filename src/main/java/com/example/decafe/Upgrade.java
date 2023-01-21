@@ -15,14 +15,15 @@ public class Upgrade {
     private String pathNotUsed;
     private String pathUSed;
     private String type;
+    private ImageView upgradeImages;
 
-    Upgrade(int CoinsNeeded, boolean used, String filenameNotUsed, String filenameUsed, String type){
+    Upgrade(int CoinsNeeded, boolean used, String filenameNotUsed, String filenameUsed, String type, ImageView upgradeImages){
         this.CoinsNeeded = CoinsNeeded;
         this.used = used;
-        File f = new File("");
-        this.pathNotUsed = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filenameNotUsed;
-        this.pathUSed = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filenameUsed;
+        this.pathNotUsed = filenameNotUsed;
+        this.pathUSed = filenameUsed;
         this.type = type;
+        this.upgradeImages = upgradeImages;
     }
 
     public boolean isUsed() {
@@ -45,10 +46,21 @@ public class Upgrade {
         return pathNotUsed;
     }
 
+    public ImageView getUpgradeImages() {
+        return upgradeImages;
+    }
+
+
+    public Image createImage(String filename) throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
+        InputStream stream = new FileInputStream(filePath);
+        return new Image(stream);
+    }
+
     public int doUpgrades(ImageView upgrade, int coin) throws FileNotFoundException {
-        InputStream stream = new FileInputStream(this.getPathUSed());
-        Image usedUpgrade = new Image(stream);
-        upgrade.setImage(usedUpgrade);
+        upgrade.setImage(createImage(this.pathUSed));
         upgrade.setDisable(true);
         this.setUsed(true);
         coin -= this.getCoinsNeeded();

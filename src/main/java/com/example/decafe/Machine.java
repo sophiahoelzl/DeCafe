@@ -30,9 +30,8 @@ public class Machine {
         this.duration = duration;
         this.capacity = 1;
         this.produced = false;
-        File f = new File("");
-        this.PathMachineWithProduct = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filenameImageWithProduct;
-        this.PathMachineWithoutProduct = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filenameImageWithoutProduct;
+        this.PathMachineWithProduct = filenameImageWithProduct;
+        this.PathMachineWithoutProduct = filenameImageWithoutProduct;
         this.type = type;
     }
     //Getter
@@ -57,6 +56,14 @@ public class Machine {
 
     public void setProduced(Boolean produced){
         this.produced = produced;
+    }
+
+    public Image createImage(String filename) throws FileNotFoundException {
+        File f = new File("");
+        String filePath;
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
+        InputStream stream = new FileInputStream(filePath);
+        return new Image(stream);
     }
 
     public void doAnimation (Timer t, ImageView machine, ProgressBar progress, Image product){
@@ -117,8 +124,8 @@ public class Machine {
 
         Timer t = new Timer();
 
-        String filePath = this.PathMachineWithProduct;
-        String filepathTwo = cofiBrew.getImageWithoutProduct();
+        String imageMachine = this.PathMachineWithProduct;
+        String imageCofi = cofiBrew.getImageWithoutProduct();
         boolean gotProduced = false;
 
         if (!this.produced && cofiBrew.getProduct().equals("none")) {
@@ -127,41 +134,37 @@ public class Machine {
         } else if (!this.produced && cofiBrew.getProduct().equals("coffee")) {
             this.setProduced(true);
             gotProduced = true;
-            filepathTwo = cofiBrew.getImageWithCoffee();
+            imageCofi = cofiBrew.getImageWithCoffee();
         } else if (!this.produced && cofiBrew.getProduct().equals("cake")) {
             this.setProduced(true);
             gotProduced = true;
-            filepathTwo = cofiBrew.getImageWithCake();
+            imageCofi = cofiBrew.getImageWithCake();
         } else {
             if (cofiBrew.getProduct().equals("none")){
                 this.setProduced(false);
-                filePath = this.PathMachineWithoutProduct;
+                imageMachine = this.PathMachineWithoutProduct;
                 cofiBrew.setProduct(this.type);
                 if (this.type.equals("coffee")){
-                    filepathTwo = cofiBrew.getImageWithCoffee();
+                    imageCofi = cofiBrew.getImageWithCoffee();
                 } else {
-                    filepathTwo = cofiBrew.getImageWithCake();
+                    imageCofi = cofiBrew.getImageWithCake();
                 }
             } else {
                     if (cofiBrew.getProduct().equals("coffee")){
-                        filepathTwo = cofiBrew.getImageWithCoffee();
+                        imageCofi = cofiBrew.getImageWithCoffee();
                     } else {
-                        filepathTwo = cofiBrew.getImageWithCake();
+                        imageCofi = cofiBrew.getImageWithCake();
                     }
             }
         }
 
-        InputStream stream = new FileInputStream(filePath);
-        InputStream stream2 = new FileInputStream(filepathTwo);
-        Image product = new Image(stream);
-        Image cofi = new Image(stream2);
-        waiter.setImage(cofi);
+        waiter.setImage(createImage(imageCofi));
 
         if (gotProduced) {
-            doAnimation(t, machine, progress, product);
+            doAnimation(t, machine, progress, createImage(imageMachine));
         } else {
             progress.setVisible(this.getProduced());
-            machine.setImage(product);
+            machine.setImage(createImage(imageMachine));
         }
 
     }
