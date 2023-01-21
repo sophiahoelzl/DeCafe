@@ -12,13 +12,10 @@ public class Customer {
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
 
     private ImageView customer;
-    private Label orderr;
+    private Label orderLabel;
     private int table;
     private Timer x;
-    private Timer t;
-    private Timer y;
-    private Timer s;
-    private Timer c;
+    private static Timer t;
     private ImageView smiley;
     private ImageView coinImage;
 
@@ -34,67 +31,29 @@ public class Customer {
     public static List<Integer> num = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7));
     public static ImageView[] pics;
     private static int number = 0;
-    public static ImageView[] simleyImages;
+    public static ImageView[] smileyImages;
     public static Label[] orderLabels;
     public static ImageView[] coinImages;
 
-    Customer(){
-        this.t = new Timer();
-        this.s = new Timer();
-        this.y = new Timer();
-        this.c = new Timer();
-        this.x = new Timer();
-    }
+    Customer(){}
 
 
     Customer(ImageView image, Label label, int table, ImageView smiley, ImageView coinImage) {
         this.customer = image;
-        this.orderr = label;
+        this.orderLabel = label;
         this.alreadyOrdered = false;
         this.table = table;
-        this.x = new Timer();
         this.smiley = smiley;
         this.coinImage = coinImage;
-        this.t = new Timer();
-        this.s = new Timer();
-        this.y = new Timer();
-        this.c = new Timer();
+        this.x = new Timer();
     }
 
-    public static void setCustomerList(List<Customer> customerList) {
-        Customer.customerList = customerList;
-    }
-
-    public static void setPics(ImageView[] pics) {
-        Customer.pics = pics;
-    }
-
-    public static List<Customer> getCustomerList() {
-        return customerList;
-    }
-
-    public static ImageView[] getPics() {
-        return pics;
-    }
-
-    public Timer getT() {
+    public static Timer getT() {
         return t;
     }
 
     public Timer getX() {
         return x;
-    }
-
-    public Timer getY() {
-        return y;
-    }
-
-    public Timer getS() {
-        return s;
-    }
-
-    public Timer getC() {
-        return c;
     }
 
     public static void addNum(int table) {
@@ -127,7 +86,7 @@ public class Customer {
     }
 
     public Label getLabel() {
-        return this.orderr;
+        return this.orderLabel;
     }
 
     public String getRandomOrder() {
@@ -151,6 +110,10 @@ public class Customer {
         this.order = order;
     }
 
+    public static void setT(Timer te) {
+        t = te;
+    }
+
     public String getOrder() {
         return order;
     }
@@ -163,49 +126,49 @@ public class Customer {
         return new Image(stream);
     }
 
-    public static ImageView getImage(ImageView cust, ImageView[] searchArray ){
+    public static ImageView getImage(ImageView customer, ImageView[] searchArray ){
         ImageView wantedImage = new ImageView();
 
-        if (pics[0].equals(cust)) {
+        if (pics[0].equals(customer)) {
             wantedImage = searchArray[0];
-        } else if (pics[1].equals(cust)) {
+        } else if (pics[1].equals(customer)) {
             wantedImage = searchArray[1];
-        } else if (pics[2].equals(cust)) {
+        } else if (pics[2].equals(customer)) {
             wantedImage = searchArray[2];
-        } else if (pics[3].equals(cust)) {
+        } else if (pics[3].equals(customer)) {
             wantedImage = searchArray[3];
-        } else if (pics[4].equals(cust)) {
+        } else if (pics[4].equals(customer)) {
             wantedImage = searchArray[4];
-        } else if (pics[5].equals(cust)) {
+        } else if (pics[5].equals(customer)) {
             wantedImage = searchArray[5];
-        } else if (pics[6].equals(cust)) {
+        } else if (pics[6].equals(customer)) {
             wantedImage = searchArray[6];
-        } else if (pics[7].equals(cust)) {
+        } else if (pics[7].equals(customer)) {
             wantedImage = searchArray[7];
         }
 
         return wantedImage;
     }
 
-    public static Label getLabel(ImageView cust) {
+    public static Label getLabel(ImageView customer) {
 
         Label customerOrder = new Label();
 
-        if (pics[0].equals(cust)) {
+        if (pics[0].equals(customer)) {
             customerOrder = orderLabels[0];
-        } else if (pics[1].equals(cust)) {
+        } else if (pics[1].equals(customer)) {
             customerOrder = orderLabels[1];
-        } else if (pics[2].equals(cust)) {
+        } else if (pics[2].equals(customer)) {
             customerOrder = orderLabels[2];
-        } else if (pics[3].equals(cust)) {
+        } else if (pics[3].equals(customer)) {
             customerOrder = orderLabels[3];
-        } else if (pics[4].equals(cust)) {
+        } else if (pics[4].equals(customer)) {
             customerOrder = orderLabels[4];
-        } else if (pics[5].equals(cust)) {
+        } else if (pics[5].equals(customer)) {
             customerOrder = orderLabels[5];
-        } else if (pics[6].equals(cust)) {
+        } else if (pics[6].equals(customer)) {
             customerOrder = orderLabels[6];
-        } else if (pics[7].equals(cust)) {
+        } else if (pics[7].equals(customer)) {
             customerOrder = orderLabels[7];
         }
 
@@ -233,14 +196,14 @@ public class Customer {
             customerImage.setVisible(true);//make this picture visible
 
             Label order = getLabel(customerImage);
-            ImageView smiley = getImage(customerImage, simleyImages);
+            ImageView smiley = getImage(customerImage, smileyImages);
             ImageView coin = getImage(customerImage, coinImages);
 
 
             Customer customer = new Customer(customerImage, order, number, smiley, coin);
             customerList.add(customer);
             allCustomers.add(customer);
-            customer.waitingTime(customerImage, order);
+            customer.waitingTime();
         }
     }
 
@@ -250,28 +213,32 @@ public class Customer {
                     @Override
                     public void run() {
                         Customer.spawnCustomers();
-                        t.cancel();
+                        t.purge();
                     }
                 },
                 duration * 1000L
         );
     }
 
-    public void leaveCoffeeShop(Timer t, boolean left, Player CofiBrew, ImageView waiter){
+    public void leaveCoffeeShop(boolean left, Player CofiBrew){
         CofiBrew.setProduct("none");
-        startTimerLeave(t, this, left);
+        startTimerLeave(this, left);
     }
 
-    public void startTimerLeave (Timer t, Customer customer, boolean left){
-        this.orderr.setVisible(false);
+    public void startTimerLeave (Customer customer, boolean left){
+        this.orderLabel.setVisible(false);
         this.smiley.setVisible(false);
         t.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
                         customer.left = left;
-                        leave(customer.getImage(), customer.getLabel());
-                        t.cancel();
+                        try {
+                            leave(customer.getImage());
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        t.purge();
                     }
                 },
                 1000
@@ -279,8 +246,8 @@ public class Customer {
         this.x.cancel();
     }
 
-    public void waitingTime(ImageView customerpic, Label order)  {
-        Customer cust = this;
+    public void waitingTime()  {
+        Customer customer = this;
         TimerTask timerTask = new TimerTask() {
             int seconds = 60;
             @Override
@@ -318,12 +285,12 @@ public class Customer {
                     red = true;
                 }
                 else if (seconds == 0){
-                    startTimerLeave(cust.t, cust, true);
+                    startTimerLeave(customer, true);
                 }
             }
         };
 
-        x.schedule(timerTask, 0, 1000);
+        this.x.schedule(timerTask, 0, 1000);
 
     }
 
@@ -340,11 +307,11 @@ public class Customer {
     public boolean checkOrder(Player CofiBrew, Customer customer, ImageView waiter) throws FileNotFoundException{
         if (CofiBrew.getProduct().equals(customer.getOrder())) {
             waiter.setImage(createImage(CofiBrew.getImageWithoutProduct()));
-            leaveCoffeeShop(this.t, false, CofiBrew, waiter);
+            leaveCoffeeShop(false, CofiBrew);
             return true;
         } else {
             waiter.setImage(createImage(CofiBrew.getImageWithoutProduct()));
-            leaveCoffeeShop(this.t, true, CofiBrew, waiter);
+            leaveCoffeeShop(true, CofiBrew);
             return false;
         }
     }
@@ -352,17 +319,17 @@ public class Customer {
     public static void noMoneySpent(Customer customer) throws FileNotFoundException {
         customer.coinImage.setVisible(false);
         customer.coinImage.setDisable(true);
-        customer.coinImage.setImage(customer.createImage("coin.png"));
         num.add(customer.getTable());
-        customer.startTimerSpawn(5, customer.s);
+        customer.startTimerSpawn(5, t);
     }
 
-    public void leave (ImageView image, Label label) {
+    public void leave (ImageView image) throws FileNotFoundException {
         image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image));
         coinImage.setVisible(true);
         coinImage.setDisable(false);
         if (left){
+            coinImage.setImage(this.createImage("coin.png"));
             coinImage.setOnMouseClicked(event1 -> {
                 try {
                     noMoneySpent(this);

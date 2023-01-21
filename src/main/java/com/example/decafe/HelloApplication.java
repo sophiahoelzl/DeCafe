@@ -7,24 +7,22 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
+// Class used to start the JavaFX Application
 public class HelloApplication extends Application {
 
     public static Stage stage;
     @Override
+    // Start Application by starting the Stage
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage = stage;
         File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "mugTabPic.png";
-        InputStream stream = new FileInputStream(filePath);
-        stage.getIcons().add(new Image(stream));
+        stage.getIcons().add(new Image("file:src/main/resources/com/example/decafe/Logo.png"));
         stage.setTitle("DeCafé");
+        HelloApplication.stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
 
