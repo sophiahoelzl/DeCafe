@@ -123,9 +123,7 @@ public class HelloController implements Initializable {
     public void loadScene(String sceneName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
         Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
         HelloApplication.stage.show();
     }
 
