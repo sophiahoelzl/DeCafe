@@ -5,8 +5,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,12 +31,12 @@ public class HelloController implements Initializable {
     public ImageView kitchenAid;
     public ImageView trashcan;
 
-    public Machine coffeeeMachine = new Machine(4, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+    public Machine coffeeeMachine = new Machine(4, "coffeeMachineWithCoffee.png", "coffeeMachine.png", "coffee");
     public Machine cakeMachine = new Machine(4, "kitchenAidUsed.png", "kitchenAid.png", "cake");
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png");
     public Upgrade coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee");
     public Upgrade cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake");
-    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhhUsed.png", "player");
+    public Upgrade playerUpgrade = new Upgrade(40, false, "upgradeSkates.png", "upgradeSkatesUsed.png", "player");
 
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -146,18 +144,27 @@ public class HelloController implements Initializable {
         add(7);
     }};
 
-
-
-    // jump from start screen to game screen
-    public void startGame() throws IOException {
+    // jump to game screen
+    public void switchToGameScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.stage.setTitle("DeCafé");
+        HelloApplication.stage.setScene(scene);
+        HelloApplication.stage.setResizable(false);
+        HelloApplication.stage.show();
+    }
+
+    // jump to instructions
+    public void switchToInstructions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("instructions.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
         HelloApplication.stage.setScene(scene);
         HelloApplication.stage.show();
     }
 
-    public void switchToEndWindow() throws IOException {
+    // jump to end screen
+    public void switchToEndScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("endScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
@@ -166,7 +173,8 @@ public class HelloController implements Initializable {
 
     }
 
-    public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
+    // jump to start screen
+    public void switchToStartScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage.setTitle("DeCafé");
@@ -175,21 +183,26 @@ public class HelloController implements Initializable {
         HelloApplication.stage.show();
     }
 
-    public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("gameScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.setResizable(false);
-        HelloApplication.stage.show();
+    // key events if wasd-keys are pressed
+    @FXML
+    public void keyPressed(KeyEvent event) {
+        switch (event.getCode()) {
+            case W -> wPressed.set(true);
+            case A -> aPressed.set(true);
+            case S -> sPressed.set(true);
+            case D -> dPressed.set(true);
+        }
     }
 
-    public void switchToInstructions() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Instructions.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.stage.setTitle("DeCafé");
-        HelloApplication.stage.setScene(scene);
-        HelloApplication.stage.show();
+    // key events if wasd-keys are released
+    @FXML
+    public void keyReleased(KeyEvent event) {
+        switch (event.getCode()) {
+            case W -> wPressed.set(false);
+            case A -> aPressed.set(false);
+            case S -> sPressed.set(false);
+            case D -> dPressed.set(false);
+        }
     }
 
     // for smoother motion
@@ -199,52 +212,63 @@ public class HelloController implements Initializable {
             //File f = new File("");
             //String filePath;
             //filePath = "";
-            double move = movementVariable;
+            double move = movementVariable; // store movementVariable in new variable
 
-            // if two keys are pressed at once and player moves diagonally
+            // if two keys are pressed at once and player moves diagonally - correct diagonal speed
             if (wPressed.get() && aPressed.get() || wPressed.get() && dPressed.get() ||
                     sPressed.get() && aPressed.get() || sPressed.get() && dPressed.get())
                 move -= movementVariable - Math.sqrt(Math.pow(movementVariable, 2) / 2);
 
-            // for collision detection later
-            double xMove = 0;
-            double yMove = 0;
+            // control waiter via wasd keys ([0|0] top-left, [100|100] bottom-right)
 
+            double xMove = 0; // move on x-axis
+            double yMove = 0; // move on y-axis
+
+            // if waiter should move up
             if (wPressed.get()) {
-                yMove = -move;
+                yMove = -move; // negative move because otherwise waiter would move down
                 //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrew.png";
-            }// if waiter should go up
+            }
 
+            // if waiter should move down
             if (sPressed.get()) {
                 yMove = move;
                 //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewUnten.png";
-            }// if waiter should go down
+            }
 
+            // if waiter should move left
             if (aPressed.get()) {
-                xMove = -move;
+                xMove = -move; // negative move because otherwise waiter would move right
                 //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewLinks.png";
-            }// if waiter should move left
+            }
 
+            // if waiter should move right
             if (dPressed.get()) {
-                xMove = move; // if waiter should move right
+                xMove = move;
                 //filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "cofiBrewRechts.png";
             }
 
+            // set x and y coordinates of waiter
             waiter.setLayoutX(waiter.getLayoutX() + xMove);
             waiter.setLayoutY(waiter.getLayoutY() + yMove);
+
+            // if collision is detected, set x and y coordinates back to where no collision occurred
             if (checkForCollision(waiter)) {
                 waiter.setLayoutX(waiter.getLayoutX() - xMove);
                 waiter.setLayoutY(waiter.getLayoutY() - yMove);
             }
 
-            /*InputStream stream = null;
+
+            /* if we want to change the waiter image while walking
+            InputStream stream = null;
             try {
                 stream = new FileInputStream(filePath);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             Image cofi = new Image(stream);
-            waiter.setImage(cofi);*/
+            waiter.setImage(cofi);
+            */
         }
     };
 
@@ -258,9 +282,11 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
-        collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-        pics = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
+        // transparent labels on top of the images to look for collisions
+        collisions = new Label[] {plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
+
+        pics = new ImageView[] {first, second, third, fourth, fifth, sixth, seventh, eighth};
 
         if (pics[0] != null && !start){
             Timer t = new Timer();
@@ -312,62 +338,43 @@ public class HelloController implements Initializable {
         }
     }
 
-    @FXML
-    public void keyPressed(KeyEvent event) {
-        switch (event.getCode()) {
-            case W -> wPressed.set(true);
-            case A -> aPressed.set(true);
-            case S -> sPressed.set(true);
-            case D -> dPressed.set(true);
-        }
-    }
 
 
-    @FXML
-    public void keyReleased(KeyEvent event) {
-        switch (event.getCode()) {
-            case W -> wPressed.set(false);
-            case A -> aPressed.set(false);
-            case S -> sPressed.set(false);
-            case D -> dPressed.set(false);
-        }
-    }
-
-    // start screen - change coffee button on mouse entered
-    public void changeCoffeeImage() throws FileNotFoundException {
+    // start screen - change start button on mouse entered
+    public void changeStartCoffeeImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "hotcoffee.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startCoffeeHot.png";
         InputStream stream = new FileInputStream(filePath);
         Image hotCoffee = new Image(stream);
         startButton.setImage(hotCoffee);
     }
 
-    // start screen - change coffee button on mouse exited
-    public void changeCoffeeImageBack() throws FileNotFoundException {
+    // start screen - change start button on mouse exited
+    public void changeStartCoffeeImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coffee.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startCoffee.png";
         InputStream stream = new FileInputStream(filePath);
         Image start = new Image(stream);
         startButton.setImage(start);
     }
 
-    // instructions - change start button on mouse entered
+    // instructions - change GOT IT! on mouse entered
     public void changeStartImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsStartButton.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsGotIt.png";
         InputStream stream = new FileInputStream(filePath);
         Image start = new Image(stream);
         gameStartButton.setImage(start);
     }
 
-    // instructions - change start button on mouse exited
+    // instructions - change GOT IT! on mouse exited
     public void changeStartImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsStartButtonBrighter.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsGotItBrighter.png";
         InputStream stream = new FileInputStream(filePath);
         Image startButton = new Image(stream);
         gameStartButton.setImage(startButton);
@@ -393,7 +400,7 @@ public class HelloController implements Initializable {
         playAgainImage.setImage(playAgain);
     }
 
-    // end screen - change BacktoStartMenu Button when mouse entered
+    // end screen - change BackToStartMenu Button when mouse entered
     public void changeBackToStartMenu() throws FileNotFoundException {
         File f = new File("");
         String filePath;
@@ -403,17 +410,17 @@ public class HelloController implements Initializable {
         backToStartImage.setImage(backToStartBrighter);
     }
 
-    // end screen - change BacktoStartMenu Button when mouse exited
+    // end screen - change BackToStartMenu Button when mouse exited
     public void changeBackToStartMenuBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "toStartMenuButton.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backToStartMenu.png";
         InputStream stream = new FileInputStream(filePath);
         Image backToStart = new Image(stream);
         backToStartImage.setImage(backToStart);
     }
 
-    // end screen - change BacktoStartMenu Button when mouse entered
+    // end screen - change Quit Button when mouse entered
     public void changeQuitEndScreen() throws FileNotFoundException {
         File f = new File("");
         String filePath;
@@ -423,7 +430,7 @@ public class HelloController implements Initializable {
         quitEndScreenImage.setImage(quitEndScreenBrighter);
     }
 
-    // end screen - change BacktoStartMenu Button when mouse exited
+    // end screen - change Quit Button when mouse exited
     public void changeQuitEndScreenBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
@@ -432,20 +439,22 @@ public class HelloController implements Initializable {
         Image quitEndScreen = new Image(stream);
         quitEndScreenImage.setImage(quitEndScreen);
     }
-    // when coffee is produced, change appearance
+
+    // if waiter is near coffee machine, change appearance when clicked
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
             coffeeeMachine.displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
         }
     }
 
-    // when cake machine is running
+    // if waiter is near cake machine, change appearance when clicked
     public void showCake() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(kitchenAid.getBoundsInParent())) {
             cakeMachine.displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
         }
     }
 
+    // if no product is held by waiter
     public void noProduct() throws FileNotFoundException {
         String filePath = CofiBrew.getImageWithoutProduct();
         InputStream stream = new FileInputStream(filePath);
@@ -650,7 +659,7 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void checkUpgradePossibel(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
+    public void checkUpgradePossible(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
         if (!upgrade.isUsed() && coin >= upgrade.getCoinsNeeded()){
             upgradeImage.setDisable(false);
             String filePath;
@@ -680,9 +689,9 @@ public class HelloController implements Initializable {
             movementVariable = 6;
         }
         coinLabel.setText(String.valueOf(coin));
-        checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
-        checkUpgradePossibel(cakeUpgrade, upgradeCake);
-        checkUpgradePossibel(playerUpgrade, upgradePlayer);
+        checkUpgradePossible(coffeeUpgrade, upgradeCoffee);
+        checkUpgradePossible(cakeUpgrade, upgradeCake);
+        checkUpgradePossible(playerUpgrade, upgradePlayer);
     }
 
     public ImageView getRandomPic (ImageView[]pics , List <Integer> num){
@@ -718,8 +727,9 @@ public class HelloController implements Initializable {
 
     }
 
+    // check if collisions occur
     public boolean checkForCollision (ImageView waiter){
-        for (int i = 0; i < collisions.length; i++) {
+        for (int i = 0; i < collisions.length; i++) { // iterate through labels
             if (waiter.getBoundsInParent().intersects(collisions[i].getBoundsInParent())) {
                 return true;
             }
@@ -744,9 +754,9 @@ public class HelloController implements Initializable {
         ((ImageView)e.getSource()).setDisable(true);
 
         if (coin < 80) {
-            checkUpgradePossibel(coffeeUpgrade, upgradeCoffee);
-            checkUpgradePossibel(cakeUpgrade, upgradeCake);
-            checkUpgradePossibel(playerUpgrade, upgradePlayer);
+            checkUpgradePossible(coffeeUpgrade, upgradeCoffee);
+            checkUpgradePossible(cakeUpgrade, upgradeCake);
+            checkUpgradePossible(playerUpgrade, upgradePlayer);
             coinLabel.setText(String.valueOf(coin));
             Timer t = new Timer();
             t.schedule(
@@ -764,12 +774,12 @@ public class HelloController implements Initializable {
                     5000
             );
         }else {
-            switchToEndWindow();
+            switchToEndScreen();
         }
     }
 
+    // end game (called when exit or quit button is clicked)
     public void endGame(){
         Platform.exit();
-
     }
 }

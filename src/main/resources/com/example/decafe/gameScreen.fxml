@@ -77,42 +77,42 @@
       </ImageView>
       <ImageView fx:id="first" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterOben.png" />
+            <Image url="@customerAbove.png" />
          </image>
       </ImageView>
       <ImageView fx:id="second" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="120.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterOben.png" />
+            <Image url="@customerAbove.png" />
          </image>
       </ImageView>
       <ImageView fx:id="third" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterUnten.png" />
+            <Image url="@customerBottom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="fourth" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="314.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterUnten.png" />
+            <Image url="@customerBottom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="sixth" fitHeight="73.0" fitWidth="100.0" layoutX="500.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterUnten.png" />
+            <Image url="@customerBottom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="seventh" fitHeight="73.0" fitWidth="100.0" layoutX="761.0" layoutY="620.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterUnten.png" />
+            <Image url="@customerBottom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="eighth" fitHeight="100.0" fitWidth="73.0" layoutX="861.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterRechts.png" />
+            <Image url="@customerRight.png" />
          </image>
       </ImageView>
       <ImageView fx:id="fifth" fitHeight="100.0" fitWidth="73.0" layoutX="609.0" layoutY="501.0" onMouseClicked="#displayPerson" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@characterRechts.png" />
+            <Image url="@customerRight.png" />
          </image>
       </ImageView>
       <Button layoutX="1000.0" layoutY="1000.0" mnemonicParsing="false" onMouseClicked="#searchForTable" text="" />
@@ -207,7 +207,7 @@
       </ImageView>
       <ImageView id="player" fx:id="upgradePlayer" disable="true" fitHeight="60.0" fitWidth="92.0" layoutX="309.0" layoutY="5.0" onMouseClicked="#doUpgrade" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@rollschuhhUsed.png" />
+            <Image url="@upgradeSkatesUsed.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="78.0" fitWidth="82.0" layoutX="892.0" onMouseClicked="#endGame" pickOnBounds="true" preserveRatio="true">
