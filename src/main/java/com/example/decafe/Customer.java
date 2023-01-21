@@ -252,6 +252,7 @@ public class Customer {
         image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image));
         smiley.setVisible(false);
+        num.add(table);
         this.x.cancel();
     }
 }
