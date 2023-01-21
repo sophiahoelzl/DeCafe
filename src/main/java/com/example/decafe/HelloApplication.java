@@ -7,10 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+// Class used to start the JavaFX Application
 public class HelloApplication extends Application {
 
     public static Stage stage;
     @Override
+    // Start Application by starting the Stage
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
