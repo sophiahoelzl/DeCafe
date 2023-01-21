@@ -93,6 +93,8 @@ public class HelloController implements Initializable {
     public ImageView upgradeCoffee;
     public ImageView upgradeCake;
     public ImageView upgradePlayer;
+
+    // for end screen
     public ImageView gameStartButton;
     public ImageView cofiBrewImage;
     public ImageView playAgainImage;
