@@ -9,23 +9,24 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+// Function used to control all the methods used for Upgrades
 public class Upgrade {
-    private int CoinsNeeded;
-    private boolean used;
-    private String pathNotUsed;
-    private String pathUSed;
-    private String type;
-    private ImageView upgradeImages;
+    private final int CoinsNeeded; // The coins needed to use/do the Upgrade
+    private boolean used; // Boolean that indicates if the Upgrade was already used or not
+    private final String ImageNotUsed; // Image of "deactivated" Upgrade
+    private final String ImageUsed; // Image of "activated" Upgrade
+    private final ImageView upgradeImages; // ImageView that is related to the Upgrade
 
-    Upgrade(int CoinsNeeded, boolean used, String filenameNotUsed, String filenameUsed, String type, ImageView upgradeImages){
+    // Constructor
+    Upgrade(int CoinsNeeded, boolean used, String filenameNotUsed, String filenameUsed, ImageView upgradeImages){
         this.CoinsNeeded = CoinsNeeded;
         this.used = used;
-        this.pathNotUsed = filenameNotUsed;
-        this.pathUSed = filenameUsed;
-        this.type = type;
+        this.ImageNotUsed = filenameNotUsed;
+        this.ImageUsed = filenameUsed;
         this.upgradeImages = upgradeImages;
     }
 
+    // Getter
     public boolean isUsed() {
         return used;
     }
@@ -38,12 +39,12 @@ public class Upgrade {
         return CoinsNeeded;
     }
 
-    public String getPathUSed() {
-        return pathUSed;
+    public String getImageUsed() {
+        return ImageUsed;
     }
 
-    public String getPathNotUsed() {
-        return pathNotUsed;
+    public String getImageNotUsed() {
+        return ImageNotUsed;
     }
 
     public ImageView getUpgradeImages() {
@@ -51,20 +52,26 @@ public class Upgrade {
     }
 
 
+    // Method used to create an Image Object
     public Image createImage(String filename) throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
-        InputStream stream = new FileInputStream(filePath);
-        return new Image(stream);
+        File f = new File(""); // Get filepath of project
+        // Get path to certain Image
+        String filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
+        InputStream stream = new FileInputStream(filePath); // Convert path into stream
+        return new Image(stream); // Convert stream to Image and return it
     }
 
+    // Method used to use an Upgrade
     public int doUpgrades(ImageView upgrade, int coin) throws FileNotFoundException {
-        upgrade.setImage(createImage(this.pathUSed));
+        // Change Image to the "deactivated" Upgrade Image
+        upgrade.setImage(createImage(this.ImageUsed));
+        // Disable the ImageView
         upgrade.setDisable(true);
+        // Set the Used variable to true
         this.setUsed(true);
+        // Decrease the coins score according to the upgrade costs
         coin -= this.getCoinsNeeded();
+        // return the new coin score
         return coin;
-
     }
 }
