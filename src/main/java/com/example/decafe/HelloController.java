@@ -26,6 +26,7 @@ public class HelloController implements Initializable {
 
     @FXML
     ImageView startButton = new ImageView();
+    public ImageView startQuitButton;
     public ImageView coffeeMachine;
     public ImageView kitchenAid;
     public ImageView trashcan;
@@ -308,6 +309,15 @@ public class HelloController implements Initializable {
         quitEndScreenImage.setImage(createImage("quitEndScreen.png"));
     }
 
+    public void changeQuitStartScreen() throws FileNotFoundException {
+        startQuitButton.setImage(createImage("quitEndScreenBrighter.png"));
+    }
+
+    // end screen - change Quit Button when mouse exited
+    public void changeQuitStartScreenBack() throws FileNotFoundException {
+        startQuitButton.setImage(createImage("quitEndScreen.png"));
+    }
+
     // if waiter is near coffee machine, change appearance when clicked
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
@@ -446,6 +456,11 @@ public class HelloController implements Initializable {
     // end game (called when quit button is clicked)
     public void endGame(){
         stopTimers();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    public void endGameBeforeEvenStarted(){
         Platform.exit();
         System.exit(0);
     }
