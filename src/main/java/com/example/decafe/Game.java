@@ -21,11 +21,11 @@ public class Game {
     private String money;
 
     Game(ImageView upgradeCoffee, ImageView upgradeCake, ImageView upgradePlayer){
-        this.coffeeMachine = new Machine(5, "CoffeemachineWithCoffee.png", "coffeeMachine.png", "coffee");
+        this.coffeeMachine = new Machine(5, "coffeeMachineWithCoffee.png", "coffeeMachine.png", "coffee");
         this.cakeMachine = new Machine(5, "kitchenAidUsed.png", "kitchenAid.png", "cake");
         this.coffeeUpgrade = new Upgrade(20, false, "coffeeUpgrade.png", "coffeeUsed.png", "coffee", upgradeCoffee);
         this.cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", "cake", upgradeCake);
-        this.playerUpgrade = new Upgrade(40, false, "upgradeRollschuh.png", "rollschuhUsed.png", "player", upgradePlayer);
+        this.playerUpgrade = new Upgrade(40, false, "upgradeSkates.png", "upgradeSkatesUsed.png", "player", upgradePlayer);
         this.coinsEarned = 0;
         this.money = "5coins.png";
         this.fourCoins = "4coins.png";

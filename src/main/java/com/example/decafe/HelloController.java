@@ -128,19 +128,6 @@ public class HelloController implements Initializable {
         HelloApplication.stage.show();
     }
 
-    // jump from start screen to game screen
-    public void startGame() throws IOException {
-        loadScene("gameScreen.fxml");
-        if (Customer.pics[0] != null && !start){
-            Customer cust = new Customer();
-            cust.startTimerSpawn(1, cust.getT());
-            cust.startTimerSpawn(5, cust.getC());
-            cust.startTimerSpawn(10, cust.getY());
-            Customer.allCustomers.add(cust);
-            start = true;
-        }
-    }
-
     // jump to end screen
     public void switchToEndScreen() throws IOException {
         loadScene("endScreen.fxml");
@@ -151,8 +138,17 @@ public class HelloController implements Initializable {
         loadScene("startScreen.fxml");
     }
 
+    // jump from start screen to game screen
     public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
         loadScene("gameScreen.fxml");
+        if (Customer.pics[0] != null && !start){
+            Customer cust = new Customer();
+            cust.startTimerSpawn(1, cust.getT());
+            cust.startTimerSpawn(5, cust.getC());
+            cust.startTimerSpawn(10, cust.getY());
+            Customer.allCustomers.add(cust);
+            start = true;
+        }
     }
 
     // jump to instructions

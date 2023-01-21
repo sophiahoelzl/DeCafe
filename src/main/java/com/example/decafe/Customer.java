@@ -354,9 +354,7 @@ public class Customer {
         customer.coinImage.setDisable(true);
         customer.coinImage.setImage(customer.createImage("coin.png"));
         num.add(customer.getTable());
-        try{customer.startTimerSpawn(5, customer.s);}
-        catch (NullPointerException x){
-        }
+        customer.startTimerSpawn(5, customer.s);
     }
 
     public void leave (ImageView image, Label label) {
