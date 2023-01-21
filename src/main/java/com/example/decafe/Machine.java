@@ -23,14 +23,14 @@ public class Machine {
     private int capacity; // Wie viele Produkte die Machine gleichzeitig erzeugen kann
     private Boolean produced;
     private final String PathMachineWithoutProduct;
-    private final String PathMachineWithProduct;
+    private final String pathMachineWithProduct;
     private final String type;
 
     public Machine(int duration, String filenameImageWithProduct, String filenameImageWithoutProduct, String type){
         this.duration = duration;
         this.capacity = 1;
         this.produced = false;
-        this.PathMachineWithProduct = filenameImageWithProduct;
+        this.pathMachineWithProduct = filenameImageWithProduct;
         this.PathMachineWithoutProduct = filenameImageWithoutProduct;
         this.type = type;
     }
@@ -124,7 +124,7 @@ public class Machine {
 
         Timer t = new Timer();
 
-        String imageMachine = this.PathMachineWithProduct;
+        String imageMachine = this.pathMachineWithProduct;
         String imageCofi = cofiBrew.getImageWithoutProduct();
         boolean gotProduced = false;
 

@@ -83,6 +83,8 @@ public class HelloController implements Initializable {
     public ImageView upgradeCoffee;
     public ImageView upgradeCake;
     public ImageView upgradePlayer;
+
+    // for end screen
     public ImageView gameStartButton;
     public ImageView cofiBrewImage;
     public ImageView playAgainImage;
@@ -139,10 +141,12 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void switchToEndWindow() throws IOException {
+    // jump to end screen
+    public void switchToEndScreen() throws IOException {
         loadScene("endScreen.fxml");
     }
 
+    // jump to start screen
     public void switchToStartScreen() throws IOException { // if button BACK TO START MENU is pressed
         loadScene("startScreen.fxml");
     }
@@ -151,8 +155,31 @@ public class HelloController implements Initializable {
         loadScene("gameScreen.fxml");
     }
 
+    // jump to instructions
     public void switchToInstructions() throws IOException {
         loadScene("Instructions.fxml");
+    }
+    
+    // key events if wasd-keys are pressed
+    @FXML
+    public void keyPressed(KeyEvent event) {
+        switch (event.getCode()) {
+            case W -> wPressed.set(true);
+            case A -> aPressed.set(true);
+            case S -> sPressed.set(true);
+            case D -> dPressed.set(true);
+        }
+    }
+
+    // key events if wasd-keys are released
+    @FXML
+    public void keyReleased(KeyEvent event) {
+        switch (event.getCode()) {
+            case W -> wPressed.set(false);
+            case A -> aPressed.set(false);
+            case S -> sPressed.set(false);
+            case D -> dPressed.set(false);
+        }
     }
 
     // for smoother motion
@@ -160,35 +187,43 @@ public class HelloController implements Initializable {
         @Override
         public void handle(long timestamp) {
             movementVariable = CofiBrew.getMovement();
-            double move = movementVariable;
+            double move = movementVariable; // store movementVariable in new variable
 
-            // if two keys are pressed at once and player moves diagonally
+            // if two keys are pressed at once and player moves diagonally - correct diagonal speed
             if (wPressed.get() && aPressed.get() || wPressed.get() && dPressed.get() ||
                     sPressed.get() && aPressed.get() || sPressed.get() && dPressed.get())
                 move -= movementVariable - Math.sqrt(Math.pow(movementVariable, 2) / 2);
 
-            // for collision detection later
-            double xMove = 0;
-            double yMove = 0;
+            // control waiter via wasd keys ([0|0] top-left, [100|100] bottom-right)
 
+            double xMove = 0; // move on x-axis
+            double yMove = 0; // move on y-axis
+
+            // if waiter should move up
             if (wPressed.get()) {
-                yMove = -move;
-            }// if waiter should go up
-
-            if (sPressed.get()) {
-                yMove = move;
-            }// if waiter should go down
-
-            if (aPressed.get()) {
-                xMove = -move;
-            }// if waiter should move left
-
-            if (dPressed.get()) {
-                xMove = move; // if waiter should move right
+                yMove = -move; // negative move because otherwise waiter would move down
             }
 
+            // if waiter should move down
+            if (sPressed.get()) {
+                yMove = move;
+            }
+
+            // if waiter should move left
+            if (aPressed.get()) {
+                xMove = -move; // negative move because otherwise waiter would move right
+            }
+
+            // if waiter should move right
+            if (dPressed.get()) {
+                xMove = move;
+            }
+
+            // set x and y coordinates of waiter
             waiter.setLayoutX(waiter.getLayoutX() + xMove);
             waiter.setLayoutY(waiter.getLayoutY() + yMove);
+
+            // if collision is detected, set x and y coordinates back to where no collision occurred
             if (checkForCollision(waiter)) {
                 waiter.setLayoutX(waiter.getLayoutX() - xMove);
                 waiter.setLayoutY(waiter.getLayoutY() - yMove);
@@ -206,7 +241,8 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
-
+        
+        // transparent labels on top of the images to look for collisions
         collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
         Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
@@ -219,26 +255,7 @@ public class HelloController implements Initializable {
 
     }
 
-    @FXML
-    public void keyPressed(KeyEvent event) {
-        switch (event.getCode()) {
-            case W -> wPressed.set(true);
-            case A -> aPressed.set(true);
-            case S -> sPressed.set(true);
-            case D -> dPressed.set(true);
-        }
-    }
 
-
-    @FXML
-    public void keyReleased(KeyEvent event) {
-        switch (event.getCode()) {
-            case W -> wPressed.set(false);
-            case A -> aPressed.set(false);
-            case S -> sPressed.set(false);
-            case D -> dPressed.set(false);
-        }
-    }
 
     public Image createImage(String filename) throws FileNotFoundException {
         File f = new File("");
@@ -247,25 +264,24 @@ public class HelloController implements Initializable {
         InputStream stream = new FileInputStream(filePath);
         return new Image(stream);
     }
-
-    // start screen - change coffee button on mouse entered
-    public void changeCoffeeImage() throws FileNotFoundException {
-        startButton.setImage(createImage("hotcoffee.png"));
+    // start screen - change start button on mouse entered
+    public void changeStartCoffeeImage() throws FileNotFoundException {
+        startButton.setImage(createImage("startCoffeeHot.png"));
     }
 
     // start screen - change coffee button on mouse exited
-    public void changeCoffeeImageBack() throws FileNotFoundException {
-        startButton.setImage(createImage("coffee.png"));
+    public void changeStartCoffeeImageBack() throws FileNotFoundException {
+        startButton.setImage(createImage("startCoffee.png"));
     }
 
-    // instructions - change start button on mouse entered
+    // instructions - change GOT IT! on mouse entered
     public void changeStartImage() throws FileNotFoundException {
-        gameStartButton.setImage(createImage("Start.png"));
+        gameStartButton.setImage(createImage("instructionsGotIt.png"));
     }
 
-    // instructions - change start button on mouse exited
+    // instructions - change GOT IT! on mouse exited
     public void changeStartImageBack() throws FileNotFoundException {
-        gameStartButton.setImage(createImage("startHover.png"));
+        gameStartButton.setImage(createImage("instructionsGotItBrighter.png"));
     }
 
     // end screen - change PlayAgain Button when mouse entered
@@ -278,39 +294,41 @@ public class HelloController implements Initializable {
         playAgainImage.setImage(createImage("playAgain.png"));
     }
 
-    // end screen - change BacktoStartMenu Button when mouse entered
+    // end screen - change BackToStartMenu Button when mouse entered
     public void changeBackToStartMenu() throws FileNotFoundException {
         backToStartImage.setImage(createImage("backToStartMenuBrighter.png"));
     }
 
-    // end screen - change BacktoStartMenu Button when mouse exited
+    // end screen - change BackToStartMenu Button when mouse exited
     public void changeBackToStartMenuBack() throws FileNotFoundException {
-        backToStartImage.setImage(createImage("toStartMenuButton.png"));
+        backToStartImage.setImage(createImage("backToStartMenu.png"));
     }
 
-    // end screen - change BacktoStartMenu Button when mouse entered
+    // end screen - change Quit Button when mouse entered
     public void changeQuitEndScreen() throws FileNotFoundException {
         quitEndScreenImage.setImage(createImage("quitEndScreenBrighter.png"));
     }
 
-    // end screen - change BacktoStartMenu Button when mouse exited
+    // end screen - change Quit Button when mouse exited
     public void changeQuitEndScreenBack() throws FileNotFoundException {
         quitEndScreenImage.setImage(createImage("quitEndScreen.png"));
     }
-    // when coffee is produced, change appearance
+
+    // if waiter is near coffee machine, change appearance when clicked
     public void showCoffee() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
             Play.getCoffeeMachine().displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
         }
     }
 
-    // when cake machine is running
+    // if waiter is near cake machine, change appearance when clicked
     public void showCake() throws FileNotFoundException {
         if (waiter.getBoundsInParent().intersects(kitchenAid.getBoundsInParent())) {
             Play.getCakeMachine().displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
         }
     }
 
+    // if no product is held by waiter
     public void noProduct() throws FileNotFoundException {
         waiter.setImage(createImage(CofiBrew.getImageWithoutProduct()));
         CofiBrew.setProduct("none");
@@ -338,7 +356,7 @@ public class HelloController implements Initializable {
                     try {
                         customer.startTimerSpawn(5, customer.getC());
                     } catch (NullPointerException e){
-                        switchToEndWindow();
+                        switchToEndScreen();
                     }
                     if (customer.checkOrder(CofiBrew, customer, waiter)) {
                         String moneyImage = "";
@@ -355,7 +373,7 @@ public class HelloController implements Initializable {
                                 getMoney(event1, customer);
                             } catch (IOException e) {
                                 try {
-                                    switchToEndWindow();
+                                    switchToEndScreen();
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
@@ -378,8 +396,9 @@ public class HelloController implements Initializable {
         checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
     }
 
+    // check if collisions occur
     public boolean checkForCollision (ImageView waiter){
-        for (Label collision : collisions) {
+        for (Label collision : collisions) { // iterate through labels
             if (waiter.getBoundsInParent().intersects(collision.getBoundsInParent())) {
                 return true;
             }
@@ -401,11 +420,11 @@ public class HelloController implements Initializable {
             try {
                 customer.startTimerSpawn(5, customer.getY());
             } catch (NullPointerException y){
-                switchToEndWindow();
+                switchToEndScreen();
             }
         }else {
             stopTimers();
-            switchToEndWindow();
+            switchToEndScreen();
         }
     }
 
@@ -423,14 +442,17 @@ public class HelloController implements Initializable {
         }
     }
 
+    // end game (called when exit clicked)
     public void endGameQuick(){
         stopTimers();
         Platform.exit();
 
     }
 
+    // end game (called when quit button is clicked)
     public void endGame(){
         stopTimers();
         Platform.exit();
+
     }
 }

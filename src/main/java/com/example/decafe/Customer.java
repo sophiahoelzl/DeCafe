@@ -10,7 +10,6 @@ import java.util.*;
 
 public class Customer {
     private String order; //Was der Gast bestellt - Kaffee oder Kuchen
-    private int coin = 0;
 
     private ImageView customer;
     private Label orderr;
@@ -27,7 +26,6 @@ public class Customer {
     private boolean green;
     private boolean yellow;
     private boolean red;
-    public String colorsmiley;
 
     private boolean left = true;
 
@@ -257,21 +255,6 @@ public class Customer {
                 },
                 duration * 1000L
         );
-    }
-
-    public String getSmileyGreen(){
-        File f = new File("");
-        return f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileygreen.png";
-    }
-
-    public String getSmileyYellow(){
-        File f = new File("");
-        return f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileyyellow.png";
-    }
-
-    public String getSmileyRed(){
-        File f = new File("");
-        return f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "smileyred.png";
     }
 
     public void leaveCoffeeShop(Timer t, boolean left, Player CofiBrew, ImageView waiter){
