@@ -355,7 +355,7 @@ public class HelloController implements Initializable {
     public void changeStartImage() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "Start.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsStartButton.png";
         InputStream stream = new FileInputStream(filePath);
         Image start = new Image(stream);
         gameStartButton.setImage(start);
@@ -365,7 +365,7 @@ public class HelloController implements Initializable {
     public void changeStartImageBack() throws FileNotFoundException {
         File f = new File("");
         String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "startHover.png";
+        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "instructionsStartButtonBrighter.png";
         InputStream stream = new FileInputStream(filePath);
         Image startButton = new Image(stream);
         gameStartButton.setImage(startButton);
