@@ -1,24 +1,23 @@
 package com.example.decafe;
 
-import java.io.File;
-
+// Class to handle Methods used to change the Image and movement speed of waiter
 public class Player {
-    private String imageWithoutProduct; //Bild vom Kellner
-    private String imageWithCoffee;
-    private String imageWithCake;
-    private String product; //Was für ein Produkt der Kellner gerade trägt - Kaffee, Kuchen oder gar nix
-    private int movement;
+    private final String imageWithoutProduct; // Image of the waiter without anything in his hands
+    private final String imageWithCoffee; // Image of the waiter with coffee in his hands
+    private final String imageWithCake; // Image of the waiter with cake in his hands
+    private String product; // The type of product the waiter holds in his hands (Coffee or Cake)
+    private int movementSpeed; // the movement speed at which the waiter moves
 
+    // Constructor
     public Player(String imageWithoutProduct, String imageWithCake, String imageWithCoffee, int movement) {
         this.imageWithoutProduct = imageWithoutProduct;
         this.imageWithCake =  imageWithCake;
         this.imageWithCoffee = imageWithCoffee;
         this.product = "none";
-        this.movement = movement;
+        this.movementSpeed = movement;
     }
 
     //Getter
-
     public String getProduct() {
         return product;
     }
@@ -36,21 +35,16 @@ public class Player {
     }
 
     public int getMovement() {
-        return movement;
+        return movementSpeed;
     }
 
     //Setter
-
     public void setProduct(String product) {
         this.product = product;
     }
 
-    public void setImageWithoutProduct(String imageWithoutProduct){
-        this.imageWithoutProduct = imageWithoutProduct;
-    }
-
     public void setMovement(int movement) {
-        this.movement = movement;
+        this.movementSpeed = movement;
     }
 }
 
