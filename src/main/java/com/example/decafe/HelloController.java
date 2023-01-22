@@ -42,22 +42,6 @@ public class HelloController implements Initializable {
     private ImageView waiter;
 
     @FXML
-    public Label orderlabel1 = new Label();
-    public Label orderlabel2 = new Label();
-    public Label orderlabel3 = new Label();
-    public Label orderlabel4 = new Label();
-    public Label orderlabel5 = new Label();
-    public Label orderlabel6 = new Label();
-    public Label orderlabel7 = new Label();
-    public Label orderlabel8 = new Label();
-    public ImageView first;
-    public ImageView second;
-    public ImageView third;
-    public ImageView fourth;
-    public ImageView fifth;
-    public ImageView sixth;
-    public ImageView seventh;
-    public ImageView eighth;
     public ProgressBar progressCoffee;
     public ProgressBar progressCake;
     public Label table1;
@@ -94,6 +78,8 @@ public class HelloController implements Initializable {
     public ImageView endScreenBackground;
     public ImageView quitEndScreenImage;
 
+    //for the customers
+    //smiley images
     public ImageView smileyfirst;
     public ImageView smileysecond;
     public ImageView smileythird;
@@ -103,6 +89,7 @@ public class HelloController implements Initializable {
     public ImageView smileyseventh;
     public ImageView smileyeighth;
 
+    //coin images
     public ImageView coinfirst;
     public ImageView coinsecond;
     public ImageView cointhird;
@@ -111,6 +98,26 @@ public class HelloController implements Initializable {
     public ImageView coinsixth;
     public ImageView coinseventh;
     public ImageView coineigth;
+
+    //order labels
+    public Label orderlabel1 = new Label();
+    public Label orderlabel2 = new Label();
+    public Label orderlabel3 = new Label();
+    public Label orderlabel4 = new Label();
+    public Label orderlabel5 = new Label();
+    public Label orderlabel6 = new Label();
+    public Label orderlabel7 = new Label();
+    public Label orderlabel8 = new Label();
+
+    //customer images
+    public ImageView first;
+    public ImageView second;
+    public ImageView third;
+    public ImageView fourth;
+    public ImageView fifth;
+    public ImageView sixth;
+    public ImageView seventh;
+    public ImageView eighth;
 
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png", 4);
     public Game Play;
@@ -240,11 +247,11 @@ public class HelloController implements Initializable {
         // transparent labels on top of the images to look for collisions
         collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-        Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth};
-        Customer.smileyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth};
-        Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8};
-        Customer.coinImages = new ImageView[]{coinfirst, coinsecond, cointhird, coinfourth, coinfifth, coinsixth, coinseventh, coineigth};
-        Customer.setT(t);
+        Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth}; //make customer ImageView[]
+        Customer.smileyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth}; //make smiley ImageView[]
+        Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8}; //make label label[]
+        Customer.coinImages = new ImageView[]{coinfirst, coinsecond, cointhird, coinfourth, coinfifth, coinsixth, coinseventh, coineigth}; //make coin ImageView[]
+        Customer.setT(t); //set the static timer t
         Play = new Game(upgradeCoffee, upgradeCake, upgradePlayer);
     }
 
@@ -336,7 +343,7 @@ public class HelloController implements Initializable {
         CofiBrew.setProduct("none");
     }
 
-    public Customer findCustomer(List<Customer> customerList, ImageView cust) {
+    public Customer findCustomer(List<Customer> customerList, ImageView cust) { //find the customer in the customerList and return it
         for (Customer customer : customerList) {
             if (customer.getImage().equals(cust)) {
                 return customer;
@@ -348,10 +355,10 @@ public class HelloController implements Initializable {
 
     public void displayPerson(MouseEvent event) throws IOException {
 
-        ImageView cust = (ImageView) event.getSource();
-        Customer customer = findCustomer(Customer.customerList, cust);
+        ImageView cust = (ImageView) event.getSource(); //get the Customer of the clicked Image
+        Customer customer = findCustomer(Customer.customerList, cust); //make new customer object
 
-            if (!customer.isAlreadyOrdered()){
+            if (!customer.isAlreadyOrdered()){ //if customer has not ordered yet, display an order
                 customer.displayOrder(customer.getLabel());
             } else {
                 if (cust.getBoundsInParent().intersects(waiter.getBoundsInParent())) {
@@ -360,7 +367,7 @@ public class HelloController implements Initializable {
                     } catch (NullPointerException e){
                         switchToEndScreen();
                     }
-                    if (customer.checkOrder(CofiBrew, customer, waiter)) {
+                    if (customer.checkOrder(CofiBrew, customer, waiter)) { //get appropriate coin image
                         String moneyImage = "";
                         if (customer.isGreen()) {
                             moneyImage = Play.getMoney();
@@ -369,7 +376,7 @@ public class HelloController implements Initializable {
                         } else if (customer.isRed()) {
                             moneyImage = Play.getThreeCoins();
                         }
-                        customer.getCoinImage().setImage(createImage(moneyImage));
+                        customer.getCoinImage().setImage(createImage(moneyImage)); //set coin image
                         customer.getCoinImage().setOnMouseClicked(event1 -> {
                             try {
                                 getMoney(event1, customer);
