@@ -126,7 +126,7 @@ public class Game {
             this.coinsEarned += 4;
         }else if (customer.isRed()){ // If customer lef in a bad mood
             // Increase coin score by 3
-            this.coinsEarned += 4;
+            this.coinsEarned += 3;
         }
     }
 }
