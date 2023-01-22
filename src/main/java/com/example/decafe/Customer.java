@@ -116,7 +116,8 @@ public class Customer {
         return order;
     }
 
-    public Image createImage(String filename) throws FileNotFoundException { //creates an image
+    //General methode to create an Imagepath
+    public Image createImage(String filename) throws FileNotFoundException {
         File f = new File("");
         String filePath;
         filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
@@ -124,7 +125,8 @@ public class Customer {
         return new Image(stream);
     }
 
-    public static ImageView getImage(ImageView customer, ImageView[] searchArray ){ //returns the appropriate image for the customer
+    //Returns the appropriate image for the customer
+    public static ImageView getImage(ImageView customer, ImageView[] searchArray ){
         ImageView wantedImage = new ImageView();
 
         if (pics[0].equals(customer)) {
@@ -148,7 +150,8 @@ public class Customer {
         return wantedImage;
     }
 
-    public static Label getLabel(ImageView customer) { //returns the appropriate label for the customer
+    //Returns the appropriate label for the customer
+    public static Label getLabel(ImageView customer) {
 
         Label customerOrder = new Label();
 
@@ -174,7 +177,8 @@ public class Customer {
 
     }
 
-    public static ImageView getRandomPic(){ //returns random customer picture
+    //Returns random customer picture
+    public static ImageView getRandomPic(){
         Random random = new Random();
         int index = num.get(random.nextInt(num.size()));
         number = index;
@@ -188,6 +192,7 @@ public class Customer {
         return pics[index];
     }
 
+    //Methode to spawn customers
     public static void spawnCustomers(){
         if (customerList.size() < 3 && num.size() != 0) { //spawn a new customer this when under 3 customers are in the cafe
             ImageView customerImage = getRandomPic(); //get random picture from Array
@@ -205,7 +210,8 @@ public class Customer {
         }
     }
 
-    public void startTimerSpawn(int duration, Timer t){ //timer to spawn the customers
+    //Timer to spawn the customers
+    public void startTimerSpawn(int duration, Timer t){
         t.schedule(
                 new TimerTask() {
                     @Override
@@ -218,12 +224,14 @@ public class Customer {
         );
     }
 
-    public void leaveCoffeeShop(boolean left, Player CofiBrew){ //when customers leave the coffee shop
+    //Methode when customer leaves the coffee shop
+    public void leaveCoffeeShop(boolean left, Player CofiBrew){
         CofiBrew.setProduct("none");
         startTimerLeave(this, left);
     }
 
-    public void startTimerLeave (Customer customer, boolean left){ //methode for when customer leaves
+    //Methode for the timer when customer leaves
+    public void startTimerLeave (Customer customer, boolean left){
         this.orderLabel.setVisible(false);
         this.smiley.setVisible(false);
         t.schedule(
@@ -244,6 +252,7 @@ public class Customer {
         this.x.cancel(); //cancel the 60 seconds when customer left
     }
 
+    //Methode for the general 60 seconds timer
     public void waitingTime()  {
         Customer customer = this;
         TimerTask timerTask = new TimerTask() {
@@ -288,11 +297,12 @@ public class Customer {
             }
         };
 
-        this.x.schedule(timerTask, 0, 1000);
+        this.x.schedule(timerTask, 0, 1000);//it should call this methode every second
 
     }
 
-    public void displayOrder(Label orderlabel) { //display order
+    //Methode to display order
+    public void displayOrder(Label orderlabel) {
         orderlabel.setVisible(true);
         order = getRandomOrder();
         setOrder(order);
@@ -301,6 +311,7 @@ public class Customer {
     }
 
 
+    //Methode to check if the order is right or wrong
     public boolean checkOrder(Player CofiBrew, Customer customer, ImageView waiter) throws FileNotFoundException{
         if (CofiBrew.getProduct().equals(customer.getOrder())) { //if CofiBrew has the right order
             waiter.setImage(createImage(CofiBrew.getImageWithoutProduct())); //set CofiBrew without order
@@ -313,13 +324,15 @@ public class Customer {
         }
     }
 
-    public static void noMoneySpent(Customer customer) throws FileNotFoundException { //when the customer leaves with
+    //when the customer leaves after 60 seconds without being served
+    public static void noMoneySpent(Customer customer) throws FileNotFoundException {
         customer.coinImage.setVisible(false);
         customer.coinImage.setDisable(true);
         num.add(customer.getTable());
         customer.startTimerSpawn(5, t);
     }
 
+    //Methode for when the customer leaves
     public void leave (ImageView image) throws FileNotFoundException {
         image.setVisible(false);
         customerList.removeIf(customer -> customer.getImage().equals(image)); //remove customer from customerList
