@@ -16,9 +16,9 @@ public class Game {
     private final Upgrade cakeUpgrade; // An Upgrade Object used to upgrade the Cake Machine
     private final Upgrade playerUpgrade; // An Upgrade Object used to make the Player faster
     private int coinsEarned; // The amount of Coins earned/used in the Game - 0 at the beginning
-    private final String threeCoins; // Image of small amount of money earned
-    private final String fourCoins; // Image of normal amount of money earned
-    private final String money; // Images of huge amount of money earned
+    private final String filenameImageThreeCoins; // Image of small amount of money earned
+    private final String filenameImageFourCoins; // Image of normal amount of money earned
+    private final String filenameImageDollar; // Images of huge amount of money earned
 
     // Constructor
     Game(ImageView upgradeCoffee, ImageView upgradeCake, ImageView upgradePlayer){
@@ -28,9 +28,9 @@ public class Game {
         this.cakeUpgrade = new Upgrade(20, false, "cakeUpgrade.png", "cakeUsed.png", upgradeCake);
         this.playerUpgrade = new Upgrade(40, false, "upgradeSkates.png", "upgradeSkatesUsed.png",  upgradePlayer);
         this.coinsEarned = 0;
-        this.money = "5coins.png";
-        this.fourCoins = "4coins.png";
-        this.threeCoins = "3coins.png";
+        this.filenameImageDollar = "5coins.png";
+        this.filenameImageFourCoins = "4coins.png";
+        this.filenameImageThreeCoins = "3coins.png";
     }
 
     // Getter
@@ -54,16 +54,16 @@ public class Game {
         return playerUpgrade;
     }
 
-    public String getThreeCoins() {
-        return threeCoins;
+    public String getFilenameImageThreeCoins() {
+        return filenameImageThreeCoins;
     }
 
-    public String getFourCoins() {
-        return fourCoins;
+    public String getFilenameImageFourCoins() {
+        return filenameImageFourCoins;
     }
 
-    public String getMoney() {
-        return money;
+    public String getFilenameImageDollar() {
+        return filenameImageDollar;
     }
 
     public int getCoinsEarned() { return coinsEarned; }
@@ -78,17 +78,17 @@ public class Game {
     }
 
     // Method to check if the Player can use a certain Upgrade
-    public void checkUpgradePossible(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
-        if (!upgrade.isUsed() && this.coinsEarned >= upgrade.getCoinsNeeded()){ // If upgrade was not already used and the Player earned enough coins to buy it
+    public void checkUpgradePossible(Upgrade upgrade) throws FileNotFoundException {
+        if (!upgrade.isAlreadyUsedOnce() && this.coinsEarned >= upgrade.getCoinsNeeded()){ // If upgrade was not already used and the Player earned enough coins to buy it
             // Enable the ImageView
-            upgradeImage.setDisable(false);
+            upgrade.getUpgradeImageView().setDisable(false);
             // Set the Image to the "activated" Upgrade Image
-            upgradeImage.setImage(createImage(upgrade.getImageNotUsed()));
+            upgrade.getUpgradeImageView().setImage(createImage(upgrade.getFilenameUpgradeNotUsed()));
         } else { // If the upgrade was used already or the Player hasn't enough coins to buy it
             // Disable the Image
-            upgradeImage.setDisable(true);
+            upgrade.getUpgradeImageView().setDisable(true);
             // Set the Image to "deactivated" Upgrade Image
-            upgradeImage.setImage(createImage(upgrade.getImageUsed()));
+            upgrade.getUpgradeImageView().setImage(createImage(upgrade.getFilenameUpgradeUsed()));
         }
     }
 
@@ -97,19 +97,19 @@ public class Game {
         switch (type) { // Switch the type of upgrade you received
             case "coffee" -> { // If the player chose the coffee upgrade
                 // Set the coin score according to what the upgrade cost + change Image and Disable upgrade
-                coinsEarned = coffeeUpgrade.doUpgrades(coffeeUpgrade.getUpgradeImages(), coinsEarned);
+                coinsEarned = coffeeUpgrade.doUpgrades(coinsEarned);
                 // Increase the speed of the Coffee Machine
                 coffeeMachine.setDuration(2);
             }
             case "cake" -> { // If the player chose the cake upgrade
                 // Set the coin score according to what the upgrade cost + change Image and Disable upgrade
-                coinsEarned = cakeUpgrade.doUpgrades(cakeUpgrade.getUpgradeImages(), coinsEarned);
+                coinsEarned = cakeUpgrade.doUpgrades(coinsEarned);
                 // Increase the speed of the Cake Machine
                 cakeMachine.setDuration(2);
             }
             case "player" -> { // If the player chose the player upgrade
                 // Set the coin score according to what the upgrade cost + change Image and Disable upgrade
-                coinsEarned = playerUpgrade.doUpgrades(playerUpgrade.getUpgradeImages(), coinsEarned);
+                coinsEarned = playerUpgrade.doUpgrades(coinsEarned);
                 // Increase the movement speed of the Player
                 CofiBrew.setMovement(6);
             }
@@ -117,13 +117,13 @@ public class Game {
     }
 
     // Method to increase coins earned according to how satisfied the customer was
-    public void setMoney(Customer customer){
+    public void setCoinsEarned(Customer customer){
         if (customer.isGreen()){ // If customer was happy
             // Increase coin score by 5
-            this.coinsEarned += 5;
+            this.coinsEarned += 7;
         } else if (customer.isYellow()){ // If customer left in a "normal" mood
             // Increase coin score by 4
-            this.coinsEarned += 4;
+            this.coinsEarned += 5;
         }else if (customer.isRed()){ // If customer lef in a bad mood
             // Increase coin score by 3
             this.coinsEarned += 3;

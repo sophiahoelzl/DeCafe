@@ -13,8 +13,8 @@ public class Customer {
     private ImageView customer; //picture of the customer
     private Label orderLabel; //label that displays order
     private int chair; //number of chair the customer is sitting
-    private Timer x; //timer for the 60 seconds waiting time
-    private static Timer t; //timer for leaving, spawning
+    private Timer sixtySecondsTimer; //timer for the 60 seconds waiting time
+    private static Timer controllerTimer; //timer for leaving, spawning
     private ImageView smiley; //picture of smiley for the mood of the customer
     private ImageView coinImage; //picture of the money the customer is leaving behind
 
@@ -23,20 +23,19 @@ public class Customer {
     private boolean yellow; //boolean for smiley
     private boolean red; //boolean for smiley
 
-    private boolean left = true; //boolean to see if customer has left
+    private boolean leftUnhappy = true; //boolean to see if customer has left unhappy (received wrong order or left after 60 secs)
 
-    public static List<Customer> customerList = new ArrayList<>(); //list with all customers that are in the café
-    public static List<Customer> allCustomers = new ArrayList<>(); //list with all customers
-    public static List<Integer> num = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7)); //integer list with all chair numbers
-    public static ImageView[] pics; //array with all customer pictures
-    private static int number = 0;
+    public static List<Customer> customersInCoffeeShop = new ArrayList<>(); //list with all customers that are in the café
+    public static List<Customer> allCustomers = new ArrayList<>(); //list with all customers ever created
+    public static List<Integer> freeChairs; //integer list with all chair numbers
+    public static ImageView[] customerImages; //array with all customer pictures
+    private static int freeSeatChosen = 0;
     public static ImageView[] smileyImages; //image for smiley
     public static Label[] orderLabels; //label for order
     public static ImageView[] coinImages; //image for coins
 
+    // Constructors
     Customer(){}
-
-
     Customer(ImageView image, Label label, int chair, ImageView smiley, ImageView coinImage) {
         this.customer = image;
         this.orderLabel = label;
@@ -44,19 +43,20 @@ public class Customer {
         this.chair = chair;
         this.smiley = smiley;
         this.coinImage = coinImage;
-        this.x = new Timer();
+        this.sixtySecondsTimer = new Timer();
     }
 
-    public static Timer getT() {
-        return t;
+    // Getter
+    public static Timer getControllerTimer() {
+        return controllerTimer;
     }
 
-    public Timer getX() {
-        return x;
+    public Timer getSixtySecondsTimer() {
+        return sixtySecondsTimer;
     }
 
-    public static void addNum(int table) { //add chair number to the list when customer has left
-        Customer.num.add(table);
+    public static void addFreeSeat(int chairLeft) { //add chair number to the list when customer has left
+        Customer.freeChairs.add(chairLeft);
     }
 
     public boolean isGreen() { //to see if the color of the smiley
@@ -75,7 +75,11 @@ public class Customer {
         return this.alreadyOrdered;
     }
 
-    public int getTable() { //get the number of the chair the customer is sitting
+    public String getOrder() { //returns the order of the customer
+        return order;
+    }
+
+    public int getChair() { //get the number of the chair the customer is sitting
         return chair;
     }
 
@@ -104,46 +108,43 @@ public class Customer {
         return coinImage;
     }
 
+    // Setter
     public void setOrder(String order) { //sets the order of the customer
         this.order = order;
     }
 
-    public static void setT(Timer te) { //sets the timer
-        t = te;
+    public static void setControllerTimer(Timer controllerTimer) { //sets the timer
+        Customer.controllerTimer = controllerTimer;
     }
 
-    public String getOrder() { //returns the order of the customer
-        return order;
-    }
-
-    //General methode to create an Imagepath
+    // Method used to create an Image Object
     public Image createImage(String filename) throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
-        InputStream stream = new FileInputStream(filePath);
-        return new Image(stream);
+        File f = new File(""); // Get filepath of project
+        // Get path to certain Image
+        String filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
+        InputStream stream = new FileInputStream(filePath); // Convert path into stream
+        return new Image(stream); // Convert stream to Image and return it
     }
 
     //Returns the appropriate image for the customer
     public static ImageView getImage(ImageView customer, ImageView[] searchArray ){
         ImageView wantedImage = new ImageView();
 
-        if (pics[0].equals(customer)) {
+        if (customerImages[0].equals(customer)) {
             wantedImage = searchArray[0];
-        } else if (pics[1].equals(customer)) {
+        } else if (customerImages[1].equals(customer)) {
             wantedImage = searchArray[1];
-        } else if (pics[2].equals(customer)) {
+        } else if (customerImages[2].equals(customer)) {
             wantedImage = searchArray[2];
-        } else if (pics[3].equals(customer)) {
+        } else if (customerImages[3].equals(customer)) {
             wantedImage = searchArray[3];
-        } else if (pics[4].equals(customer)) {
+        } else if (customerImages[4].equals(customer)) {
             wantedImage = searchArray[4];
-        } else if (pics[5].equals(customer)) {
+        } else if (customerImages[5].equals(customer)) {
             wantedImage = searchArray[5];
-        } else if (pics[6].equals(customer)) {
+        } else if (customerImages[6].equals(customer)) {
             wantedImage = searchArray[6];
-        } else if (pics[7].equals(customer)) {
+        } else if (customerImages[7].equals(customer)) {
             wantedImage = searchArray[7];
         }
 
@@ -155,21 +156,21 @@ public class Customer {
 
         Label customerOrder = new Label();
 
-        if (pics[0].equals(customer)) {
+        if (customerImages[0].equals(customer)) {
             customerOrder = orderLabels[0];
-        } else if (pics[1].equals(customer)) {
+        } else if (customerImages[1].equals(customer)) {
             customerOrder = orderLabels[1];
-        } else if (pics[2].equals(customer)) {
+        } else if (customerImages[2].equals(customer)) {
             customerOrder = orderLabels[2];
-        } else if (pics[3].equals(customer)) {
+        } else if (customerImages[3].equals(customer)) {
             customerOrder = orderLabels[3];
-        } else if (pics[4].equals(customer)) {
+        } else if (customerImages[4].equals(customer)) {
             customerOrder = orderLabels[4];
-        } else if (pics[5].equals(customer)) {
+        } else if (customerImages[5].equals(customer)) {
             customerOrder = orderLabels[5];
-        } else if (pics[6].equals(customer)) {
+        } else if (customerImages[6].equals(customer)) {
             customerOrder = orderLabels[6];
-        } else if (pics[7].equals(customer)) {
+        } else if (customerImages[7].equals(customer)) {
             customerOrder = orderLabels[7];
         }
 
@@ -180,21 +181,21 @@ public class Customer {
     //Returns random customer picture
     public static ImageView getRandomPic(){
         Random random = new Random();
-        int index = num.get(random.nextInt(num.size()));
-        number = index;
+        int index = freeChairs.get(random.nextInt(freeChairs.size()));
+        freeSeatChosen = index;
 
-        if (!num.contains(index)) { //when the customer is already visible make new random number
+        if (!freeChairs.contains(index)) { //when the customer is already visible make new random number
             getRandomPic();
         }
 
-        num.remove(Integer.valueOf(index)); //remove the number from the number list of chairs so there are no duplicates
+        freeChairs.remove(Integer.valueOf(index)); //remove the number from the number list of chairs so there are no duplicates
 
-        return pics[index];
+        return customerImages[index];
     }
 
     //Methode to spawn customers
     public static void spawnCustomers(){
-        if (customerList.size() < 3 && num.size() != 0) { //spawn a new customer this when under 3 customers are in the cafe
+        if (customersInCoffeeShop.size() < 3 && freeChairs.size() != 0) { //spawn a new customer this when under 3 customers are in the café
             ImageView customerImage = getRandomPic(); //get random picture from Array
             customerImage.setVisible(true); //make this picture visible
 
@@ -203,53 +204,46 @@ public class Customer {
             ImageView coin = getImage(customerImage, coinImages); //gets the coin picture for the customer
 
 
-            Customer customer = new Customer(customerImage, order, number, smiley, coin); //make new customer object
-            customerList.add(customer); //to check if not more than 3 customers are in the store
+            Customer customer = new Customer(customerImage, order, freeSeatChosen, smiley, coin); //make new customer object
+            customersInCoffeeShop.add(customer); //to check if not more than 3 customers are in the store
             allCustomers.add(customer); //to stop all timers that are still alive even after customer has left
             customer.waitingTime(); //place customer in the waitingTime of  60 seconds
         }
     }
 
     //Timer to spawn the customers
-    public void startTimerSpawn(int duration, Timer t){
-        t.schedule(
+    public void startTimerSpawn(int duration, Timer controllerTimer){
+        controllerTimer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
                         Customer.spawnCustomers();
-                        t.purge();
+                        controllerTimer.purge();
                     }
                 },
                 duration * 1000L
         );
     }
 
-    //Methode when customer leaves the coffee shop
-    public void leaveCoffeeShop(boolean left, Player CofiBrew){
-        CofiBrew.setProduct("none");
-        startTimerLeave(this, left);
-    }
-
     //Methode for the timer when customer leaves
-    public void startTimerLeave (Customer customer, boolean left){
+    public void startTimerLeave (Customer customer){
         this.orderLabel.setVisible(false);
         this.smiley.setVisible(false);
-        t.schedule(
+        controllerTimer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
-                        customer.left = left;
                         try {
                             leave(customer.getImage());
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-                        t.purge();
+                        controllerTimer.purge();
                     }
                 },
                 1000
         );
-        this.x.cancel(); //cancel the 60 seconds when customer left
+        this.sixtySecondsTimer.cancel(); //cancel the 60 seconds when customer left
     }
 
     //Methode for the general 60 seconds timer
@@ -292,19 +286,19 @@ public class Customer {
                     red = true;
                 }
                 else if (seconds == 0){ //when the timer has finished - customer leaves
-                    startTimerLeave(customer, true);
+                    startTimerLeave(customer);
                 }
             }
         };
 
-        this.x.schedule(timerTask, 0, 1000);//it should call this methode every second
+        this.sixtySecondsTimer.schedule(timerTask, 0, 1000);//it should call this methode every second
 
     }
 
     //Methode to display order
     public void displayOrder(Label orderlabel) {
         orderlabel.setVisible(true);
-        order = getRandomOrder();
+        this.order = getRandomOrder();
         setOrder(order);
         orderlabel.setText(order);
         this.alreadyOrdered = true;
@@ -312,35 +306,37 @@ public class Customer {
 
 
     //Methode to check if the order is right or wrong
-    public boolean checkOrder(Player CofiBrew, Customer customer, ImageView waiter) throws FileNotFoundException{
-        if (CofiBrew.getProduct().equals(customer.getOrder())) { //if CofiBrew has the right order
-            waiter.setImage(createImage(CofiBrew.getImageWithoutProduct())); //set CofiBrew without order
-            leaveCoffeeShop(false, CofiBrew);
+    public boolean checkOrder(Player CofiBrew, Customer customer, ImageView waiterImage) throws FileNotFoundException{
+        waiterImage.setImage(createImage(CofiBrew.getFilenameImageWithoutProduct())); //set CofiBrew without order
+        if (CofiBrew.getProductInHand().equals(customer.getOrder())) { //if CofiBrew has the right order
+            CofiBrew.setProductInHand("none"); // change product hold by player to none
+            this.leftUnhappy = false;
+            startTimerLeave(this); // start timer to leave the coffee shop (true - it was the right order)
             return true;
         } else {
-            waiter.setImage(createImage(CofiBrew.getImageWithoutProduct())); //also set CofiBrew without order if it was false
-            leaveCoffeeShop(true, CofiBrew); //leave the coffeeshop
+            CofiBrew.setProductInHand("none"); // change product hold by player to none
+            startTimerLeave(this);  // start timer to leave the coffee shop (false - it was the wrong order)
             return false;
         }
     }
 
-    //when the customer leaves after 60 seconds without being served
+    //when the customer leaves after 60 seconds without being served or received wrong order
     public static void noMoneySpent(Customer customer) throws FileNotFoundException {
         customer.coinImage.setVisible(false);
         customer.coinImage.setDisable(true);
-        num.add(customer.getTable());
-        customer.startTimerSpawn(5, t);
+        freeChairs.add(customer.getChair());
+        customer.startTimerSpawn(5, controllerTimer);
     }
 
     //Methode for when the customer leaves
-    public void leave (ImageView image) throws FileNotFoundException {
-        image.setVisible(false);
-        customerList.removeIf(customer -> customer.getImage().equals(image)); //remove customer from customerList
-        coinImage.setVisible(true);
-        coinImage.setDisable(false);
-        if (left){ //when customer leaves after 60 seconds
-            coinImage.setImage(this.createImage("coin.png"));
-            coinImage.setOnMouseClicked(event1 -> {
+    public void leave (ImageView customerImage) throws FileNotFoundException {
+        customerImage.setVisible(false);
+        customersInCoffeeShop.removeIf(customer -> customer.getImage().equals(customerImage)); //remove customer from customerList
+        this.coinImage.setVisible(true);
+        this.coinImage.setDisable(false);
+        if (this.leftUnhappy){ //when customer leaves after 60 seconds or received wrong order
+            this.coinImage.setImage(this.createImage("coin.png")); // set coin Image to empty plate
+            this.coinImage.setOnMouseClicked(event1 -> { // set click event to this
                 try {
                     noMoneySpent(this);
                 } catch (FileNotFoundException e) {

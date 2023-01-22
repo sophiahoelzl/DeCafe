@@ -20,30 +20,42 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-
+// Class that is responsible for every action taken in JavaFX GUI (connected via fxml files)
 public class HelloController implements Initializable {
 
-
-    @FXML
-    ImageView startButton = new ImageView();
+    // Assets of the Start Screen
+    public ImageView startButton;
     public ImageView startQuitButton;
-    public ImageView coffeeMachine;
-    public ImageView kitchenAid;
-    public ImageView trashcan;
 
+    //Assets of the Game Screen
+    // Image of the waiter
+    public ImageView waiterImageView;
+
+    // Label that shows the current amount of coins earned
+    public Label coinsEarnedLabel;
+
+    // Used for controlling the movement of the Player
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
     private BooleanProperty sPressed = new SimpleBooleanProperty();
     private BooleanProperty dPressed = new SimpleBooleanProperty();
-
     private BooleanBinding keyPressed = wPressed.or(aPressed).or(sPressed).or(dPressed);
 
-    @FXML
-    private ImageView waiter;
+    // Images of the Object the Player can interact with
+    public ImageView coffeeMachineImageView;
+    public ImageView cakeMachineImageView;
+    public ImageView trashcanImageView;
 
-    @FXML
-    public ProgressBar progressCoffee;
-    public ProgressBar progressCake;
+    // Progress bars used to show Production Progress
+    public ProgressBar progressBarCoffee;
+    public ProgressBar progressBarCake;
+
+    // Images used to control Upgrades
+    public ImageView upgradeCoffeeImageView;
+    public ImageView upgradeCakeImageView;
+    public ImageView upgradePlayerImageView;
+
+    // Labels used for collision detection management
     public Label table1;
     public Label table2;
     public Label table3;
@@ -64,40 +76,27 @@ public class HelloController implements Initializable {
     public Label edgeTop;
     public Label edgeLeft;
     public Label edgeRight;
-    public Label coinLabel;
-    public ImageView upgradeCoffee;
-    public ImageView upgradeCake;
-    public ImageView upgradePlayer;
-
-    // for end screen
-    public ImageView gameStartButton;
-    public ImageView cofiBrewImage;
-    public ImageView playAgainImage;
-    public ImageView backToStartImage;
-    public Label labelCredits;
-    public ImageView endScreenBackground;
-    public ImageView quitEndScreenImage;
 
     //for the customers
     //smiley images
-    public ImageView smileyfirst;
-    public ImageView smileysecond;
-    public ImageView smileythird;
-    public ImageView smileyfourth;
-    public ImageView smileyfifth;
-    public ImageView smileysixth;
-    public ImageView smileyseventh;
-    public ImageView smileyeighth;
+    public ImageView smileyFirst;
+    public ImageView smileySecond;
+    public ImageView smileyThird;
+    public ImageView smileyFourth;
+    public ImageView smileyFifth;
+    public ImageView smileySixth;
+    public ImageView smileySeventh;
+    public ImageView smileyEighth;
 
     //coin images
-    public ImageView coinfirst;
-    public ImageView coinsecond;
-    public ImageView cointhird;
-    public ImageView coinfourth;
-    public ImageView coinfifth;
-    public ImageView coinsixth;
-    public ImageView coinseventh;
-    public ImageView coineigth;
+    public ImageView coinFirst;
+    public ImageView coinSecond;
+    public ImageView coinThird;
+    public ImageView coinFourth;
+    public ImageView coinFifth;
+    public ImageView coinSixth;
+    public ImageView coinSeventh;
+    public ImageView coinEighth;
 
     //order labels
     public Label orderlabel1 = new Label();
@@ -119,14 +118,26 @@ public class HelloController implements Initializable {
     public ImageView seventh;
     public ImageView eighth;
 
+    // for end screen
+    public ImageView gameStartButton;
+    public ImageView cofiBrewImage;
+    public ImageView playAgainImage;
+    public ImageView backToStartImage;
+    public Label labelCredits;
+    public ImageView endScreenBackground;
+    public ImageView quitEndScreenImage;
+
+    // Player object created to change Images and movement Speed
     public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png", 4);
+    // Game object used to control main methods
     public Game Play;
-
+    // Label array used for collision detection management
     private Label[] collisions;
+    // Timer used to spawn customers or make them leave
+    public Timer controllerTimer = new Timer();
 
-    private boolean start = false;
-    public Timer t = new Timer();
 
+    // Method used to load a certain scene according to the name of the fxml file
     public void loadScene(String sceneName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
         Scene scene = new Scene(fxmlLoader.load());
@@ -147,13 +158,12 @@ public class HelloController implements Initializable {
     // jump from start screen to game screen
     public void switchToGameScreen() throws IOException { // if button PLAY AGAIN is pressed
         loadScene("gameScreen.fxml");
-        if (Customer.pics[0] != null && !start){
-            Customer cust = new Customer();
-            cust.startTimerSpawn(1, Customer.getT());
-            cust.startTimerSpawn(5, Customer.getT());
-            cust.startTimerSpawn(10, Customer.getT());
-            Customer.allCustomers.add(cust);
-            start = true;
+        if (Customer.customerImages[0] != null) {
+            Customer customer = new Customer();
+            customer.startTimerSpawn(1, Customer.getControllerTimer());
+            customer.startTimerSpawn(5, Customer.getControllerTimer());
+            customer.startTimerSpawn(10, Customer.getControllerTimer());
+            Customer.allCustomers.add(customer);
         }
     }
 
@@ -161,7 +171,7 @@ public class HelloController implements Initializable {
     public void switchToInstructions() throws IOException {
         loadScene("Instructions.fxml");
     }
-    
+
     // key events if wasd-keys are pressed
     @FXML
     public void keyPressed(KeyEvent event) {
@@ -222,20 +232,20 @@ public class HelloController implements Initializable {
             }
 
             // set x and y coordinates of waiter
-            waiter.setLayoutX(waiter.getLayoutX() + xMove);
-            waiter.setLayoutY(waiter.getLayoutY() + yMove);
+            waiterImageView.setLayoutX(waiterImageView.getLayoutX() + xMove);
+            waiterImageView.setLayoutY(waiterImageView.getLayoutY() + yMove);
 
             // if collision is detected, set x and y coordinates back to where no collision occurred
-            if (checkForCollision(waiter)) {
-                waiter.setLayoutX(waiter.getLayoutX() - xMove);
-                waiter.setLayoutY(waiter.getLayoutY() - yMove);
+            if (checkForCollision(waiterImageView)) {
+                waiterImageView.setLayoutX(waiterImageView.getLayoutX() - xMove);
+                waiterImageView.setLayoutY(waiterImageView.getLayoutY() - yMove);
             }
         }
     };
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle){
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         keyPressed.addListener((((observableValue, aBoolean, t1) -> { // if any key from the four keys is pressed
             if (!aBoolean) {
                 timer.start();
@@ -243,27 +253,30 @@ public class HelloController implements Initializable {
                 timer.stop();
             }
         })));
-        
+
         // transparent labels on top of the images to look for collisions
         collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
-        Customer.pics =  new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth}; //make customer ImageView[]
-        Customer.smileyImages = new ImageView[]{smileyfirst, smileysecond, smileythird, smileyfourth, smileyfifth, smileysixth, smileyseventh, smileyeighth}; //make smiley ImageView[]
+        // initialise ImagesViews and Labels so Customer Class can operate with them
+        Customer.customerImages = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth}; //make customer ImageView[]
+        Customer.smileyImages = new ImageView[]{smileyFirst, smileySecond, smileyThird, smileyFourth, smileyFifth, smileySixth, smileySeventh, smileyEighth}; //make smiley ImageView[]
         Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8}; //make label label[]
-        Customer.coinImages = new ImageView[]{coinfirst, coinsecond, cointhird, coinfourth, coinfifth, coinsixth, coinseventh, coineigth}; //make coin ImageView[]
-        Customer.setT(t); //set the static timer t
-        Play = new Game(upgradeCoffee, upgradeCake, upgradePlayer);
+        Customer.coinImages = new ImageView[]{coinFirst, coinSecond, coinThird, coinFourth, coinFifth, coinSixth, coinSeventh, coinEighth}; //make coin ImageView[]
+        Customer.freeChairs = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7)); //make freeChairs Array
+        Customer.setControllerTimer(controllerTimer); //set the static timer t
+        Play = new Game(upgradeCoffeeImageView, upgradeCakeImageView, upgradePlayerImageView); // initialise Game Object with upgrade ImageViews
     }
 
 
-
+    // Method used to create an Image Object
     public Image createImage(String filename) throws FileNotFoundException {
-        File f = new File("");
-        String filePath;
-        filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
-        InputStream stream = new FileInputStream(filePath);
-        return new Image(stream);
+        File f = new File(""); // Get filepath of project
+        // Get path to certain Image
+        String filePath = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + filename;
+        InputStream stream = new FileInputStream(filePath); // Convert path into stream
+        return new Image(stream); // Convert stream to Image and return it
     }
+
     // start screen - change start button on mouse entered
     public void changeStartCoffeeImage() throws FileNotFoundException {
         startButton.setImage(createImage("startCoffeeHot.png"));
@@ -272,6 +285,15 @@ public class HelloController implements Initializable {
     // start screen - change coffee button on mouse exited
     public void changeStartCoffeeImageBack() throws FileNotFoundException {
         startButton.setImage(createImage("startCoffee.png"));
+    }
+    // start screen - change Quit Button on mouse entered
+    public void changeQuitStartScreen() throws FileNotFoundException {
+        startQuitButton.setImage(createImage("quitEndScreenBrighter.png"));
+    }
+
+    // start screen - change Quit Button when mouse exited
+    public void changeQuitStartScreenBack() throws FileNotFoundException {
+        startQuitButton.setImage(createImage("quitEndScreen.png"));
     }
 
     // instructions - change GOT IT! on mouse entered
@@ -314,158 +336,150 @@ public class HelloController implements Initializable {
         quitEndScreenImage.setImage(createImage("quitEndScreen.png"));
     }
 
-    public void changeQuitStartScreen() throws FileNotFoundException {
-        startQuitButton.setImage(createImage("quitEndScreenBrighter.png"));
-    }
-
-    // end screen - change Quit Button when mouse exited
-    public void changeQuitStartScreenBack() throws FileNotFoundException {
-        startQuitButton.setImage(createImage("quitEndScreen.png"));
-    }
-
     // if waiter is near coffee machine, change appearance when clicked
     public void showCoffee() throws FileNotFoundException {
-        if (waiter.getBoundsInParent().intersects(coffeeMachine.getBoundsInParent())) {
-            Play.getCoffeeMachine().displayProduct(waiter, coffeeMachine, CofiBrew, progressCoffee);
+        if (waiterImageView.getBoundsInParent().intersects(coffeeMachineImageView.getBoundsInParent())) {
+            Play.getCoffeeMachine().displayProduct(waiterImageView, coffeeMachineImageView, CofiBrew, progressBarCoffee);
         }
     }
 
     // if waiter is near cake machine, change appearance when clicked
     public void showCake() throws FileNotFoundException {
-        if (waiter.getBoundsInParent().intersects(kitchenAid.getBoundsInParent())) {
-            Play.getCakeMachine().displayProduct(waiter, kitchenAid, CofiBrew, progressCake);
+        if (waiterImageView.getBoundsInParent().intersects(cakeMachineImageView.getBoundsInParent())) {
+            Play.getCakeMachine().displayProduct(waiterImageView, cakeMachineImageView, CofiBrew, progressBarCake);
         }
     }
 
     // if no product is held by waiter
     public void noProduct() throws FileNotFoundException {
-        waiter.setImage(createImage(CofiBrew.getImageWithoutProduct()));
-        CofiBrew.setProduct("none");
+        waiterImageView.setImage(createImage(CofiBrew.getFilenameImageWithoutProduct()));
+        CofiBrew.setProductInHand("none");
     }
 
-    public Customer findCustomer(List<Customer> customerList, ImageView cust) { //find the customer in the customerList and return it
+    // find the customer in the customerList and return it
+    public Customer findCustomer(List<Customer> customerList, ImageView customerImageView) {
         for (Customer customer : customerList) {
-            if (customer.getImage().equals(cust)) {
+            if (customer.getImage().equals(customerImageView)) {
                 return customer;
             }
         }
-        return null;
+        return null; // if not found return null
     }
 
-
+    // Method used to display a customer, check if and order was right and set Images for coin ImagesViews
     public void displayPerson(MouseEvent event) throws IOException {
+        ImageView customerImageView = (ImageView) event.getSource(); //get the Customer of the clicked Image
+        Customer customer = findCustomer(Customer.customersInCoffeeShop, customerImageView); //make new customer object
 
-        ImageView cust = (ImageView) event.getSource(); //get the Customer of the clicked Image
-        Customer customer = findCustomer(Customer.customerList, cust); //make new customer object
-
-            if (!customer.isAlreadyOrdered()){ //if customer has not ordered yet, display an order
-                customer.displayOrder(customer.getLabel());
-            } else {
-                if (cust.getBoundsInParent().intersects(waiter.getBoundsInParent())) {
-                    try {
-                        customer.startTimerSpawn(5, Customer.getT());
-                    } catch (NullPointerException e){
-                        switchToEndScreen();
+        if (!customer.isAlreadyOrdered()) { //if customer has not ordered yet, display an order
+            customer.displayOrder(customer.getLabel());
+        } else {
+            if (customerImageView.getBoundsInParent().intersects(waiterImageView.getBoundsInParent())) { // If customer has already ordered and waiter is near the customer
+                try {
+                    customer.startTimerSpawn(5, Customer.getControllerTimer()); // spawn a new customer if a chair is free
+                } catch (NullPointerException e) {
+                    switchToEndScreen();
+                }
+                if (customer.checkOrder(CofiBrew, customer, waiterImageView)) { // check if order the waiter has in his hands is the one the customer ordered
+                    String moneyImage = ""; // if so set the relating coin ImageView
+                    if (customer.isGreen()) { // if customer left happy
+                        moneyImage = Play.getFilenameImageDollar();
+                    } else if (customer.isYellow()) { // if customer left normal
+                        moneyImage = Play.getFilenameImageFourCoins();
+                    } else if (customer.isRed()) { // if customer left sad
+                        moneyImage = Play.getFilenameImageThreeCoins();
                     }
-                    if (customer.checkOrder(CofiBrew, customer, waiter)) { //get appropriate coin image
-                        String moneyImage = "";
-                        if (customer.isGreen()) {
-                            moneyImage = Play.getMoney();
-                        } else if (customer.isYellow()) {
-                            moneyImage = Play.getFourCoins();
-                        } else if (customer.isRed()) {
-                            moneyImage = Play.getThreeCoins();
-                        }
-                        customer.getCoinImage().setImage(createImage(moneyImage)); //set coin image
-                        customer.getCoinImage().setOnMouseClicked(event1 -> {
+                    customer.getCoinImage().setImage(createImage(moneyImage)); //set coin image
+                    customer.getCoinImage().setOnMouseClicked(event1 -> { // set click event for coin image
+                        try {
+                            getMoney(event1, customer); // if coin Image is clicked jump to this method
+                        } catch (IOException e) {
                             try {
-                                getMoney(event1, customer);
-                            } catch (IOException e) {
-                                try {
-                                    switchToEndScreen();
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-                                }
+                                switchToEndScreen();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
+        }
     }
 
-    public void checkUpgradePossible(Upgrade upgrade, ImageView upgradeImage) throws FileNotFoundException {
-        Play.checkUpgradePossible(upgrade, upgradeImage);
+    // Method to check if an Upgrade can be made (check if player has earned enough coins and if it was already used or not)
+    public void checkUpgradePossible(Upgrade upgrade) throws FileNotFoundException {
+        Play.checkUpgradePossible(upgrade);
     }
 
-    public void doUpgrade (MouseEvent e) throws FileNotFoundException {
-        Play.doUpgrade(((ImageView)e.getSource()).getId(), CofiBrew);
-        coinLabel.setText(String.valueOf(Play.getCoinsEarned()));
-        checkUpgradePossible(Play.getCoffeeUpgrade(), upgradeCoffee);
-        checkUpgradePossible(Play.getCakeUpgrade(), upgradeCake);
-        checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
+    // Method to actively use an Upgrade
+    public void doUpgrade(MouseEvent e) throws FileNotFoundException {
+        // activate the Upgrade (according to whatever ImageView was chosen)
+        Play.doUpgrade(((ImageView) e.getSource()).getId(), CofiBrew);
+        // set the coin label to the correct amount of coins (coins earned - upgrade costs)
+        coinsEarnedLabel.setText(String.valueOf(Play.getCoinsEarned()));
+        // check if other upgrades are still possible or if they need to be "deactivated"
+        checkUpgradePossible(Play.getCoffeeUpgrade());
+        checkUpgradePossible(Play.getCakeUpgrade());
+        checkUpgradePossible(Play.getPlayerUpgrade());
     }
 
     // check if collisions occur
-    public boolean checkForCollision (ImageView waiter){
+    public boolean checkForCollision(ImageView waiter) {
         for (Label collision : collisions) { // iterate through labels
-            if (waiter.getBoundsInParent().intersects(collision.getBoundsInParent())) {
-                return true;
+            if (waiter.getBoundsInParent().intersects(collision.getBoundsInParent())) { // if waiter would collide with a label
+                return true; // return true
             }
         }
         return false;
     }
 
+    // Method used when coin Image is clicked on
     public void getMoney(MouseEvent e, Customer customer) throws IOException {
-        Customer.addNum(customer.getTable());
-        Play.setMoney(customer);
-        ((ImageView)e.getSource()).setVisible(false);
-        ((ImageView)e.getSource()).setDisable(true);
+        Customer.addFreeSeat(customer.getChair()); // add the seat chosen from the customer to the freeSeatsArray again
+        Play.setCoinsEarned(customer); // set the money earned according to what amount of money the customer left
+        ((ImageView) e.getSource()).setVisible(false); // disable the coin Image and make it invisible
+        ((ImageView) e.getSource()).setDisable(true);
 
-        if (Play.getCoinsEarned() < 80) {
-            checkUpgradePossible(Play.getCoffeeUpgrade(), upgradeCoffee);
-            checkUpgradePossible(Play.getCakeUpgrade(), upgradeCake);
-            checkUpgradePossible(Play.getPlayerUpgrade(), upgradePlayer);
-            coinLabel.setText(String.valueOf(Play.getCoinsEarned()));
+        if (Play.getCoinsEarned() < 80) { // check if enough coins were earned to end the game
+            checkUpgradePossible(Play.getCoffeeUpgrade()); // if not, check if any upgrades would be possible
+            checkUpgradePossible(Play.getCakeUpgrade());
+            checkUpgradePossible(Play.getPlayerUpgrade());
+            coinsEarnedLabel.setText(String.valueOf(Play.getCoinsEarned())); // refresh the coin score shown in GUI
             try {
-                customer.startTimerSpawn(5, Customer.getT());
-            } catch (NullPointerException y){
+                customer.startTimerSpawn(5, Customer.getControllerTimer()); // spawn a new customer
+            } catch (NullPointerException y) {
                 switchToEndScreen();
             }
-        }else {
-            stopTimers();
-            switchToEndScreen();
+        } else { // if enough coins were earned
+            stopTimers(); // stop all the timers
+            switchToEndScreen(); // switch to the end screen
         }
     }
 
-    public void searchForTable(){
-        Customer.spawnCustomers();
-    }
-
-    public void stopTimers(){
-        for (Customer customer : Customer.allCustomers){
-            if (customer.getX() != null){
-                customer.getX().cancel();
+    // Method used to stop all the timers activated by spawning customers
+    public void stopTimers() {
+        for (Customer customer : Customer.allCustomers) { // cancel all 60 seconds timers
+            if (customer.getSixtySecondsTimer() != null) {
+                customer.getSixtySecondsTimer().cancel();
             }
         }
-        t.cancel();
-        Customer.getT().cancel();
+        Customer.allCustomers.clear(); // clear all Lists created by spawning/despawning customer
+        Customer.customersInCoffeeShop.clear();
+        Customer.freeChairs.clear();
+        CofiBrew.setProductInHand("none"); // clear Cofis hand
+        controllerTimer.cancel(); // cancel spawn/leaving timer
+        Customer.getControllerTimer().cancel();
     }
 
-    // end game (called when exit clicked)
-    public void endGameQuick(){
+    // end game (called when exit clicked) - in Game Screen
+    public void endGameQuick() {
         stopTimers();
         Platform.exit();
         System.exit(0);
     }
 
-    // end game (called when quit button is clicked)
-    public void endGame(){
-        stopTimers();
-        Platform.exit();
-        System.exit(0);
-    }
-
-    public void endGameBeforeEvenStarted(){
+    // end game (called when quit button is clicked) - in End Screen and Start Screen
+    public void endGame() {
         Platform.exit();
         System.exit(0);
     }
