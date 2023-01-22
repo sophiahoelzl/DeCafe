@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         HelloApplication.stage = stage;
         File f = new File("");
-        stage.getIcons().add(new Image("file:src/main/resources/com/example/decafe/Logo.png"));
+        stage.getIcons().add(new Image("file:src/main/resources/com/example/decafe/mugTabPic.png"));
         stage.setTitle("DeCafé");
         HelloApplication.stage.setResizable(false);
         stage.setScene(scene);
