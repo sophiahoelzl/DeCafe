@@ -9,6 +9,7 @@ There are two ways to access our project
 > Github link:  https://github.com/sophiahoelzl/DeCafe
 ### Start the Game
 To be able to play our game you need to run the `public static void main(String[] args)` in the `HelloApplication` Class
+> found in src/main/java/com/example/decafe/HelloApplicatin.class
 ## How to play the Game
 Everything you need to know to play our game is explained in the Instruction Screen (the one after the Start Screen)
 # Have Fun!
