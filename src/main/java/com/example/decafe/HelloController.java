@@ -99,14 +99,14 @@ public class HelloController implements Initializable {
     public ImageView coinEighth;
 
     //order labels
-    public Label orderlabel1 = new Label();
-    public Label orderlabel2 = new Label();
-    public Label orderlabel3 = new Label();
-    public Label orderlabel4 = new Label();
-    public Label orderlabel5 = new Label();
-    public Label orderlabel6 = new Label();
-    public Label orderlabel7 = new Label();
-    public Label orderlabel8 = new Label();
+    public ImageView orderlabel1 = new ImageView();
+    public ImageView orderlabel2 = new ImageView();
+    public ImageView orderlabel3 = new ImageView();
+    public ImageView orderlabel4 = new ImageView();
+    public ImageView orderlabel5 = new ImageView();
+    public ImageView orderlabel6 = new ImageView();
+    public ImageView orderlabel7 = new ImageView();
+    public ImageView orderlabel8 = new ImageView();
 
     //customer images
     public ImageView first;
@@ -260,7 +260,7 @@ public class HelloController implements Initializable {
         // initialise ImagesViews and Labels so Customer Class can operate with them
         Customer.customerImages = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth}; //make customer ImageView[]
         Customer.smileyImages = new ImageView[]{smileyFirst, smileySecond, smileyThird, smileyFourth, smileyFifth, smileySixth, smileySeventh, smileyEighth}; //make smiley ImageView[]
-        Customer.orderLabels = new Label[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8}; //make label label[]
+        Customer.orderLabels = new ImageView[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8}; //make label label[]
         Customer.coinImages = new ImageView[]{coinFirst, coinSecond, coinThird, coinFourth, coinFifth, coinSixth, coinSeventh, coinEighth}; //make coin ImageView[]
         Customer.freeChairs = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7)); //make freeChairs Array
         Customer.setControllerTimer(controllerTimer); //set the static timer t

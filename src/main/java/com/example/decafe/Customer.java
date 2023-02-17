@@ -11,7 +11,7 @@ import java.util.*;
 public class Customer {
     private String order; //The order of the customer
     private ImageView customer; //picture of the customer
-    private Label orderLabel; //label that displays order
+    private ImageView orderLabel; //label that displays order
     private int chair; //number of chair the customer is sitting
     private Timer sixtySecondsTimer; //timer for the 60 seconds waiting time
     private static Timer controllerTimer; //timer for leaving, spawning
@@ -31,12 +31,12 @@ public class Customer {
     public static ImageView[] customerImages; //array with all customer pictures
     private static int freeSeatChosen = 0;
     public static ImageView[] smileyImages; //image for smiley
-    public static Label[] orderLabels; //label for order
+    public static ImageView[] orderLabels; //label for order
     public static ImageView[] coinImages; //image for coins
 
     // Constructors
     Customer(){}
-    Customer(ImageView image, Label label, int chair, ImageView smiley, ImageView coinImage) {
+    Customer(ImageView image, ImageView label, int chair, ImageView smiley, ImageView coinImage) {
         this.customer = image;
         this.orderLabel = label;
         this.alreadyOrdered = false;
@@ -87,7 +87,7 @@ public class Customer {
         return this.customer;
     }
 
-    public Label getLabel() { //returns the label of the customer
+    public ImageView getLabel() { //returns the label of the customer
         return this.orderLabel;
     }
 
@@ -152,9 +152,9 @@ public class Customer {
     }
 
     //Returns the appropriate label for the customer
-    public static Label getLabel(ImageView customer) {
+    public static ImageView getLabel(ImageView customer) {
 
-        Label customerOrder = new Label();
+        ImageView customerOrder = new ImageView();
 
         if (customerImages[0].equals(customer)) {
             customerOrder = orderLabels[0];
@@ -199,7 +199,7 @@ public class Customer {
             ImageView customerImage = getRandomPic(); //get random picture from Array
             customerImage.setVisible(true); //make this picture visible
 
-            Label order = getLabel(customerImage); //get the label for the customer
+            ImageView order = getLabel(customerImage); //get the label for the customer
             ImageView smiley = getImage(customerImage, smileyImages); //gets the smiley picture for the customer
             ImageView coin = getImage(customerImage, coinImages); //gets the coin picture for the customer
 
@@ -296,11 +296,32 @@ public class Customer {
     }
 
     //Methode to display order
-    public void displayOrder(Label orderlabel) {
-        orderlabel.setVisible(true);
+    public void displayOrder(ImageView orderlabel) throws FileNotFoundException {
         this.order = getRandomOrder();
         setOrder(order);
-        orderlabel.setText(order);
+        if(order.equals("cake")) {
+            if (chair == 0 || chair == 1 || chair == 4 || chair == 7) {
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCakeTopLeft.png"));
+            } else if(chair == 2 || chair == 3){
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCakeTopRight.png"));
+            } else if(chair == 5 || chair == 6){
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCakeBottomRight.png"));
+            }
+        } else if(order.equals("coffee")){
+            if (chair == 0 || chair == 1 || chair == 4 || chair == 7) {
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCoffeeTopLeft.png"));
+            } else if(chair == 2 || chair == 3){
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCoffeeTopRight.png"));
+            } else if(chair == 5 || chair == 6){
+                orderlabel.setVisible(true);
+                orderlabel.setImage(createImage("bubbleCoffeeBottomRight.png"));
+            }
+        }
         this.alreadyOrdered = true;
     }
 
