@@ -3,6 +3,7 @@ package com.example.decafe;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -211,8 +212,8 @@ public class Customer {
             allCustomers.add(customer); //to stop all timers that are still alive even after customer has left
             File f = new File("");
             String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "doorBell.mp3";
-            Media sound = new Media(new File(musicFile).toURI().toString());
-            MediaPlayer doorBell = new MediaPlayer(sound);
+            AudioClip doorBell = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer doorBell = new MediaPlayer(sound);
             doorBell.play();
             customer.waitingTime(); //place customer in the waitingTime of  60 seconds
         }
@@ -363,6 +364,11 @@ public class Customer {
         this.coinImage.setVisible(true);
         this.coinImage.setDisable(false);
         if (this.leftUnhappy){ //when customer leaves after 60 seconds or received wrong order
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "wrongChoice.mp3";
+            AudioClip wrongOrder = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer collectMoney = new MediaPlayer(sound);
+            wrongOrder.play();
             this.coinImage.setImage(this.createImage("coin.png")); // set coin Image to empty plate
             this.coinImage.setOnMouseClicked(event1 -> { // set click event to this
                 try {
@@ -371,6 +377,12 @@ public class Customer {
                     e.printStackTrace();
                 }
             });
+        } else {
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "rightChoice.mp3";
+            AudioClip rightOrder = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer collectMoney = new MediaPlayer(sound);
+            rightOrder.play();
         }
     }
 }

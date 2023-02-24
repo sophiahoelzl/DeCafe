@@ -126,11 +126,6 @@ public class Machine {
     public void displayProduct (ImageView waiterImageView, ImageView machineImageView, Player cofiBrew, ProgressBar machineProgressBar) throws FileNotFoundException {
         // create new Timer object
         Timer productionTimer = new Timer();
-        File f = new File("");
-        String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "test_sound.wav";
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
         // Set default image of Waiter and Machine
         String imageMachine = this.filenameImageMachineWithProduct;
         String imageCofi = cofiBrew.getFilenameImageWithoutProduct();

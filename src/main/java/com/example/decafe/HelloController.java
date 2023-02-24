@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -341,6 +342,11 @@ public class HelloController implements Initializable {
     public void showCoffee() throws FileNotFoundException {
         if (waiterImageView.getBoundsInParent().intersects(coffeeMachineImageView.getBoundsInParent())) {
             Play.getCoffeeMachine().displayProduct(waiterImageView, coffeeMachineImageView, CofiBrew, progressBarCoffee);
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "test_sound.wav";
+            AudioClip coffeeSound = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer coffeeSound = new MediaPlayer(sound);
+            coffeeSound.play();
         }
     }
 
@@ -348,13 +354,25 @@ public class HelloController implements Initializable {
     public void showCake() throws FileNotFoundException {
         if (waiterImageView.getBoundsInParent().intersects(cakeMachineImageView.getBoundsInParent())) {
             Play.getCakeMachine().displayProduct(waiterImageView, cakeMachineImageView, CofiBrew, progressBarCake);
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "test_sound.wav";
+            AudioClip cakeSound = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer cakeSound = new MediaPlayer(sound);
+            cakeSound.play();
         }
     }
 
     // if no product is held by waiter
     public void noProduct() throws FileNotFoundException {
-        waiterImageView.setImage(createImage(CofiBrew.getFilenameImageWithoutProduct()));
-        CofiBrew.setProductInHand("none");
+        if (CofiBrew.getProductInHand().equals("coffee") || CofiBrew.getProductInHand().equals("cake")) {
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "trashSound.mp3";
+            AudioClip trashSound = new AudioClip(new File(musicFile).toURI().toString());
+            //MediaPlayer cakeSound = new MediaPlayer(sound);
+            trashSound.play();
+            waiterImageView.setImage(createImage(CofiBrew.getFilenameImageWithoutProduct()));
+            CofiBrew.setProductInHand("none");
+        }
     }
 
     // find the customer in the customerList and return it
@@ -418,6 +436,13 @@ public class HelloController implements Initializable {
         Play.doUpgrade(((ImageView) e.getSource()).getId(), CofiBrew);
         // set the coin label to the correct amount of coins (coins earned - upgrade costs)
         coinsEarnedLabel.setText(String.valueOf(Play.getCoinsEarned()));
+
+        File f = new File("");
+        String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "upgradeSound.wav";
+        AudioClip getUpgrade = new AudioClip(new File(musicFile).toURI().toString());
+        //MediaPlayer collectMoney = new MediaPlayer(sound);
+        getUpgrade.play();
+
         // check if other upgrades are still possible or if they need to be "deactivated"
         checkUpgradePossible(Play.getCoffeeUpgrade());
         checkUpgradePossible(Play.getCakeUpgrade());
@@ -438,8 +463,8 @@ public class HelloController implements Initializable {
     public void getMoney(MouseEvent e, Customer customer) throws IOException {
         File f = new File("");
         String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coinsSound.wav";
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer collectMoney = new MediaPlayer(sound);
+        AudioClip collectMoney = new AudioClip(new File(musicFile).toURI().toString());
+        //MediaPlayer collectMoney = new MediaPlayer(sound);
         collectMoney.play();
         Customer.addFreeSeat(customer.getChair()); // add the seat chosen from the customer to the freeSeatsArray again
         Play.setCoinsEarned(customer); // set the money earned according to what amount of money the customer left
