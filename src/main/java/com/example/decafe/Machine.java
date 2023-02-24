@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 // Class used to control all the methods needed to operate a Machine
 public class Machine {
@@ -124,6 +126,11 @@ public class Machine {
     public void displayProduct (ImageView waiterImageView, ImageView machineImageView, Player cofiBrew, ProgressBar machineProgressBar) throws FileNotFoundException {
         // create new Timer object
         Timer productionTimer = new Timer();
+        File f = new File("");
+        String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "test_sound.wav";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
         // Set default image of Waiter and Machine
         String imageMachine = this.filenameImageMachineWithProduct;
         String imageCofi = cofiBrew.getFilenameImageWithoutProduct();

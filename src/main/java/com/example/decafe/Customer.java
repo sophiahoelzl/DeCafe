@@ -3,6 +3,8 @@ package com.example.decafe;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
 import java.util.*;
@@ -207,6 +209,11 @@ public class Customer {
             Customer customer = new Customer(customerImage, order, freeSeatChosen, smiley, coin); //make new customer object
             customersInCoffeeShop.add(customer); //to check if not more than 3 customers are in the store
             allCustomers.add(customer); //to stop all timers that are still alive even after customer has left
+            File f = new File("");
+            String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "doorBell.mp3";
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            MediaPlayer doorBell = new MediaPlayer(sound);
+            doorBell.play();
             customer.waitingTime(); //place customer in the waitingTime of  60 seconds
         }
     }

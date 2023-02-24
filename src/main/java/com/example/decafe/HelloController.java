@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
 import java.net.URL;
@@ -33,7 +35,6 @@ public class HelloController implements Initializable {
 
     // Label that shows the current amount of coins earned
     public Label coinsEarnedLabel;
-
     // Used for controlling the movement of the Player
     private BooleanProperty wPressed = new SimpleBooleanProperty();
     private BooleanProperty aPressed = new SimpleBooleanProperty();
@@ -435,6 +436,11 @@ public class HelloController implements Initializable {
 
     // Method used when coin Image is clicked on
     public void getMoney(MouseEvent e, Customer customer) throws IOException {
+        File f = new File("");
+        String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "coinsSound.wav";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer collectMoney = new MediaPlayer(sound);
+        collectMoney.play();
         Customer.addFreeSeat(customer.getChair()); // add the seat chosen from the customer to the freeSeatsArray again
         Play.setCoinsEarned(customer); // set the money earned according to what amount of money the customer left
         ((ImageView) e.getSource()).setVisible(false); // disable the coin Image and make it invisible
