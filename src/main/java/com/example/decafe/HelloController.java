@@ -16,8 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
 import java.net.URL;
@@ -72,7 +70,6 @@ public class HelloController implements Initializable {
     public Label customerBot1;
     public Label customerBot2;
     public Label customerBot3;
-    public Label customerBot4;
     public Label plant;
     public Label edgeBot;
     public Label edgeTop;
@@ -88,7 +85,6 @@ public class HelloController implements Initializable {
     public ImageView smileyFifth;
     public ImageView smileySixth;
     public ImageView smileySeventh;
-    public ImageView smileyEighth;
 
     //coin images
     public ImageView coinFirst;
@@ -98,7 +94,6 @@ public class HelloController implements Initializable {
     public ImageView coinFifth;
     public ImageView coinSixth;
     public ImageView coinSeventh;
-    public ImageView coinEighth;
 
     //order labels
     public ImageView orderlabel1 = new ImageView();
@@ -108,7 +103,6 @@ public class HelloController implements Initializable {
     public ImageView orderlabel5 = new ImageView();
     public ImageView orderlabel6 = new ImageView();
     public ImageView orderlabel7 = new ImageView();
-    public ImageView orderlabel8 = new ImageView();
 
     //customer images
     public ImageView first;
@@ -118,7 +112,6 @@ public class HelloController implements Initializable {
     public ImageView fifth;
     public ImageView sixth;
     public ImageView seventh;
-    public ImageView eighth;
 
     // for end screen
     public ImageView gameStartButton;
@@ -130,7 +123,7 @@ public class HelloController implements Initializable {
     public ImageView quitEndScreenImage;
 
     // Player object created to change Images and movement Speed
-    public Player CofiBrew = new Player("cofiBrew.png", "cofiBrewWithCake.png", "cofiBrewWithCoffee.png", 4);
+    public Player CofiBrew = new Player("CofiBrewUp.png", "CofiBrewCakeLeft.png", "CofiBrewCoffeeLeft.png", 4);
     // Game object used to control main methods
     public Game Play;
     // Label array used for collision detection management
@@ -202,6 +195,7 @@ public class HelloController implements Initializable {
         public void handle(long timestamp) {
             int movementVariable = CofiBrew.getMovement();
             double move = movementVariable; // store movementVariable in new variable
+            String movement = "none";
 
             // if two keys are pressed at once and player moves diagonally - correct diagonal speed
             if (wPressed.get() && aPressed.get() || wPressed.get() && dPressed.get() ||
@@ -216,21 +210,25 @@ public class HelloController implements Initializable {
             // if waiter should move up
             if (wPressed.get()) {
                 yMove = -move; // negative move because otherwise waiter would move down
+                movement = "up";
             }
 
             // if waiter should move down
             if (sPressed.get()) {
                 yMove = move;
+                movement = "down";
             }
 
             // if waiter should move left
             if (aPressed.get()) {
                 xMove = -move; // negative move because otherwise waiter would move right
+               movement = "left";
             }
 
             // if waiter should move right
             if (dPressed.get()) {
                 xMove = move;
+                movement = "right";
             }
 
             // set x and y coordinates of waiter
@@ -241,6 +239,57 @@ public class HelloController implements Initializable {
             if (checkForCollision(waiterImageView)) {
                 waiterImageView.setLayoutX(waiterImageView.getLayoutX() - xMove);
                 waiterImageView.setLayoutY(waiterImageView.getLayoutY() - yMove);
+                movement = "none";
+            } else {
+                if (movement.equals("up")){
+                    try {
+                        if (CofiBrew.getProductInHand().equals("none")) {
+                            waiterImageView.setImage(createImage("CofiBrewUp.png"));
+                        } else if (CofiBrew.getProductInHand().equals("cake")){
+                            waiterImageView.setImage(createImage("CofiBrewCakeUp.png"));
+                        } else if (CofiBrew.getProductInHand().equals("coffee")){
+                            waiterImageView.setImage(createImage("CofiBrewCoffeeUp.png"));
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (movement.equals("down")){
+                    try {
+                        if (CofiBrew.getProductInHand().equals("none")) {
+                            waiterImageView.setImage(createImage("CofiBrewDown.png"));
+                        } else if (CofiBrew.getProductInHand().equals("cake")){
+                            waiterImageView.setImage(createImage("CofiBrewCakeDown.png"));
+                        } else if (CofiBrew.getProductInHand().equals("coffee")){
+                            waiterImageView.setImage(createImage("CofiBrewCoffeeDown.png"));
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (movement.equals("left")){
+                    try {
+                        if (CofiBrew.getProductInHand().equals("none")) {
+                            waiterImageView.setImage(createImage("CofiBrewLeft.png"));
+                        } else if (CofiBrew.getProductInHand().equals("cake")){
+                            waiterImageView.setImage(createImage("CofiBrewCakeLeft.png"));
+                        } else if (CofiBrew.getProductInHand().equals("coffee")){
+                            waiterImageView.setImage(createImage("CofiBrewCoffeeLeft.png"));
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (movement.equals("right")){
+                    try {
+                        if (CofiBrew.getProductInHand().equals("none")) {
+                            waiterImageView.setImage(createImage("CofiBrewRight.png"));
+                        } else if (CofiBrew.getProductInHand().equals("cake")){
+                            waiterImageView.setImage(createImage("CofiBrewCakeRight.png"));
+                        } else if (CofiBrew.getProductInHand().equals("coffee")){
+                            waiterImageView.setImage(createImage("CofiBrewCoffeeRight.png"));
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     };
@@ -257,14 +306,14 @@ public class HelloController implements Initializable {
         })));
 
         // transparent labels on top of the images to look for collisions
-        collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerBot4, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
+        collisions = new Label[]{plant, plantsAbove, customerBot1, customerBot2, customerBot3, customerTop1, customerTop2, customerTop3, customerTop4, table1, table2, table3, table4, edgeBot, edgeLeft, edgeRight, edgeTop, countRight, countBelow};
 
         // initialise ImagesViews and Labels so Customer Class can operate with them
-        Customer.customerImages = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh, eighth}; //make customer ImageView[]
-        Customer.smileyImages = new ImageView[]{smileyFirst, smileySecond, smileyThird, smileyFourth, smileyFifth, smileySixth, smileySeventh, smileyEighth}; //make smiley ImageView[]
-        Customer.orderLabels = new ImageView[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7, orderlabel8}; //make label label[]
-        Customer.coinImages = new ImageView[]{coinFirst, coinSecond, coinThird, coinFourth, coinFifth, coinSixth, coinSeventh, coinEighth}; //make coin ImageView[]
-        Customer.freeChairs = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7)); //make freeChairs Array
+        Customer.customerImages = new ImageView[]{first, second, third, fourth, fifth, sixth, seventh}; //make customer ImageView[]
+        Customer.smileyImages = new ImageView[]{smileyFirst, smileySecond, smileyThird, smileyFourth, smileyFifth, smileySixth, smileySeventh}; //make smiley ImageView[]
+        Customer.orderLabels = new ImageView[]{orderlabel1, orderlabel2, orderlabel3, orderlabel4, orderlabel5, orderlabel6, orderlabel7}; //make label label[]
+        Customer.coinImages = new ImageView[]{coinFirst, coinSecond, coinThird, coinFourth, coinFifth, coinSixth, coinSeventh}; //make coin ImageView[]
+        Customer.freeChairs = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6)); //make freeChairs Array
         Customer.setControllerTimer(controllerTimer); //set the static timer t
         Play = new Game(upgradeCoffeeImageView, upgradeCakeImageView, upgradePlayerImageView); // initialise Game Object with upgrade ImageViews
     }

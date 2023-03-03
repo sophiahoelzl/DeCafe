@@ -147,8 +147,6 @@ public class Customer {
             wantedImage = searchArray[5];
         } else if (customerImages[6].equals(customer)) {
             wantedImage = searchArray[6];
-        } else if (customerImages[7].equals(customer)) {
-            wantedImage = searchArray[7];
         }
 
         return wantedImage;
@@ -173,8 +171,6 @@ public class Customer {
             customerOrder = orderLabels[5];
         } else if (customerImages[6].equals(customer)) {
             customerOrder = orderLabels[6];
-        } else if (customerImages[7].equals(customer)) {
-            customerOrder = orderLabels[7];
         }
 
         return customerOrder;
@@ -308,24 +304,24 @@ public class Customer {
         this.order = getRandomOrder();
         setOrder(order);
         if(order.equals("cake")) {
-            if (chair == 0 || chair == 1 || chair == 4 || chair == 7) {
+            if (chair == 0 || chair == 1 || chair == 4 || chair == 6) {
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCakeTopLeft.png"));
             } else if(chair == 2 || chair == 3){
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCakeTopRight.png"));
-            } else if(chair == 5 || chair == 6){
+            } else if(chair == 5) {
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCakeBottomRight.png"));
             }
         } else if(order.equals("coffee")){
-            if (chair == 0 || chair == 1 || chair == 4 || chair == 7) {
+            if (chair == 0 || chair == 1 || chair == 4 || chair == 6) {
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCoffeeTopLeft.png"));
             } else if(chair == 2 || chair == 3){
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCoffeeTopRight.png"));
-            } else if(chair == 5 || chair == 6){
+            } else if(chair == 5){
                 orderlabel.setVisible(true);
                 orderlabel.setImage(createImage("bubbleCoffeeBottomRight.png"));
             }
