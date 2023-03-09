@@ -166,6 +166,7 @@ public class HelloController implements Initializable {
             customer.startTimerSpawn(10, Customer.getControllerTimer());
             Customer.allCustomers.add(customer);
         }
+        backgroundMusic.setCycleCount(AudioClip.INDEFINITE);
         backgroundMusic.play();
     }
 
