@@ -16,6 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
 import java.net.URL;
@@ -131,6 +133,10 @@ public class HelloController implements Initializable {
     // Timer used to spawn customers or make them leave
     public Timer controllerTimer = new Timer();
 
+    public File f = new File("");
+    public String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backgroundmusic.wav";
+    public AudioClip backgroundMusic = new AudioClip(new File(musicFile).toURI().toString());
+
 
     // Method used to load a certain scene according to the name of the fxml file
     public void loadScene(String sceneName) throws IOException {
@@ -160,6 +166,7 @@ public class HelloController implements Initializable {
             customer.startTimerSpawn(10, Customer.getControllerTimer());
             Customer.allCustomers.add(customer);
         }
+        backgroundMusic.play();
     }
 
     // jump to instructions
@@ -554,6 +561,7 @@ public class HelloController implements Initializable {
     // end game (called when exit clicked) - in Game Screen
     public void endGameQuick() {
         stopTimers();
+        backgroundMusic.stop();
         Platform.exit();
         System.exit(0);
     }
@@ -561,6 +569,7 @@ public class HelloController implements Initializable {
     // end game (called when quit button is clicked) - in End Screen and Start Screen
     public void endGame() {
         Platform.exit();
+        backgroundMusic.stop();
         System.exit(0);
     }
 }
