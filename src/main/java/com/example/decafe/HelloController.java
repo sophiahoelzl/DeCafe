@@ -134,7 +134,7 @@ public class HelloController implements Initializable {
     public Timer controllerTimer = new Timer();
 
     public File f = new File("");
-    public String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backgroundmusic.wav";
+    public String musicFile = f.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "com" + File.separator + "example" + File.separator + "decafe" + File.separator + "backgroundmusic.mp3";
     public AudioClip backgroundMusic = new AudioClip(new File(musicFile).toURI().toString());
 
 
