@@ -148,6 +148,7 @@ public class HelloController implements Initializable {
 
     // jump to end screen
     public void switchToEndScreen() throws IOException {
+        backgroundMusic.stop();
         loadScene("endScreen.fxml");
     }
 
